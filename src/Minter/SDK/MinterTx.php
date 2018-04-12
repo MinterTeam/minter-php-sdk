@@ -114,7 +114,7 @@ class MinterTx
      */
     public function recoverPublicKey(array $tx): string
     {
-        $shortTx = array_except($tx, ['v', 'r', 's']);
+        $shortTx = array_diff($tx, ['v', 'r', 's']);
         $shortTx = $this->detectHex2bin($shortTx);
         $shortTx['data'] = $this->rlp->encode($shortTx['data']);
         $msg = $this->createKeccakHash($shortTx);
