@@ -59,6 +59,7 @@ Trait Http
     private function post(string $url, array $parameters)
     {
         try {
+
             $response = $this->client->request('POST', $url, [
                 'json' => $parameters
             ])->getBody();

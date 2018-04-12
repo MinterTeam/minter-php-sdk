@@ -16,7 +16,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
         'name' => '',
         'symbol' => '',
         'initialAmount' => '',
-        'initalReverse' => '',
+        'initialReserve' => '',
         'crr' => ''
     ];
 
@@ -41,8 +41,8 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
         return $this->rlp->encode([
             'name' => $this->data['name'],
             'symbol' => MinterConverter::convertCoinName($this->data['symbol']),
-            'initialAmount' => $this->data['initalAmount'],
-            'initalReverse' => $this->data['initialReserve'],
+            'initialAmount' => $this->data['initialAmount'],
+            'initialReserve' => $this->data['initialReserve'],
             'crr' => $this->data['crr']
         ]);
     }
@@ -59,7 +59,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'name' => pack('H*', $txData[0]),
             'symbol' => str_replace(chr(0), '', pack('H*', $txData[1])),
             'initialAmount' => hexdec($txData[2]),
-            'initalReverse' => hexdec($txData[3]),
+            'initialReserve' => hexdec($txData[3]),
             'crr' => hexdec($txData[4])
         ];
     }
