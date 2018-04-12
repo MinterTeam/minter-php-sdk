@@ -15,12 +15,8 @@ class MinterAPI
      * MinterAPI constructor.
      * @param bool $nodeUrl
      */
-    public function __construct($nodeUrl = false)
+    public function __construct($nodeUrl)
     {
-        if(!$nodeUrl) {
-            $nodeUrl = env('MINTER_BLOCKCHAIN_NODE_URL');
-        }
-
         $this->setApiUrl($nodeUrl);
     }
 

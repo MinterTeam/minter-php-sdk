@@ -39,7 +39,7 @@ class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
         return $this->rlp->encode([
             'coin_from' => MinterConverter::convertCoinName($this->data['coin_from']),
             'coin_to' => MinterConverter::convertCoinName($this->data['coin_to']),
-            'value' => $this->data['value']
+            'value' => MinterConverter::convertValue($this->data['value'], 'pip')
         ]);
     }
 
