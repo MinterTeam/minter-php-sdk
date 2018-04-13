@@ -2,8 +2,6 @@
 
 namespace Minter\Interfaces;
 
-use Web3p\RLP\Buffer;
-
 interface MinterTxInterface
 {
     /**
@@ -15,11 +13,11 @@ interface MinterTxInterface
     public function __get($name);
 
     /**
-     * RLP encoded tx data
+     * Prepare data tx for signing
      *
-     * @return \Web3p\RLP\Buffer
+     * @return array
      */
-    public function serialize(): Buffer;
+    public function encode(): array;
 
     /**
      * Prepare output tx data
@@ -27,5 +25,5 @@ interface MinterTxInterface
      * @param array $txData
      * @return array
      */
-    public function convertFromHex(array $txData): array;
+    public function decode(array $txData): array;
 }

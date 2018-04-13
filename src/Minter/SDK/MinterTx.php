@@ -47,6 +47,10 @@ class MinterTx
         if(is_string($tx)) {
             $this->tx = $this->decode($tx);
         }
+
+        if(is_array($tx)) {
+            $this->tx = $this->encode($tx);
+        }
     }
 
     /**
@@ -94,6 +98,7 @@ class MinterTx
         }
 
         $tx = $this->tx;
+        $tx['data'] = $this->rlp->encode($tx['data']);
 
         $keccak = $this->createKeccakHash($tx);
         $ec = new EC('secp256k1');
@@ -114,7 +119,7 @@ class MinterTx
      */
     public function recoverPublicKey(array $tx): string
     {
-        $shortTx = array_diff($tx, ['v', 'r', 's']);
+        $shortTx = array_diff_key($tx, ['v' => '', 'r' => '', 's' => '']);
         $shortTx = $this->detectHex2bin($shortTx);
         $shortTx['data'] = $this->rlp->encode($shortTx['data']);
         $msg = $this->createKeccakHash($shortTx);
@@ -159,15 +164,43 @@ class MinterTx
      */
     protected function decode(string $tx): array
     {
-        $tx = $this->rplToHex(
-            bin2hex(base64_decode($tx))
-        );
-
+        $tx = $this->rplToHex(bin2hex(base64_decode($tx)));
         $dataIndex = array_search('data', $this->structure);
-        $data = $this->rplToHex($tx[$dataIndex]);
-        $tx[$dataIndex] = $data;
+        $tx[$dataIndex] = $this->rplToHex($tx[$dataIndex]);
 
-        return $this->prepareResult($tx);
+        return $this->encode($this->prepareResult($tx), true);
+    }
+
+    /**
+     * Encode transaction data
+     *
+     * @param array $tx
+     * @return array
+     * @throws \Exception
+     */
+    protected function encode(array $tx, bool $isHexFormat = false): array
+    {
+        switch ($tx['type']) {
+            case MinterSendCoinTx::TYPE:
+                $dataTx = new MinterSendCoinTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterConvertCoinTx::TYPE:
+                $dataTx = new MinterConvertCoinTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterCreateCoinTx::TYPE:
+                $dataTx = new MinterCreateCoinTx($tx['data'], $isHexFormat);
+                break;
+
+            default:
+                throw new \Exception('Unknown transaction type');
+                break;
+        }
+
+        $tx['data'] = $dataTx->data;
+
+        return $tx;
     }
 
     /**
@@ -243,9 +276,9 @@ class MinterTx
     protected function detectHex2bin(array $data): array
     {
         foreach ($data as $key => $value) {
-            if(is_array($value)) {
+            if (is_array($value)) {
                 $data[$key] = $this->detectHex2bin($value);
-            } elseif(is_string($value) && ctype_xdigit($value)) {
+            } elseif (is_string($value) && ctype_xdigit($value)) {
                 $data[$key] = hex2bin($value);
             }
         }

@@ -3,16 +3,20 @@
 namespace Minter\SDK;
 
 use Minter\Interfaces\MinterTxInterface;
-use Web3p\RLP\Buffer;
 
 class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
 {
+    /**
+     * Type
+     */
+    const TYPE = 3;
+
     /**
      * Send coin tx data
      *
      * @var array
      */
-    protected $data = [
+    public $data = [
         'name' => '',
         'symbol' => '',
         'initialAmount' => '',
@@ -32,19 +36,19 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     }
 
     /**
-     * RLP encoded tx data
+     * Prepare tx data for signing
      *
-     * @return \Web3p\RLP\Buffer
+     * @return array
      */
-    public function serialize(): Buffer
+    public function encode(): array
     {
-        return $this->rlp->encode([
+        return [
             'name' => $this->data['name'],
             'symbol' => MinterConverter::convertCoinName($this->data['symbol']),
-            'initialAmount' => $this->data['initialAmount'],
-            'initialReserve' => $this->data['initialReserve'],
+            'initialAmount' => MinterConverter::convertValue($this->data['initialAmount'], 'pip'),
+            'initialReserve' => MinterConverter::convertValue($this->data['initialReserve'], 'pip'),
             'crr' => $this->data['crr']
-        ]);
+        ];
     }
 
     /**
@@ -53,13 +57,13 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
      * @param array $txData
      * @return array
      */
-    public function convertFromHex(array $txData): array
+    public function decode(array $txData): array
     {
         return [
             'name' => pack('H*', $txData[0]),
             'symbol' => str_replace(chr(0), '', pack('H*', $txData[1])),
-            'initialAmount' => hexdec($txData[2]),
-            'initialReserve' => hexdec($txData[3]),
+            'initialAmount' => MinterConverter::convertValue(hexdec($txData[2]), 'bip'),
+            'initialReserve' => MinterConverter::convertValue(hexdec($txData[3]), 'bip'),
             'crr' => hexdec($txData[4])
         ];
     }
