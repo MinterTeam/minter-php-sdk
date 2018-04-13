@@ -10,21 +10,21 @@ This is a pure PHP SDK for working with <b>Minter</b> blockhain
 composer require minter/minter-php-sdk
 ```
 
-## Usage MinterAPI
+## Using MinterAPI
 
-Create instance
+Create MinterAPI instance
 
 ```php
 use Minter\MinterAPI;
 
-$nodeUrl = 'http://156.123.34.5:8841'; // example node url
+$nodeUrl = 'http://156.123.34.5:8841'; // example of a node url
 
 $api = new MinterAPI($nodeUrl);
 ```
 
 ### getBalance
 
-Returns the coins and their balance of the given address.
+Returns coins list and balance of an address.
 
 ``
 getBalance(string $minterAddress): \stdClass
@@ -35,13 +35,13 @@ getBalance(string $minterAddress): \stdClass
 ```php
 $api->getBalance('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
-// {MTN: 1000000, TESTCOIN: 2000000}
+// result: {MTN: 1000000, TESTCOIN: 2000000}
 
 ```
 
 ### getNonce
 
-Returns the nonce of the given address.
+Returns current nonce of an address.
 
 ``
 getNonce(string $minterAddress): integer
@@ -73,7 +73,7 @@ $api->send('Mxf86d010101a6e58a4d494e540000000000009432143b4d9674b13b0868da425d04
 
 ### getTransactionsFrom
 
-Returns the outcoming transactions of the given address
+Returns list of outgoing transactions of an address
 
 ``
 getTransactionsFrom(string $minterAddress): \stdClass
@@ -84,12 +84,12 @@ getTransactionsFrom(string $minterAddress): \stdClass
 ```php
 $api->getTransactionsFrom('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
-// {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
+// result: {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
 ```
 
 ### getTransactionsTo
 
-Returns the incoming transactions of the given address
+Returns list of incoming transactions of an address
 
 ``
 getTransactionsTo(string $minterAddress): \stdClass
@@ -100,18 +100,18 @@ getTransactionsTo(string $minterAddress): \stdClass
 ```php
 $api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
-// {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
+// result: {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
 ```
 
-## Usage MinterSDK
+## Using MinterSDK
 
 ### Sign transaction
 
-Returns the signed tx
+Returns a signed tx
 
 ###### Example
 
-* Sign the <b>sending</b> coin transaction
+* Sign the <b>SendCoin</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
@@ -133,7 +133,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>converting</b> coin transaction
+* Sign the <b>ConvertCoin</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
@@ -155,7 +155,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>creating</b> coin transaction
+* Sign the <b>CreateCoin</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
@@ -181,7 +181,7 @@ $tx->sign('your private key')
 
 ### Decode transaction
 
-Returns the array of transaction data
+Returns an array with transaction data
 
 ###### Example
 
