@@ -30,7 +30,7 @@ Returns the coins and their balance of the given address.
 getBalance(string $minterAddress): \stdClass
 ``
 
-######Example
+###### Example
 
 ```php
 $api->getBalance('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
@@ -47,7 +47,7 @@ Returns the nonce of the given address.
 getNonce(string $minterAddress): integer
 ``
 
-######Example
+###### Example
 
 ```php
 $api->getNonce('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
@@ -63,7 +63,7 @@ Returns the result of sending <b>signed</b> tx.
 send(string $tx): \stdClass
 ``
 
-######Example
+###### Example
 
 ```php
 $api->send('Mxf86d010101a6e58a4d494e540000000000009432143b4d9674b13b0868da425d049fd66910ebae843b9aca001ba0f0c64ae99c1f3f1acb9ad44cc1beeb3e29339353841b2a25dfa14529c41f6bbea02055b472434f7119ea5d7e928a2c357d9f5189b396cd1908bb1f9940391a79e4')
@@ -79,7 +79,7 @@ Returns the outcoming transactions of the given address
 getTransactionsFrom(string $minterAddress): \stdClass
 ``
 
-######Example
+###### Example
 
 ```php
 $api->getTransactionsFrom('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
@@ -95,7 +95,7 @@ Returns the incoming transactions of the given address
 getTransactionsTo(string $minterAddress): \stdClass
 ``
 
-######Example
+###### Example
 
 ```php
 $api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
@@ -109,7 +109,7 @@ $api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
 Returns the signed tx
 
-######Example
+###### Example
 
 * Sign the <b>sending</b> coin transaction
 
@@ -183,7 +183,7 @@ $tx->sign('your private key')
 
 Returns the array of transaction data
 
-######Example
+###### Example
 
 * Decode transaction
 
