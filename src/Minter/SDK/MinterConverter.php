@@ -21,7 +21,7 @@ class MinterConverter
         if ($to === 'pip') {
             return self::DEFAULT * $num;
         } else if ($to === 'bip') {
-            return self::DEFAULT / $num;
+            return $num / self::DEFAULT;
         }
     }
 

@@ -117,17 +117,15 @@ Returns a signed tx
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterSendCoinTx;
 
-$txData = new MinterSendCoinTx([
-    'coin' => 'MTN',
-    'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
-    'value' => 10 
-]);
-
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
-    'type' => 1,
-    'data' => $txData->serialize()
+    'type' => MinterSendCoinTx::TYPE,
+    'data' => [
+        'coin' => 'MTN',
+        'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
+        'value' => 10 
+    ]
 ]);
 
 $tx->sign('your private key')
@@ -139,17 +137,15 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterConvertCoinTx;
 
-$txData = new MinterConvertCoinTx([
-    'coin_from' => 'MNT',
-    'coin_to' => 'TESTCOIN',
-    'value' => 1
-]);
-
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
-    'type' => 2,
-    'data' => $txData->serialize()
+    'type' => MinterConvertCoinTx::TYPE,
+    'data' => [
+         'coin_from' => 'MNT',
+         'coin_to' => 'TESTCOIN',
+         'value' => 1
+    ]
 ]);
 
 $tx->sign('your private key')
@@ -161,19 +157,17 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCreateCoinTx;
 
-$txData = new MinterCreateCoinTx([
-    'name' => 'TEST COIN',
-    'symbol' => 'TEST',
-    'initialAmount' => 100,
-    'initialReserve' => 10,
-    'crr' => 10
-]);
-
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
-    'type' => 3,
-    'data' => $txData->serialize()
+    'type' => MinterCreateCoinTx::TYPE,
+    'data' => [
+        'name' => 'TEST COIN',
+        'symbol' => 'TEST',
+        'initialAmount' => 100,
+        'initialReserve' => 10,
+        'crr' => 10
+    ]
 ]);
 
 $tx->sign('your private key')
@@ -189,32 +183,10 @@ Returns an array with transaction data
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterSendCoinTx;
-use Minter\SDK\MinterCreateCoinTx;
-use Minter\SDK\MinterConvertCoinTx;
 
 $tx = new MinterTx('string tx');
 
-// {height: .., data: [{...}], from: 'Mx...', type: ...}
-
-// now we need to parse data of transaction
-if($tx->type === 1) {
-    $data = new MinterSendCoinTx($tx->data, true);
-    
-    // {to: 'Mx...', coin: '...', 'value': ...}
-}
-
-if($tx->type === 2) {
-    $data = new MinterConvertCoinTx($tx->data, true);
-    
-    // {coin_from: '...', coin_to: '...', 'value': ...}
-}
-
-if($tx->type === 3) {
-    $data = new MinterCreateCoinTx($tx->data, true);
-    
-    // {name: '...', symbol: '...', 'initialAmount': ... , 'initialReserve': ... , 'crr': ...}
-}   
+// $tx->from, $tx->data, $tx->nonce ...
 
 ```
 

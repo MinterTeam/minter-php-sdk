@@ -3,17 +3,20 @@
 namespace Minter\SDK;
 
 use Minter\Interfaces\MinterTxInterface;
-use Web3p\RLP\Buffer;
-use Web3p\RLP\RLP;
 
 class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
 {
+    /**
+     * Type
+     */
+    const TYPE = 1;
+
     /**
      * Send coin tx data
      *
      * @var array
      */
-    protected $data = [
+    public $data = [
         'coin' => '',
         'to' => '',
         'value' => ''
@@ -31,17 +34,17 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     }
 
     /**
-     * RLP encoded tx data
+     * Prepare data for signing
      *
-     * @return \Web3p\RLP\Buffer
+     * @return array
      */
-    public function serialize(): Buffer
+    public function encode(): array
     {
-        return $this->rlp->encode([
+        return [
             'coin' => MinterConverter::convertCoinName($this->data['coin']),
             'to' => hex2bin(substr($this->data['to'], 2, strlen($this->data['to']))),
             'value' => MinterConverter::convertValue($this->data['value'], 'pip')
-        ]);
+        ];
     }
 
     /**
@@ -50,12 +53,12 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
      * @param array $txData
      * @return array
      */
-    public function convertFromHex(array $txData): array
+    public function decode(array $txData): array
     {
         return [
             'coin' => str_replace(chr(0), '', pack('H*', $txData[0])),
             'to' => 'Mx' . $txData[1],
-            'value' => hexdec($txData[2])
+            'value' => MinterConverter::convertValue(hexdec($txData[2]), 'bip')
         ];
     }
 }

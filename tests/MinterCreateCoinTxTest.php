@@ -16,58 +16,40 @@ final class MinterCreateCoinTxTest extends TestCase
     const PRIVATE_KEY = '418e4be028dcaed85aa58b643979f644f806a42bb6d1912848720788a53bb8a4';
 
     /**
+     * Predefined minter address
+     */
+    const MINTER_ADDRESS = 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99';
+
+    /**
      * Predefined data
      */
     const DATA = [
-        'name' => 'TEST COIN',
-        'symbol' => 'TEST',
+        'name' => 'SUPER TEST',
+        'symbol' => 'SPRTEST',
         'initialAmount' => 100,
         'initialReserve' => 10,
         'crr' => 10
     ];
 
     /**
-     * Predefined valid RLP encoded data of self::DATA
+     * Predefined valid tx for decoding
      */
-    const VALID_RLP_ENCODED_DATA = 'd8895445535420434f494e8a54455354000000000000640a0a';
+    const VALID_TX = '+GoFAQOj4opTVVBFUiBURVNUilNQUlRFU1QAAACFAlQL5ACEO5rKAAoboCTrfCCQh2alEat8p3G+ymfRu8c6Yvy5Tf0Cklftds+goHuPSqp0aOnCu7obIqvyWtS0isOmN3NTDmQmY9HcTf8k';
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf86001010399d8895445535420434f494e8a54455354000000000000640a0a1ba025120bc80add1e7456ec6e09d62d1fd0f2bdf6694f1dc219d72d973407bf6cc4a0602bb53187957e804467387d33c282f052e7d0141c4271bd57bc5ad6c68290b1';
-
-    /**
-     * Test to valid RLP encode data of MinterCreateCoinTx serialization
-     */
-    public function testSerialization(): void
-    {
-        $tx = new MinterCreateCoinTx(self::DATA);
-
-        $this->assertSame($tx->serialize()->toString('hex'), self::VALID_RLP_ENCODED_DATA);
-    }
+    const VALID_SIGNATURE = 'Mxf86a010103a3e28a535550455220544553548a535052544553540000008502540be400843b9aca000a1ca026844b7ace1552e362382ffcde669de1e2e0375f90a77bb488e8d5377e84ce5aa0183cc3f57d73aac3adf01cc74cb52cd5eb77bedeefcddfb18381feec7292b5c4';
 
     /**
      * Test to decode data for MinterCreateCoinTx
      */
     public function testDecode(): void
     {
-        $tx = new MinterCreateCoinTx([
-            implode(unpack("H*", self::DATA['name'])),
-            implode(unpack("H*", self::DATA['symbol'])),
-            dechex(self::DATA['initialAmount']),
-            dechex(self::DATA['initialReserve']),
-            dechex(self::DATA['crr'])
-        ], true);
+        $tx = new MinterTx(self::VALID_TX);
 
-        $this->assertSame($tx->name, self::DATA['name']);
-
-        $this->assertSame($tx->symbol, self::DATA['symbol']);
-
-        $this->assertSame($tx->initialAmount, self::DATA['initialAmount']);
-
-        $this->assertSame($tx->initialReserve, self::DATA['initialReserve']);
-
-        $this->assertSame($tx->crr, self::DATA['crr']);
+        $this->assertSame($tx->data, self::DATA);
+        $this->assertSame($tx->from, self::MINTER_ADDRESS);
     }
 
     /**
@@ -75,12 +57,11 @@ final class MinterCreateCoinTxTest extends TestCase
      */
     public function testSign(): void
     {
-        $txData = new MinterCreateCoinTx(self::DATA);
         $tx = new MinterTx([
             'nonce' => 1,
             'gasPrice' => 1,
-            'type' => 3,
-            'data' => $txData->serialize()
+            'type' => MinterCreateCoinTx::TYPE,
+            'data' => self::DATA
         ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);

@@ -3,24 +3,15 @@
 namespace Minter\SDK;
 
 use Minter\Interfaces\MinterTxInterface;
-use Web3p\RLP\RLP;
-use Web3p\RLP\Buffer;
 
 abstract class MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * rlp
-     *
-     * @var RLP
-     */
-    protected $rlp;
-
     /**
      * Send coin tx data
      *
      * @var array
      */
-    protected $data;
+    public $data;
 
     /**
      * MinterSendCoinTx constructor.
@@ -29,8 +20,6 @@ abstract class MinterCoinTx implements MinterTxInterface
      */
     public function __construct($data, $convert = false)
     {
-        $this->rlp = new RLP();
-
         if(!$convert) {
             foreach ($this->data as $key => $value) {
                 if (!isset($data[$key])) {
@@ -39,9 +28,11 @@ abstract class MinterCoinTx implements MinterTxInterface
 
                 $this->data[$key] = $data[$key];
             }
+
+            $this->data = $this->encode();
         }
         else {
-            $this->data = $this->convertFromHex($data);
+            $this->data = $this->decode($data);
         }
     }
 
@@ -63,11 +54,11 @@ abstract class MinterCoinTx implements MinterTxInterface
     }
 
     /**
-     * RLP encoded tx data
+     * Prepare data tx for signing
      *
-     * @return \Web3p\RLP\Buffer
+     * @return array
      */
-    abstract function serialize(): Buffer;
+    abstract function encode(): array;
 
     /**
      * Prepare output tx data
@@ -75,5 +66,5 @@ abstract class MinterCoinTx implements MinterTxInterface
      * @param array $txData
      * @return array
      */
-    abstract function convertFromHex(array $txData): array;
+    abstract function decode(array $txData): array;
 }
