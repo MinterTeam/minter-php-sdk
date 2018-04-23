@@ -19,7 +19,7 @@ class MinterConverter
     public static function convertValue(float $num, string $to)
     {
         if ($to === 'pip') {
-            return self::DEFAULT * $num;
+            return intval(self::DEFAULT * $num);
         } else if ($to === 'bip') {
             return $num / self::DEFAULT;
         }
