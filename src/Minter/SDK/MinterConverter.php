@@ -16,7 +16,7 @@ class MinterConverter
      * @param string $to
      * @return int
      */
-    public static function convertValue(float $num, string $to): int
+    public static function convertValue(float $num, string $to)
     {
         if ($to === 'pip') {
             return self::DEFAULT * $num;
