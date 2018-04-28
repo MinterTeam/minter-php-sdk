@@ -65,7 +65,7 @@ Trait Http
             ])->getBody();
 
         } catch (RequestException $exception) {
-            throw new \Exception($exception->getMessage());
+            throw $exception;
         }
 
         return json_decode($response);
