@@ -33,12 +33,6 @@ class MinterConverter
      */
     public static function convertCoinName(string $symbol)
     {
-        $nulls = $symbol;
-
-        for($i = 1; $i <= 10 - strlen($symbol); $i ++) {
-            $nulls .= chr(0);
-        }
-
-        return $nulls;
+        return $symbol  . str_repeat(chr(0), 10 - strlen($symbol));
     }
 }
