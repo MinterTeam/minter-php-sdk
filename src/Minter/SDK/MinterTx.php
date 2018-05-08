@@ -30,6 +30,7 @@ class MinterTx
         'gasPrice',
         'type',
         'data',
+        'payload',
         'v',
         'r',
         's'
@@ -38,6 +39,7 @@ class MinterTx
     /**
      * MinterTx constructor.
      * @param $tx
+     * @throws \Exception
      */
     public function __construct($tx)
     {
@@ -161,6 +163,7 @@ class MinterTx
      *
      * @param string $tx
      * @return array
+     * @throws \Exception
      */
     protected function decode(string $tx): array
     {
@@ -175,6 +178,7 @@ class MinterTx
      * Encode transaction data
      *
      * @param array $tx
+     * @param bool $isHexFormat
      * @return array
      * @throws \Exception
      */
@@ -212,8 +216,6 @@ class MinterTx
      */
     protected function prepareResult(array $tx): array
     {
-        $dataIndex = array_search('data', $this->structure);
-
         $result = [];
         foreach($this->structure as $key => $field) {
             if($field === 'r' || $field === 's' || $field === 'data') {
