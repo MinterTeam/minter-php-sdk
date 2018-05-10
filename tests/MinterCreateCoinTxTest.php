@@ -13,12 +13,12 @@ final class MinterCreateCoinTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '418e4be028dcaed85aa58b643979f644f806a42bb6d1912848720788a53bb8a4';
+    const PRIVATE_KEY = 'b574d2a7151fcf0df573feae58015f85f6ebf38ea4b38c49196c6aceee27e189';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99';
+    const MINTER_ADDRESS = 'Mx887c5de2515e788abb422c3e483496e1b1f3dff4';
 
     /**
      * Predefined data
@@ -26,27 +26,22 @@ final class MinterCreateCoinTxTest extends TestCase
     const DATA = [
         'name' => 'SUPER TEST',
         'symbol' => 'SPRTEST',
-        'initialAmount' => 100,
-        'initialReserve' => 10,
+        'initialAmount' => 100.0,
+        'initialReserve' => 10.0,
         'crr' => 10
     ];
 
     /**
-     * Predefined valid tx for decoding
-     */
-    const VALID_TX = '+GoFAQOj4opTVVBFUiBURVNUilNQUlRFU1QAAACFAlQL5ACEO5rKAAoboCTrfCCQh2alEat8p3G+ymfRu8c6Yvy5Tf0Cklftds+goHuPSqp0aOnCu7obIqvyWtS0isOmN3NTDmQmY9HcTf8k';
-
-    /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf86a010103a3e28a535550455220544553548a535052544553540000008502540be400843b9aca000a1ca026844b7ace1552e362382ffcde669de1e2e0375f90a77bb488e8d5377e84ce5aa0183cc3f57d73aac3adf01cc74cb52cd5eb77bedeefcddfb18381feec7292b5c4';
+    const VALID_SIGNATURE = 'Mxf86b010103a3e28a535550455220544553548a535052544553540000008502540be400843b9aca000a801ba035da98a1af9903c8500686f7992e4de15bf0b9dc4bfe4a773564094e93256cbfa044047e7ee32dc63bc1cce7f0f34db556fac245c69346f85a3fb527df859206b5';
 
     /**
      * Test to decode data for MinterCreateCoinTx
      */
     public function testDecode(): void
     {
-        $tx = new MinterTx(self::VALID_TX);
+        $tx = new MinterTx(self::VALID_SIGNATURE);
 
         $this->assertSame($tx->data, self::DATA);
         $this->assertSame($tx->from, self::MINTER_ADDRESS);
@@ -61,7 +56,8 @@ final class MinterCreateCoinTxTest extends TestCase
             'nonce' => 1,
             'gasPrice' => 1,
             'type' => MinterCreateCoinTx::TYPE,
-            'data' => self::DATA
+            'data' => self::DATA,
+            'payload' => ''
         ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);

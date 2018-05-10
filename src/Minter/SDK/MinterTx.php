@@ -37,6 +37,11 @@ class MinterTx
     ];
 
     /**
+     * bits for recovery param in elliptic curve
+     */
+    const V_BITS = 27;
+
+    /**
      * MinterTx constructor.
      * @param $tx
      * @throws \Exception
@@ -99,18 +104,18 @@ class MinterTx
             throw new \Exception('Undefined tx');
         }
 
-        $tx = $this->tx;
-        $tx['data'] = $this->rlp->encode($tx['data']);
+        $tx = $this->txDataRlpEncode($this->tx);
 
         $keccak = $this->createKeccakHash($tx);
-        $ec = new EC('secp256k1');
-        $signature = $ec->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
+        $ellipticCurve = new EC('secp256k1');
+        $signature = $ellipticCurve->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
 
         $tx = array_merge($tx, $this->prepareVRS($signature));
         $tx = MinterWallet::PREFIX . $this->rlp->encode($tx)->toString('hex');
 
         return $tx;
     }
+
 
     /**
      * Recover public key
@@ -123,18 +128,20 @@ class MinterTx
     {
         $shortTx = array_diff_key($tx, ['v' => '', 'r' => '', 's' => '']);
         $shortTx = $this->detectHex2bin($shortTx);
-        $shortTx['data'] = $this->rlp->encode($shortTx['data']);
+        $shortTx = $this->txDataRlpEncode($shortTx);
+
         $msg = $this->createKeccakHash($shortTx);
 
-        $recoveryParam = $tx['v'] === 27 ? 0 : 1;
+        $recoveryParam = $tx['v'] === MinterTx::V_BITS ? 0 : 1;
+
         $signature = [
             'r' => $tx['r'],
             's' => $tx['s'],
             'recoveryParam' => $recoveryParam
         ];
 
-        $ec = new EC('secp256k1');
-        $point = $ec->recoverPubKey($msg, $signature, $recoveryParam, 'hex');
+        $ellipticCurve = new EC('secp256k1');
+        $point = $ellipticCurve->recoverPubKey($msg, $signature, $recoveryParam, 'hex');
 
         return MinterWallet::generatePublicKey([
             'pub' => $point,
@@ -167,9 +174,10 @@ class MinterTx
      */
     protected function decode(string $tx): array
     {
-        $tx = $this->rplToHex(bin2hex(base64_decode($tx)));
+        $tx = $this->rlpToHex($tx);
+
         $dataIndex = array_search('data', $this->structure);
-        $tx[$dataIndex] = $this->rplToHex($tx[$dataIndex]);
+        $tx[$dataIndex] = $this->rlpToHex($tx[$dataIndex]);
 
         return $this->encode($this->prepareResult($tx), true);
     }
@@ -221,6 +229,9 @@ class MinterTx
             if(in_array($field, ['r', 's', 'data'])) {
                 $result[$field] = $tx[$key];
             }
+            elseif($field === 'payload') {
+                $result[$field] = str_replace(chr(0), '', pack('H*', $tx[$key]));
+            }
             else {
                 $result[$field] = hexdec($tx[$key]);
             }
@@ -237,15 +248,17 @@ class MinterTx
      * @param string $data
      * @return array
      */
-    protected function rplToHex(string $data): array
+    protected function rlpToHex(string $data): array
     {
-        $data = $this->rlp->decode('0x' . $data);
+        $data = $this->rlp->decode(
+            '0x' . str_replace(MinterWallet::PREFIX, '', $data)
+        );
 
         foreach ($data as $key => $value) {
             $data[$key] = $value->toString('hex');
         }
 
-        return $data;
+        return (array) $data;
     }
 
     /**
@@ -263,7 +276,7 @@ class MinterTx
         if(strlen($s) % 2 !== 0) $s = '0' . $s;
 
         return [
-            'v' => $signature->recoveryParam + 27,
+            'v' => $signature->recoveryParam + MinterTx::V_BITS,
             'r' => hex2bin($r),
             's' => hex2bin($s)
         ];
@@ -286,5 +299,18 @@ class MinterTx
         }
 
         return $data;
+    }
+
+    /**
+     * Convert tx data to rlp
+     *
+     * @param array $tx
+     * @return array
+     */
+    protected function txDataRlpEncode(array $tx): array
+    {
+        $tx['data'] = $this->rlp->encode($tx['data']);
+
+        return $tx;
     }
 }
