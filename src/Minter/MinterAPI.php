@@ -29,7 +29,7 @@ class MinterAPI
      */
     public function getBalance(string $address): \stdClass
     {
-        return $this->post('/api/balance/' . $address);
+        return $this->get('/api/balance/' . $address);
     }
 
     /**
