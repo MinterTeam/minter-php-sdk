@@ -41,7 +41,7 @@ class MinterAPI
      */
     public function getNonce(string $address): int
     {
-        $response = $this->post('/api/transactionCount/' . $address);
+        $response = $this->get('/api/transactionCount/' . $address);
 
         return $response->result + 1;
     }
@@ -67,7 +67,7 @@ class MinterAPI
      */
     public function getTransactionsFrom(string $address): \stdClass
     {
-        return $this->post('/api/transactions', ['query' => "tx.from='" . $address . "'"]);
+        return $this->get('/api/transactions', ['query' => "tx.from='" . $address . "'"]);
     }
 
     /**
@@ -79,6 +79,6 @@ class MinterAPI
      */
     public function getTransactionsTo(string $address): \stdClass
     {
-        return $this->post('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
+        return $this->get('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
     }
 }
