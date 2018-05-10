@@ -18,7 +18,7 @@ abstract class MinterCoinTx implements MinterTxInterface
      * @param $data
      * @throws \Exception
      */
-    public function __construct($data, $convert = false)
+    public function __construct(array $data, $convert = false)
     {
         if(!$convert) {
             foreach ($this->data as $key => $value) {

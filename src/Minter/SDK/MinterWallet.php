@@ -19,7 +19,7 @@ class MinterWallet
      * @return array
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): array
     {
         $privateKey = self::generatePrivateKey();
 
@@ -42,7 +42,7 @@ class MinterWallet
      * @return string
      * @throws \Exception
      */
-    public static function generatePrivateKey()
+    public static function generatePrivateKey(): string
     {
         return bin2hex(
             random_bytes(32)
