@@ -125,7 +125,8 @@ $tx = new MinterTx([
         'coin' => 'MTN',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => 10 
-    ]
+    ],
+    'payload' => ''
 ]);
 
 $tx->sign('your private key')
@@ -145,7 +146,8 @@ $tx = new MinterTx([
          'coin_from' => 'MNT',
          'coin_to' => 'TESTCOIN',
          'value' => 1
-    ]
+    ],
+    'payload' => ''
 ]);
 
 $tx->sign('your private key')
@@ -167,7 +169,8 @@ $tx = new MinterTx([
         'initialAmount' => 100,
         'initialReserve' => 10,
         'crr' => 10
-    ]
+    ],
+    'payload' => ''
 ]);
 
 $tx->sign('your private key')
