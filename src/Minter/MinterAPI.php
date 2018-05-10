@@ -29,7 +29,7 @@ class MinterAPI
      */
     public function getBalance(string $address): \stdClass
     {
-        return $this->post('/api/getBalance', ['address' => $address]);
+        return $this->post('/api/balance/' . $address);
     }
 
     /**
@@ -41,7 +41,7 @@ class MinterAPI
      */
     public function getNonce(string $address): int
     {
-        $response = $this->post('/api/getTransactionCount', ['address' => $address]);
+        $response = $this->post('/api/transactionCount/' . $address);
 
         return $response->result + 1;
     }
@@ -67,7 +67,7 @@ class MinterAPI
      */
     public function getTransactionsFrom(string $address): \stdClass
     {
-        return $this->post('/api/getTransactions', ['query' => "tx.from='" . $address . "'"]);
+        return $this->post('/api/transactions', ['query' => "tx.from='" . $address . "'"]);
     }
 
     /**
@@ -79,6 +79,6 @@ class MinterAPI
      */
     public function getTransactionsTo(string $address): \stdClass
     {
-        return $this->post('/api/getTransactions', ['query' => "tx.to='" . $address . "'"]);
+        return $this->post('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
     }
 }

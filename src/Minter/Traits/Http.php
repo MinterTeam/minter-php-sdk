@@ -56,7 +56,7 @@ Trait Http
      * @return mixed
      * @throws \Exception
      */
-    private function post(string $url, array $parameters)
+    private function post(string $url, array $parameters = [])
     {
         try {
 

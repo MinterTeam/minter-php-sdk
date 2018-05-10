@@ -218,7 +218,7 @@ class MinterTx
     {
         $result = [];
         foreach($this->structure as $key => $field) {
-            if($field === 'r' || $field === 's' || $field === 'data') {
+            if(in_array($field, ['r', 's', 'data'])) {
                 $result[$field] = $tx[$key];
             }
             else {
