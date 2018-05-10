@@ -31,7 +31,7 @@ class MinterConverter
      * @param string $symbol
      * @return string
      */
-    public static function convertCoinName(string $symbol)
+    public static function convertCoinName(string $symbol): string
     {
         return $symbol  . str_repeat(chr(0), 10 - strlen($symbol));
     }
