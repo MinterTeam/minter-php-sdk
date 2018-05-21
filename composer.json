@@ -10,7 +10,9 @@
     "kornrunner/keccak": "^1.0",
     "simplito/elliptic-php": "^1.0",
     "web3p/rlp": "^0.2.0",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "^6.3",
+    "minter/minter-php-bip-44": "dev-master",
+    "bitwasp/bitcoin-lib": "1.0.*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

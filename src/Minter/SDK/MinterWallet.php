@@ -2,9 +2,11 @@
 
 namespace Minter\SDK;
 
+use BitWasp\BitcoinLib\BIP39\BIP39;
 use kornrunner\Keccak;
 use Elliptic\EC;
 use Elliptic\EC\KeyPair;
+use BIP\BIP44;
 
 class MinterWallet
 {
@@ -21,7 +23,10 @@ class MinterWallet
      */
     public static function create(): array
     {
-        $privateKey = self::generatePrivateKey();
+        $entropy = BIP39::generateEntropy(128);
+        $mnemonic = BIP39::entropyToMnemonic($entropy);
+        $seed = BIP39::mnemonicToSeedHex($mnemonic, '');
+        $privateKey = BIP44::fromMasterSeed($seed)->derive("m/44'/60'/0'/0/0")->privateKey;
 
         $publicKey = self::generatePublicKey([
             'priv' => $privateKey,
@@ -32,7 +37,9 @@ class MinterWallet
 
         return [
             'address' => $address,
-            'private_key' => $privateKey
+            'private_key' => $privateKey,
+            'mnemonic' => $mnemonic,
+            'seed' => $seed
         ];
     }
 
