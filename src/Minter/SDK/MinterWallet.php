@@ -42,20 +42,7 @@ class MinterWallet
             'seed' => $seed
         ];
     }
-
-    /**
-     * Generate private key by random bytes
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public static function generatePrivateKey(): string
-    {
-        return bin2hex(
-            random_bytes(32)
-        );
-    }
-
+    
     /**
      * Generate public key
      *
