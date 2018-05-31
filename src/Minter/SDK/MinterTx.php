@@ -42,6 +42,11 @@ class MinterTx
     const V_BITS = 27;
 
     /**
+     * Fee in PIP
+     */
+    const PAYLOAD_COMMISSION = 500;
+
+    /**
      * MinterTx constructor.
      * @param $tx
      * @throws \Exception
@@ -116,7 +121,6 @@ class MinterTx
         return $tx;
     }
 
-
     /**
      * Recover public key
      *
@@ -147,6 +151,42 @@ class MinterTx
             'pub' => $point,
             'pubEnc' => 'hex'
         ]);
+    }
+
+    /**
+     * Get hash of transaction
+     *
+     * @param string $tx
+     * @return string
+     */
+    public function getHash(string $tx): string
+    {
+        $tx = substr($tx, 2);
+        $tx =  dechex(strlen($tx) / 2) . $tx;
+        return MinterWallet::PREFIX . hash('ripemd160', hex2bin($tx));
+    }
+
+    public function getFee(): int
+    {
+        switch ($this->type) {
+            case MinterSendCoinTx::TYPE:
+                $gas = MinterSendCoinTx::COMMISSION;
+                break;
+
+            case MinterConvertCoinTx::TYPE:
+                $gas = MinterConvertCoinTx::COMMISSION;
+                break;
+
+            case MinterCreateCoinTx::TYPE:
+                $gas = MinterCreateCoinTx::COMMISSION;
+                break;
+
+            default:
+                throw new \Exception('Unknown transaction type');
+                break;
+        }
+
+        return $gas + (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION;
     }
 
     /**

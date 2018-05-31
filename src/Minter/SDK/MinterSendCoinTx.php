@@ -12,6 +12,11 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     const TYPE = 1;
 
     /**
+     * Fee in PIP
+     */
+    const COMMISSION = 1000;
+
+    /**
      * Send coin tx data
      *
      * @var array
