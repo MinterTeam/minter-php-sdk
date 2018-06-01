@@ -21,7 +21,13 @@ class MinterConverter
         if ($to === 'pip') {
             return bcmul(self::DEFAULT, $num);
         } else if ($to === 'bip') {
-            return bcdiv(self::DEFAULT, $num);
+            try {
+                $result = bcdiv(self::DEFAULT, $num);
+            } catch(\Exception $e) {
+                $result = '0';
+            }
+
+            return $result;
         }
     }
 
