@@ -26,8 +26,8 @@ final class MinterCreateCoinTxTest extends TestCase
     const DATA = [
         'name' => 'SUPER TEST',
         'symbol' => 'SPRTEST',
-        'initialAmount' => 100.0,
-        'initialReserve' => 10.0,
+        'initialAmount' => '100',
+        'initialReserve' => '10',
         'crr' => 10
     ];
 

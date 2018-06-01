@@ -26,7 +26,7 @@ final class MinterSendCoinTxTest extends TestCase
     const DATA = [
         'coin' => 'MNT',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
-        'value' => 1.0
+        'value' => '1'
     ];
 
     /**

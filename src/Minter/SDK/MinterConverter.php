@@ -12,16 +12,16 @@ class MinterConverter
     /**
      * Convert value
      *
-     * @param float $num
+     * @param $num
      * @param string $to
-     * @return int
+     * @return string
      */
-    public static function convertValue(float $num, string $to)
+    public static function convertValue($num, string $to)
     {
         if ($to === 'pip') {
-            return intval(self::DEFAULT * $num);
+            return bcmul(self::DEFAULT, $num);
         } else if ($to === 'bip') {
-            return $num / self::DEFAULT;
+            return bcdiv($num, self::DEFAULT);
         }
     }
 

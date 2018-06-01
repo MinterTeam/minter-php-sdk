@@ -23,10 +23,10 @@ final class MinterConvertCoinTxTest extends TestCase
     /**
      * Predefined data
      */
-    const DATA = [
+        const DATA = [
         'coin_from' => 'MNT',
         'coin_to' => 'SPRTEST',
-        'value' => 1.0
+        'value' => '1'
     ];
 
     /**

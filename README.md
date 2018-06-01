@@ -124,7 +124,7 @@ $tx = new MinterTx([
     'data' => [
         'coin' => 'MTN',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
-        'value' => 10 
+        'value' => '10'
     ],
     'payload' => ''
 ]);
@@ -145,7 +145,7 @@ $tx = new MinterTx([
     'data' => [
          'coin_from' => 'MNT',
          'coin_to' => 'TESTCOIN',
-         'value' => 1
+         'value' => '1'
     ],
     'payload' => ''
 ]);
@@ -166,8 +166,8 @@ $tx = new MinterTx([
     'data' => [
         'name' => 'TEST COIN',
         'symbol' => 'TEST',
-        'initialAmount' => 100,
-        'initialReserve' => 10,
+        'initialAmount' => '100',
+        'initialReserve' => '10',
         'crr' => 10
     ],
     'payload' => ''
