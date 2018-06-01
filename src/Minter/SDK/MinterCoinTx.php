@@ -54,6 +54,17 @@ abstract class MinterCoinTx implements MinterTxInterface
     }
 
     /**
+     * Decode from hex
+     *
+     * @param string $hex
+     * @return string
+     */
+    protected function hex_decode(string $hex)
+    {
+        return gmp_strval(gmp_init($hex, 16), 10);
+    }
+
+    /**
      * Prepare data tx for signing
      *
      * @return array

@@ -57,7 +57,8 @@ final class MinterCreateCoinTxTest extends TestCase
             'gasPrice' => 1,
             'type' => MinterCreateCoinTx::TYPE,
             'data' => self::DATA,
-            'payload' => ''
+            'payload' => '',
+            'serviceData' => ''
         ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);

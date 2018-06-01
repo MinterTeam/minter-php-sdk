@@ -31,6 +31,7 @@ class MinterTx
         'type',
         'data',
         'payload',
+        'serviceData',
         'v',
         'r',
         's'
@@ -286,7 +287,7 @@ class MinterTx
             if(in_array($field, ['r', 's', 'data'])) {
                 $result[$field] = $tx[$key];
             }
-            elseif($field === 'payload') {
+            elseif($field === 'payload' || $field === 'serviceData') {
                 $result[$field] = str_replace(chr(0), '', pack('H*', $tx[$key]));
             }
             else {

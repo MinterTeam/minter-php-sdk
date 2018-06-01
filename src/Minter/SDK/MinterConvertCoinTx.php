@@ -63,7 +63,7 @@ class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
         return [
             'coin_from' => str_replace(chr(0), '', pack('H*', $txData[0])),
             'coin_to' => str_replace(chr(0), '', pack('H*', $txData[1])),
-            'value' => MinterConverter::convertValue(hexdec($txData[2]), 'bip')
+            'value' => MinterConverter::convertValue($this->hex_decode($txData[2]), 'bip')
         ];
     }
 }

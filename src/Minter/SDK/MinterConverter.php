@@ -7,7 +7,7 @@ class MinterConverter
     /**
      * PIP in BIP
      */
-    const DEFAULT = 100000000;
+    const DEFAULT = '1000000000000000000';
 
     /**
      * Convert value
@@ -21,7 +21,7 @@ class MinterConverter
         if ($to === 'pip') {
             return bcmul(self::DEFAULT, $num);
         } else if ($to === 'bip') {
-            return bcdiv($num, self::DEFAULT);
+            return bcdiv(self::DEFAULT, $num);
         }
     }
 
