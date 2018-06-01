@@ -21,7 +21,7 @@ class MinterConverter
         if ($to === 'pip') {
             return bcmul(self::DEFAULT, $num);
         } else if ($to === 'bip') {
-            return rtrim(bcdiv($num, self::DEFAULT, 25), '0');
+            return rtrim(rtrim(bcdiv($num, self::DEFAULT, 25), '0'), '.')
         }
     }
 
