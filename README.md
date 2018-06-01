@@ -185,14 +185,23 @@ $tx = new MinterTx([....]);
 $tx->getFee();
 ```
 
-* Get hash of transaction
+* Get hash of encoded transaction
 ```php
 use Minter\SDK\MinterTx;
 
 $tx = new MinterTx([....]);
 $sign = $tx->sign('your private key');
 
-$hash = $tx->getHash($sign);
+$hash = $tx->getHash();
+```
+
+* Get hash of decoded transaction
+```php
+use Minter\SDK\MinterTx;
+
+$tx = new MinterTx('Mx....');
+
+$hash = $tx->getHash();
 ```
 
 ### Decode transaction

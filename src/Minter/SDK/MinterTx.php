@@ -37,6 +37,11 @@ class MinterTx
     ];
 
     /**
+     * @var string
+     */
+    protected $txSigned;
+
+    /**
      * bits for recovery param in elliptic curve
      */
     const V_BITS = 27;
@@ -57,6 +62,7 @@ class MinterTx
         $this->rlp = new RLP;
 
         if(is_string($tx)) {
+            $this->txSigned = $tx;
             $this->tx = $this->decode($tx);
         }
 
@@ -116,9 +122,10 @@ class MinterTx
         $signature = $ellipticCurve->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
 
         $tx = array_merge($tx, $this->prepareVRS($signature));
-        $tx = MinterWallet::PREFIX . $this->rlp->encode($tx)->toString('hex');
 
-        return $tx;
+        $this->txSigned = MinterWallet::PREFIX . $this->rlp->encode($tx)->toString('hex');
+
+        return $this->txSigned;
     }
 
     /**
@@ -156,14 +163,18 @@ class MinterTx
     /**
      * Get hash of transaction
      *
-     * @param string $tx
      * @return string
      */
-    public function getHash(string $tx): string
+    public function getHash(): string
     {
-        $tx = substr($tx, 2);
-        $tx =  dechex(strlen($tx) / 2) . $tx;
-        return MinterWallet::PREFIX . hash('ripemd160', hex2bin($tx));
+        if(!$this->txSigned) {
+            throw new \Exception('You need to sign transaction before');
+        }
+
+        $tx = substr($this->txSigned, 2);
+        $tx = hex2bin(dechex(strlen($tx) / 2) . $tx);
+
+        return MinterWallet::PREFIX . hash('ripemd160', $tx);
     }
 
     /**
