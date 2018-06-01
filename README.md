@@ -176,6 +176,25 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+* Calculate fee of transaction
+```php
+use Minter\SDK\MinterTx;
+
+$tx = new MinterTx([....]);
+
+$tx->getFee();
+```
+
+* Get hash of transaction
+```php
+use Minter\SDK\MinterTx;
+
+$tx = new MinterTx([....]);
+$sign = $tx->sign('your private key');
+
+$hash = $tx->getHash($sign);
+```
+
 ### Decode transaction
 
 Returns an array with transaction data

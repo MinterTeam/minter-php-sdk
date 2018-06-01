@@ -166,6 +166,12 @@ class MinterTx
         return MinterWallet::PREFIX . hash('ripemd160', hex2bin($tx));
     }
 
+    /**
+     * Get fee of transaction in PIP
+     *
+     * @return int
+     * @throws \Exception
+     */
     public function getFee(): int
     {
         switch ($this->type) {
