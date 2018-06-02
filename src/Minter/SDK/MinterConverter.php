@@ -12,11 +12,11 @@ class MinterConverter
     /**
      * Convert value
      *
-     * @param $num
+     * @param string $num
      * @param string $to
      * @return string
      */
-    public static function convertValue($num, string $to)
+    public static function convertValue(string $num, string $to)
     {
         if ($to === 'pip') {
             return bcmul(self::DEFAULT, $num);
