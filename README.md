@@ -115,7 +115,7 @@ Returns a signed tx
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterSendCoinTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
@@ -126,7 +126,8 @@ $tx = new MinterTx([
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ],
-    'payload' => ''
+    'payload' => '',
+    'serviceData' => ''
 ]);
 
 $tx->sign('your private key')
@@ -136,7 +137,7 @@ $tx->sign('your private key')
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterConvertCoinTx;
+use Minter\SDK\MinterCoins\MinterConvertCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
@@ -147,7 +148,8 @@ $tx = new MinterTx([
          'coin_to' => 'TESTCOIN',
          'value' => '1'
     ],
-    'payload' => ''
+    'payload' => '',
+    'serviceData' => ''
 ]);
 
 $tx->sign('your private key')
@@ -157,7 +159,7 @@ $tx->sign('your private key')
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
@@ -170,7 +172,8 @@ $tx = new MinterTx([
         'initialReserve' => '10',
         'crr' => 10
     ],
-    'payload' => ''
+    'payload' => '',
+    'serviceData' => ''
 ]);
 
 $tx->sign('your private key')
