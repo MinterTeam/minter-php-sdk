@@ -1,5 +1,5 @@
 <?php
-namespace Minter\Traits;
+namespace Minter\Library;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;

@@ -4,6 +4,10 @@ namespace Minter\SDK;
 
 use kornrunner\Keccak;
 use Elliptic\EC;
+use Minter\Library\Helper;
+use Minter\SDK\MinterCoins\MinterConvertCoinTx;
+use Minter\SDK\MinterCoins\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
 use Web3p\RLP\RLP;
 
 class MinterTx
@@ -116,15 +120,23 @@ class MinterTx
             throw new \Exception('Undefined tx');
         }
 
+        // encode data array to RPL
         $tx = $this->txDataRlpEncode($this->tx);
 
+        // create kessak hash from transaction
         $keccak = $this->createKeccakHash($tx);
+
+        // create elliptic curve and sign
         $ellipticCurve = new EC('secp256k1');
         $signature = $ellipticCurve->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
 
+        // prepare special V R S bytes and add them to transaction
         $tx = array_merge($tx, $this->prepareVRS($signature));
 
-        $this->txSigned = MinterWallet::PREFIX . $this->rlp->encode($tx)->toString('hex');
+        // add "Mx" prefix to transaction
+        $this->txSigned = Helper::addWalletPrefix(
+            $this->rlp->encode($tx)->toString('hex')
+        );
 
         return $this->txSigned;
     }
@@ -138,23 +150,29 @@ class MinterTx
      */
     public function recoverPublicKey(array $tx): string
     {
+        // prepare short transaction
         $shortTx = array_diff_key($tx, ['v' => '', 'r' => '', 's' => '']);
-        $shortTx = $this->detectHex2bin($shortTx);
+        $shortTx = Helper::hex2binRecursive($shortTx);
         $shortTx = $this->txDataRlpEncode($shortTx);
 
+        // create kessak hash from transaction
         $msg = $this->createKeccakHash($shortTx);
 
+        // define the recovery param
         $recoveryParam = $tx['v'] === MinterTx::V_BITS ? 0 : 1;
 
+        // define the signature
         $signature = [
             'r' => $tx['r'],
             's' => $tx['s'],
             'recoveryParam' => $recoveryParam
         ];
 
+        // create elliptic curve
         $ellipticCurve = new EC('secp256k1');
         $point = $ellipticCurve->recoverPubKey($msg, $signature, $recoveryParam, 'hex');
 
+        // generate public key from point
         return MinterWallet::generatePublicKey([
             'pub' => $point,
             'pubEnc' => 'hex'
@@ -172,10 +190,14 @@ class MinterTx
             throw new \Exception('You need to sign transaction before');
         }
 
-        $tx = substr($this->txSigned, 2);
+        // prepare transaction
+        $tx = Helper::removeWalletPrefix($this->txSigned);
         $tx = hex2bin(dechex(strlen($tx) / 2) . $tx);
 
-        return MinterWallet::PREFIX . hash('ripemd160', $tx);
+        // make RIPEMD160 hash of transaction
+        return Helper::addWalletPrefix(
+            hash('ripemd160', $tx)
+        );
     }
 
     /**
@@ -232,11 +254,14 @@ class MinterTx
      */
     protected function decode(string $tx): array
     {
+        // pack RLP to hex string
         $tx = $this->rlpToHex($tx);
 
+        // pack data of transaction to hex string
         $dataIndex = array_search('data', $this->structure);
         $tx[$dataIndex] = $this->rlpToHex($tx[$dataIndex]);
 
+        // encode transaction data
         return $this->encode($this->prepareResult($tx), true);
     }
 
@@ -288,7 +313,7 @@ class MinterTx
                 $result[$field] = $tx[$key];
             }
             elseif($field === 'payload' || $field === 'serviceData') {
-                $result[$field] = str_replace(chr(0), '', pack('H*', $tx[$key]));
+                $result[$field] = Helper::pack2hex($tx[$key]);
             }
             else {
                 $result[$field] = hexdec($tx[$key]);
@@ -338,25 +363,6 @@ class MinterTx
             'r' => hex2bin($r),
             's' => hex2bin($s)
         ];
-    }
-
-    /**
-     * Detect hex string and convert to bin
-     *
-     * @param array $data
-     * @return array
-     */
-    protected function detectHex2bin(array $data): array
-    {
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                $data[$key] = $this->detectHex2bin($value);
-            } elseif (is_string($value) && ctype_xdigit($value)) {
-                $data[$key] = hex2bin($value);
-            }
-        }
-
-        return $data;
     }
 
     /**

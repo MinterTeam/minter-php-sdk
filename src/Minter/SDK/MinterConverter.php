@@ -2,6 +2,8 @@
 
 namespace Minter\SDK;
 
+use Minter\Library\Helper;
+
 class MinterConverter
 {
     /**
@@ -21,7 +23,7 @@ class MinterConverter
         if ($to === 'pip') {
             return bcmul(self::DEFAULT, $num);
         } else if ($to === 'bip') {
-            return rtrim(rtrim(bcdiv($num, self::DEFAULT, 25), '0'), '.');
+            return Helper::niceNumber(bcdiv($num, self::DEFAULT, 25));
         }
     }
 

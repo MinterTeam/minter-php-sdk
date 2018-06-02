@@ -1,8 +1,11 @@
 <?php
 
-namespace Minter\SDK;
+namespace Minter\SDK\MinterCoins;
 
-use Minter\Interfaces\MinterTxInterface;
+use Minter\Contracts\MinterTxInterface;
+use Minter\Library\Helper;
+use Minter\SDK\MinterConverter;
+use Minter\SDK\MinterWallet;
 
 class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
 {
@@ -47,7 +50,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             'coin' => MinterConverter::convertCoinName($this->data['coin']),
-            'to' => hex2bin(substr($this->data['to'], 2, strlen($this->data['to']))),
+            'to' => $this->prepareAddress(),
             'value' => MinterConverter::convertValue($this->data['value'], 'pip')
         ];
     }
@@ -61,9 +64,24 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
-            'coin' => str_replace(chr(0), '', pack('H*', $txData[0])),
-            'to' => 'Mx' . $txData[1],
-            'value' => MinterConverter::convertValue($this->hex_decode($txData[2]), 'bip')
+            'coin' => Helper::pack2hex($txData[0]),
+            'to' => Helper::addWalletPrefix($txData[1]),
+            'value' => MinterConverter::convertValue(
+                Helper::hexDecode($txData[2]),
+                'bip'
+            )
         ];
+    }
+
+    /**
+     *  Remove MinterWallet prefix and pack hex address to binary
+     *
+     * @return bool|string
+     */
+    protected function prepareAddress()
+    {
+        return hex2bin(
+            Helper::removeWalletPrefix($this->data['to'])
+        );
     }
 }

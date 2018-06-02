@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ final class MinterCreateCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf86b010103a3e28a535550455220544553548a535052544553540000008502540be400843b9aca000a801ba035da98a1af9903c8500686f7992e4de15bf0b9dc4bfe4a773564094e93256cbfa044047e7ee32dc63bc1cce7f0f34db556fac245c69346f85a3fb527df859206b5';
+    const VALID_SIGNATURE = 'Mxf874010103abea8a535550455220544553548a5350525445535400000089056bc75e2d63100000888ac7230489e800000a80801ba08d6cba9315ab2c1dc2776aeb09af9afb9b7ef2909b95ea0a5bbc6fe9fcc154e9a030f56e428629fb39d1861c0c62c2f21e75f49ceadb249ae2e7c91e839daffb2f';
 
     /**
      * Test to decode data for MinterCreateCoinTx

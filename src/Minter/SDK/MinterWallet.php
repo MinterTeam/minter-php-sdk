@@ -16,6 +16,16 @@ class MinterWallet
     const PREFIX = 'Mx';
 
     /**
+     * Amount of entropy bits
+     */
+    const BIP44_ENTROPY_BITS = 128;
+
+    /**
+     * Address path for creating wallet from the seed
+     */
+    const BIP44_SEED_ADDRESS_PATH = "m/44'/60'/0'/0/0";
+
+    /**
      * Create Minter wallet
      *
      * @return array
@@ -23,10 +33,10 @@ class MinterWallet
      */
     public static function create(): array
     {
-        $entropy = BIP39::generateEntropy(128);
+        $entropy = BIP39::generateEntropy(self::BIP44_ENTROPY_BITS);
         $mnemonic = BIP39::entropyToMnemonic($entropy);
         $seed = BIP39::mnemonicToSeedHex($mnemonic, '');
-        $privateKey = BIP44::fromMasterSeed($seed)->derive("m/44'/60'/0'/0/0")->privateKey;
+        $privateKey = BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
 
         $publicKey = self::generatePublicKey([
             'priv' => $privateKey,

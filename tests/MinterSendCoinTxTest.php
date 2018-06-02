@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterSendCoinTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Minter\SDK;
+namespace Minter\SDK\MinterCoins;
 
-use Minter\Interfaces\MinterTxInterface;
+use Minter\Contracts\MinterTxInterface;
 
 abstract class MinterCoinTx implements MinterTxInterface
 {
@@ -51,17 +51,6 @@ abstract class MinterCoinTx implements MinterTxInterface
         }
 
         return $this->data[$name];
-    }
-
-    /**
-     * Decode from hex
-     *
-     * @param string $hex
-     * @return string
-     */
-    protected function hex_decode(string $hex)
-    {
-        return gmp_strval(gmp_init($hex, 16), 10);
     }
 
     /**

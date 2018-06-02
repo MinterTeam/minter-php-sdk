@@ -1,6 +1,6 @@
 <?php
 
-namespace Minter\Interfaces;
+namespace Minter\Contracts;
 
 interface MinterTxInterface
 {

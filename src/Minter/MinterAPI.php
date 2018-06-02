@@ -2,7 +2,7 @@
 
 namespace Minter;
 
-use Minter\Traits\Http;
+use Minter\Library\Http;
 
 class MinterAPI
 {

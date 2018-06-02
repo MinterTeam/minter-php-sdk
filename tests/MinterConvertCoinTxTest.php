@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterConvertCoinTx;
+use Minter\SDK\MinterCoins\MinterConvertCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ final class MinterConvertCoinTxTest extends TestCase
     /**
      * Predefined data
      */
-        const DATA = [
+    const DATA = [
         'coin_from' => 'MNT',
         'coin_to' => 'SPRTEST',
         'value' => '1'
@@ -32,7 +32,7 @@ final class MinterConvertCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf8640601029cdb8a4d4e54000000000000008a535052544553540000008405f5e100801ca09f86537b2c997306d7b4df2a3db0615f1b6377b1cdb7efbcd0b5d53fa70e9bcda048c05469026e213703a29ae8cda53e41d4fff7e9e454ff95017bdf157c3ef384';
+    const VALID_SIGNATURE = 'Mxf869010102a0df8a4d4e54000000000000008a53505254455354000000880de0b6b3a764000080801ba09ea1259e0b94b0e136c54ddf9fe97aefb47c6208a307a692169f4f7c8606d24aa030fee0c7978dde0aa9ab814593ab3c99c1be3d0ce0ceeb607f25a29acf3a958c';
 
     /**
      * Test to decode data for MinterConvertCoinTx
@@ -51,7 +51,7 @@ final class MinterConvertCoinTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 6,
+            'nonce' => 1,
             'gasPrice' => 1,
             'type' => MinterConvertCoinTx::TYPE,
             'data' => self::DATA,

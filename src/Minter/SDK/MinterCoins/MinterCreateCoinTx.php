@@ -1,8 +1,10 @@
 <?php
 
-namespace Minter\SDK;
+namespace Minter\SDK\MinterCoins;
 
-use Minter\Interfaces\MinterTxInterface;
+use Minter\Contracts\MinterTxInterface;
+use Minter\Library\Helper;
+use Minter\SDK\MinterConverter;
 
 class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
 {
@@ -65,10 +67,16 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
-            'name' => pack('H*', $txData[0]),
-            'symbol' => str_replace(chr(0), '', pack('H*', $txData[1])),
-            'initialAmount' => MinterConverter::convertValue($this->hex_decode($txData[2]), 'bip'),
-            'initialReserve' => MinterConverter::convertValue($this->hex_decode($txData[3]), 'bip'),
+            'name' => Helper::pack2hex($txData[0]),
+            'symbol' => Helper::pack2hex($txData[1]),
+            'initialAmount' => MinterConverter::convertValue(
+                Helper::hexDecode($txData[2]),
+                'bip'
+            ),
+            'initialReserve' => MinterConverter::convertValue(
+                Helper::hexDecode($txData[3])
+                , 'bip'
+            ),
             'crr' => hexdec($txData[4])
         ];
     }
