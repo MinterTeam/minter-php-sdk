@@ -79,4 +79,15 @@ class Helper
     {
         return rtrim(rtrim($number, '0'), '.');
     }
+
+    /**
+     * Add 0 if length of hex string is odd
+     *
+     * @param string $hexString
+     * @return string
+     */
+    public static function padToEven(string $hexString): string
+    {
+        return strlen($hexString) % 2 !== 0 ? '0' . $hexString : $hexString;
+    }
 }

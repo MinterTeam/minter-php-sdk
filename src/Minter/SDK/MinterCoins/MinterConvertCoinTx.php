@@ -6,6 +6,10 @@ use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
+/**
+ * Class MinterConvertCoinTx
+ * @package Minter\SDK\MinterCoins
+ */
 class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
 {
     /**
@@ -30,17 +34,6 @@ class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
     ];
 
     /**
-     * MinterCreateCoinTx constructor.
-     * @param $data
-     * @param bool $convert
-     * @throws \Exception
-     */
-    public function __construct($data, $convert = false)
-    {
-        parent::__construct($data, $convert);
-    }
-
-    /**
      * Prepare tx data for signing
      *
      * @return array
@@ -48,8 +41,13 @@ class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encode(): array
     {
         return [
+            // Add nulls before the coin name
             'coin_from' => MinterConverter::convertCoinName($this->data['coin_from']),
+
+            // Add nulls before the coin name
             'coin_to' => MinterConverter::convertCoinName($this->data['coin_to']),
+
+            // Convert value from BIP to PIP
             'value' => MinterConverter::convertValue($this->data['value'], 'pip')
         ];
     }
@@ -63,12 +61,14 @@ class MinterConvertCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
+            // Pack binary to hex
             'coin_from' => Helper::pack2hex($txData[0]),
+
+            // Pack binary to hex
             'coin_to' => Helper::pack2hex($txData[1]),
-            'value' => MinterConverter::convertValue(
-                Helper::hexDecode($txData[2]),
-                'bip'
-            )
+
+            // Convert value from PIP to BIP
+            'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
         ];
     }
 }

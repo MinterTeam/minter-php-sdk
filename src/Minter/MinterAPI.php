@@ -4,6 +4,10 @@ namespace Minter;
 
 use Minter\Library\Http;
 
+/**
+ * Class MinterAPI
+ * @package Minter
+ */
 class MinterAPI
 {
     /**

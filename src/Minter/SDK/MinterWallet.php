@@ -8,6 +8,10 @@ use Elliptic\EC;
 use Elliptic\EC\KeyPair;
 use BIP\BIP44;
 
+/**
+ * Class MinterWallet
+ * @package Minter\SDK
+ */
 class MinterWallet
 {
     /**

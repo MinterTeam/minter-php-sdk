@@ -4,12 +4,20 @@ namespace Minter\SDK;
 
 use kornrunner\Keccak;
 use Elliptic\EC;
+use Minter\SDK\MinterCoins\MinterDelegateTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
+use Web3p\RLP\RLP;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\MinterConvertCoinTx;
 use Minter\SDK\MinterCoins\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
-use Web3p\RLP\RLP;
 
+/**
+ * Class MinterTx
+ * @package Minter\SDK
+ */
 class MinterTx
 {
     /**
@@ -221,6 +229,22 @@ class MinterTx
                 $gas = MinterCreateCoinTx::COMMISSION;
                 break;
 
+            case MinterDeclareCandidacyTx::TYPE:
+                $gas = MinterDeclareCandidacyTx::COMMISSION;
+                break;
+
+            case MinterDelegateTx::TYPE:
+                $gas = MinterDelegateTx::COMMISSION;
+                break;
+
+            case MinterSetCandidateOnTx::TYPE:
+                $gas = MinterSetCandidateOnTx::COMMISSION;
+                break;
+
+            case MinterSetCandidateOffTx::TYPE:
+                $gas = MinterSetCandidateOffTx::COMMISSION;
+                break;
+
             default:
                 throw new \Exception('Unknown transaction type');
                 break;
@@ -288,6 +312,22 @@ class MinterTx
                 $dataTx = new MinterCreateCoinTx($tx['data'], $isHexFormat);
                 break;
 
+            case MinterDeclareCandidacyTx::TYPE:
+                $dataTx = new MinterDeclareCandidacyTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterDelegateTx::TYPE:
+                $dataTx = new MinterDelegateTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterSetCandidateOnTx::TYPE:
+                $dataTx = new MinterSetCandidateOnTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterSetCandidateOffTx::TYPE:
+                $dataTx = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
+                break;
+
             default:
                 throw new \Exception('Unknown transaction type');
                 break;
@@ -352,11 +392,8 @@ class MinterTx
      */
     protected function prepareVRS(EC\Signature $signature): array
     {
-        $r = $signature->r->toString('hex');
-        if(strlen($r) % 2 !== 0) $r = '0' . $r;
-
-        $s = $signature->s->toString('hex');
-        if(strlen($s) % 2 !== 0) $s = '0' . $s;
+        $r = Helper::padToEven($signature->r->toString('hex'));
+        $s = Helper::padToEven($signature->s->toString('hex'));
 
         return [
             'v' => $signature->recoveryParam + MinterTx::V_BITS,

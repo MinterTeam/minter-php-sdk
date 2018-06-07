@@ -5,8 +5,11 @@ namespace Minter\SDK\MinterCoins;
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
-use Minter\SDK\MinterWallet;
 
+/**
+ * Class MinterSendCoinTx
+ * @package Minter\SDK\MinterCoins
+ */
 class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
 {
     /**
@@ -31,17 +34,6 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     ];
 
     /**
-     * MinterSendCoinTx constructor.
-     * @param $data
-     * @param bool $convert
-     * @throws \Exception
-     */
-    public function __construct($data, $convert = false)
-    {
-        parent::__construct($data, $convert);
-    }
-
-    /**
      * Prepare data for signing
      *
      * @return array
@@ -49,8 +41,15 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encode(): array
     {
         return [
+            // Add nulls before coin name
             'coin' => MinterConverter::convertCoinName($this->data['coin']),
-            'to' => $this->prepareAddress(),
+
+            // Remove Minter wallet prefix and convert hex string to binary
+            'to' => hex2bin(
+                Helper::removeWalletPrefix($this->data['to'])
+            ),
+
+            // Convert from BIP to PIP
             'value' => MinterConverter::convertValue($this->data['value'], 'pip')
         ];
     }
@@ -64,24 +63,14 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
+            // Pack binary to string
             'coin' => Helper::pack2hex($txData[0]),
-            'to' => Helper::addWalletPrefix($txData[1]),
-            'value' => MinterConverter::convertValue(
-                Helper::hexDecode($txData[2]),
-                'bip'
-            )
-        ];
-    }
 
-    /**
-     *  Remove MinterWallet prefix and pack hex address to binary
-     *
-     * @return bool|string
-     */
-    protected function prepareAddress()
-    {
-        return hex2bin(
-            Helper::removeWalletPrefix($this->data['to'])
-        );
+            // Add Minter wallet prefix to string
+            'to' => Helper::addWalletPrefix($txData[1]),
+
+            // Convert value from PIP to BIP
+            'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
+        ];
     }
 }

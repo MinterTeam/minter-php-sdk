@@ -4,6 +4,10 @@ namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
 
+/**
+ * Class MinterCoinTx
+ * @package Minter\SDK\MinterCoins
+ */
 abstract class MinterCoinTx implements MinterTxInterface
 {
     /**
@@ -20,6 +24,10 @@ abstract class MinterCoinTx implements MinterTxInterface
      */
     public function __construct(array $data, $convert = false)
     {
+        if(count($data) !== count($this->data)) {
+            throw new \Exception('Invalid elements of data');
+        }
+
         if(!$convert) {
             foreach ($this->data as $key => $value) {
                 if (!isset($data[$key])) {

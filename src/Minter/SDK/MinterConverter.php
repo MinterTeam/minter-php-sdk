@@ -4,6 +4,10 @@ namespace Minter\SDK;
 
 use Minter\Library\Helper;
 
+/**
+ * Class MinterConverter
+ * @package Minter\SDK
+ */
 class MinterConverter
 {
     /**
