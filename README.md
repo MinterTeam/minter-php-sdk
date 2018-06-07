@@ -179,6 +179,90 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+* Sign the <b>DeclareCandidacy</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterDeclareCandidacyTx::TYPE,
+    'data' => [
+        'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
+        'pubkey' => 'Mx023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
+        'commission' => '10',
+        'stake' => '5'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>Delegate</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterDelegateTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterDelegateTx::TYPE,
+    'data' => [
+        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
+        'stake' => '5'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>SetCandidateOn</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterSetCandidateOnTx::TYPE,
+    'data' => [
+        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>SetCandidateOff</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterSetCandidateOffTx::TYPE,
+    'data' => [
+        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
 * Calculate fee of transaction
 ```php
 use Minter\SDK\MinterTx;
