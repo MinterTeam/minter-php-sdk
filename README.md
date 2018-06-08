@@ -263,6 +263,27 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+* Sign the <b>RedeemCoupon</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRedeemCouponTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterRedeemCouponTx::TYPE,
+    'data' => [
+        'check' => 'your coupon',
+        'proof' => 'created by MinterCoupon proof'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
 * Calculate fee of transaction
 ```php
 use Minter\SDK\MinterTx;
@@ -308,7 +329,34 @@ $tx = new MinterTx('string tx');
 
 ```
 
+### Create Minter Coupon
 
-## License
+###### Example
 
-The Minter PHP SDK is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* Create coupon
+
+```php
+use Minter\SDK\MinterCoupon;
+
+$coupon = new MinterCoupon([
+    'nonce' => $nonce,
+    'dueBlock' => 999999,
+    'coin' => 'MNT',
+    'value' => '10'
+], 'your pass phrase');
+
+echo $coupon->sign('your private key here'); 
+
+// Mx.......
+
+```
+
+* Create proof
+
+```php
+use Minter\SDK\MinterCoupon;
+
+$coupon = new MinterCoupon('your Minter address here', 'your pass phrase');
+
+echo $coupon->createProof(); 
+```

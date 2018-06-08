@@ -2,10 +2,17 @@
 
 namespace Minter\Library;
 
+use kornrunner\Keccak;
 use Minter\SDK\MinterWallet;
+use Elliptic\EC;
 
 class Helper
 {
+    /**
+     * bits for recovery param in elliptic curve
+     */
+    const V_BITS = 27;
+
     /**
      * Decode from hex
      *
@@ -89,5 +96,37 @@ class Helper
     public static function padToEven(string $hexString): string
     {
         return strlen($hexString) % 2 !== 0 ? '0' . $hexString : $hexString;
+    }
+
+    /**
+     * Create Keccak 256 hash
+     *
+     * @param array $tx
+     * @return string
+     * @throws \Exception
+     */
+    public static function createKeccakHash(string $dataString): string
+    {
+        $binaryTx = hex2bin($dataString);
+
+        return Keccak::hash($binaryTx, 256);
+    }
+
+    /**
+     * Format signature V R S parameters
+     *
+     * @param EC\Signature $signature
+     * @return array
+     */
+    public static function formatSignatureParams(EC\Signature $signature): array
+    {
+        $r = self::padToEven($signature->r->toString('hex'));
+        $s = self::padToEven($signature->s->toString('hex'));
+
+        return [
+            'v' => $signature->recoveryParam + self::V_BITS,
+            'r' => hex2bin($r),
+            's' => hex2bin($s)
+        ];
     }
 }

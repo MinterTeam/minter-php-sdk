@@ -4,11 +4,12 @@ namespace Minter\SDK;
 
 use kornrunner\Keccak;
 use Elliptic\EC;
-use Minter\SDK\MinterCoins\MinterDelegateTx;
-use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
-use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 use Web3p\RLP\RLP;
 use Minter\Library\Helper;
+use Minter\SDK\MinterCoins\MinterDelegateTx;
+use Minter\SDK\MinterCoins\MinterRedeemCouponTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 use Minter\SDK\MinterCoins\MinterConvertCoinTx;
 use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
@@ -53,11 +54,6 @@ class MinterTx
      * @var string
      */
     protected $txSigned;
-
-    /**
-     * bits for recovery param in elliptic curve
-     */
-    const V_BITS = 27;
 
     /**
      * Fee in PIP
@@ -132,14 +128,16 @@ class MinterTx
         $tx = $this->txDataRlpEncode($this->tx);
 
         // create kessak hash from transaction
-        $keccak = $this->createKeccakHash($tx);
+        $keccak = Helper::createKeccakHash(
+            $this->rlp->encode($tx)->toString('hex')
+        );
 
         // create elliptic curve and sign
         $ellipticCurve = new EC('secp256k1');
         $signature = $ellipticCurve->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
 
         // prepare special V R S bytes and add them to transaction
-        $tx = array_merge($tx, $this->prepareVRS($signature));
+        $tx = array_merge($tx, Helper::formatSignatureParams($signature));
 
         // add "Mx" prefix to transaction
         $this->txSigned = Helper::addWalletPrefix(
@@ -164,10 +162,12 @@ class MinterTx
         $shortTx = $this->txDataRlpEncode($shortTx);
 
         // create kessak hash from transaction
-        $msg = $this->createKeccakHash($shortTx);
+        $msg = Helper::createKeccakHash(
+            $this->rlp->encode($shortTx)->toString('hex')
+        );
 
         // define the recovery param
-        $recoveryParam = $tx['v'] === MinterTx::V_BITS ? 0 : 1;
+        $recoveryParam = $tx['v'] === Helper::V_BITS ? 0 : 1;
 
         // define the signature
         $signature = [
@@ -245,28 +245,16 @@ class MinterTx
                 $gas = MinterSetCandidateOffTx::COMMISSION;
                 break;
 
+            case MinterRedeemCouponTx::TYPE:
+                $gas = MinterRedeemCouponTx::COMMISSION;
+                break;
+
             default:
                 throw new \Exception('Unknown transaction type');
                 break;
         }
 
         return $gas + (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION;
-    }
-
-    /**
-     * Create Keccak 256 hash
-     *
-     * @param array $tx
-     * @return string
-     * @throws \Exception
-     */
-    protected function createKeccakHash(array $tx): string
-    {
-        $binaryTx = hex2bin(
-            $this->rlp->encode($tx)->toString('hex')
-        );
-
-        return Keccak::hash($binaryTx, 256);
     }
 
     /**
@@ -328,6 +316,10 @@ class MinterTx
                 $dataTx = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
                 break;
 
+            case MinterRedeemCouponTx::TYPE:
+                $dataTx = new MinterRedeemCouponTx($tx['data'], $isHexFormat);
+                break;
+
             default:
                 throw new \Exception('Unknown transaction type');
                 break;
@@ -382,24 +374,6 @@ class MinterTx
         }
 
         return (array) $data;
-    }
-
-    /**
-     * Prepare V R S for tx
-     *
-     * @param EC\Signature $signature
-     * @return array
-     */
-    protected function prepareVRS(EC\Signature $signature): array
-    {
-        $r = Helper::padToEven($signature->r->toString('hex'));
-        $s = Helper::padToEven($signature->s->toString('hex'));
-
-        return [
-            'v' => $signature->recoveryParam + MinterTx::V_BITS,
-            'r' => hex2bin($r),
-            's' => hex2bin($s)
-        ];
     }
 
     /**
