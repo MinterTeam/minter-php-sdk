@@ -6,10 +6,10 @@ use Minter\Library\Helper;
 use Web3p\RLP\RLP;
 
 /**
- * Class MinterCoupon
+ * Class MinterCheck
  * @package Minter\SDK
  */
-class MinterCoupon
+class MinterCheck
 {
     /**
      * @var RLP
@@ -22,14 +22,14 @@ class MinterCoupon
     protected $minterAddress;
 
     /**
-     * Coupon passphrase
+     * Check passphrase
      *
      * @var string
      */
     protected $passphrase;
 
     /**
-     * Coupon structure
+     * Check structure
      *
      * @var array
      */
@@ -45,24 +45,24 @@ class MinterCoupon
     ];
 
     /**
-     * Define RLP, password and encode/decode coupon
+     * Define RLP, password and encode/decode check
      *
-     * MinterCoupon constructor.
-     * @param $couponOrAddress
+     * MinterCheck constructor.
+     * @param $checkOrAddress
      * @param string $passphrase
      */
-    public function __construct($couponOrAddress, string $passphrase)
+    public function __construct($checkOrAddress, string $passphrase)
     {
         $this->rlp = new RLP;
 
         $this->passphrase = $passphrase;
 
-        if(is_array($couponOrAddress)) {
-            $this->structure = $this->defineProperties($couponOrAddress);
+        if(is_array($checkOrAddress)) {
+            $this->structure = $this->defineProperties($checkOrAddress);
         }
 
-        if(is_string($couponOrAddress)) {
-            $this->minterAddress = $couponOrAddress;
+        if(is_string($checkOrAddress)) {
+            $this->minterAddress = $checkOrAddress;
         }
     }
 
@@ -144,37 +144,37 @@ class MinterCoupon
     /**
      * Merge input fields with structure
      *
-     * @param array $coupon
+     * @param array $check
      * @return array
      * @throws \Exception
      */
-    protected function defineProperties(array $coupon): array
+    protected function defineProperties(array $check): array
     {
         $structure = array_flip($this->structure);
 
-        if(!$this->validateFields($coupon)) {
+        if(!$this->validateFields($check)) {
             throw new \Exception('Invalid fields');
         }
 
-        return array_merge($structure, $this->encode($coupon));
+        return array_merge($structure, $this->encode($check));
     }
 
     /**
      * Encode input fields
      *
-     * @param array $coupon
+     * @param array $check
      * @return array
      */
-    protected function encode(array $coupon): array
+    protected function encode(array $check): array
     {
         return [
-            'nonce' => $coupon['nonce'],
+            'nonce' => $check['nonce'],
 
-            'dueBlock' => $coupon['dueBlock'],
+            'dueBlock' => $check['dueBlock'],
 
-            'coin' => MinterConverter::convertCoinName($coupon['coin']),
+            'coin' => MinterConverter::convertCoinName($check['coin']),
 
-            'value' => MinterConverter::convertValue($coupon['value'], 'pip'),
+            'value' => MinterConverter::convertValue($check['value'], 'pip'),
         ];
     }
 

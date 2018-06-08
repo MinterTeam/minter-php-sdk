@@ -6,10 +6,10 @@ use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 
 /**
- * Class MinterRedeemCouponTx
+ * Class MinterRedeemCheckTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterRedeemCouponTx extends MinterCoinTx implements MinterTxInterface
+class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
 {
     /**
      * Type
@@ -22,7 +22,7 @@ class MinterRedeemCouponTx extends MinterCoinTx implements MinterTxInterface
     const COMMISSION = 1000;
 
     /**
-     * Minter Redeem Coupon tx data
+     * Minter Redeem check tx data
      *
      * @var array
      */

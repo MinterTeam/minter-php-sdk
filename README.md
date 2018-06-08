@@ -263,19 +263,19 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>RedeemCoupon</b> transaction
+* Sign the <b>RedeemCheck</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterRedeemCouponTx;
+use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
-    'type' => MinterRedeemCouponTx::TYPE,
+    'type' => MinterRedeemCheckTx::TYPE,
     'data' => [
-        'check' => 'your coupon',
-        'proof' => 'created by MinterCoupon proof'
+        'check' => 'your check',
+        'proof' => 'created by MinterCheck proof'
     ],
     'payload' => '',
     'serviceData' => ''
@@ -329,23 +329,23 @@ $tx = new MinterTx('string tx');
 
 ```
 
-### Create Minter Coupon
+### Create Minter Check
 
 ###### Example
 
-* Create coupon
+* Create check
 
 ```php
-use Minter\SDK\MinterCoupon;
+use Minter\SDK\MinterCheck;
 
-$coupon = new MinterCoupon([
+$check = new MinterCheck([
     'nonce' => $nonce,
     'dueBlock' => 999999,
     'coin' => 'MNT',
     'value' => '10'
 ], 'your pass phrase');
 
-echo $coupon->sign('your private key here'); 
+echo $check->sign('your private key here'); 
 
 // Mx.......
 
@@ -354,9 +354,9 @@ echo $coupon->sign('your private key here');
 * Create proof
 
 ```php
-use Minter\SDK\MinterCoupon;
+use Minter\SDK\MinterCheck;
 
-$coupon = new MinterCoupon('your Minter address here', 'your pass phrase');
+$check = new MinterCheck('your Minter address here', 'your pass phrase');
 
-echo $coupon->createProof(); 
+echo $check->createProof(); 
 ```

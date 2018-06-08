@@ -7,7 +7,7 @@ use Elliptic\EC;
 use Web3p\RLP\RLP;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\MinterDelegateTx;
-use Minter\SDK\MinterCoins\MinterRedeemCouponTx;
+use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 use Minter\SDK\MinterCoins\MinterConvertCoinTx;
@@ -245,8 +245,8 @@ class MinterTx
                 $gas = MinterSetCandidateOffTx::COMMISSION;
                 break;
 
-            case MinterRedeemCouponTx::TYPE:
-                $gas = MinterRedeemCouponTx::COMMISSION;
+            case MinterRedeemCheckTx::TYPE:
+                $gas = MinterRedeemCheckTx::COMMISSION;
                 break;
 
             default:
@@ -316,8 +316,8 @@ class MinterTx
                 $dataTx = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
                 break;
 
-            case MinterRedeemCouponTx::TYPE:
-                $dataTx = new MinterRedeemCouponTx($tx['data'], $isHexFormat);
+            case MinterRedeemCheckTx::TYPE:
+                $dataTx = new MinterRedeemCheckTx($tx['data'], $isHexFormat);
                 break;
 
             default:
