@@ -61,6 +61,11 @@ class MinterTx
     const PAYLOAD_COMMISSION = 500;
 
     /**
+     * All gas price multiplied by FEE DEFAULT (PIP)
+     */
+    const FEE_DEFAULT_MULTIPLIER = 100000000;
+
+    /**
      * MinterTx constructor.
      * @param $tx
      * @throws \Exception
@@ -211,10 +216,10 @@ class MinterTx
     /**
      * Get fee of transaction in PIP
      *
-     * @return int
+     * @return string
      * @throws \Exception
      */
-    public function getFee(): int
+    public function getFee(): string
     {
         switch ($this->type) {
             case MinterSendCoinTx::TYPE:
@@ -254,7 +259,12 @@ class MinterTx
                 break;
         }
 
-        return $gas + (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION;
+        return bcadd(
+            // gas price
+            bcmul($gas, self::FEE_DEFAULT_MULTIPLIER),
+            // commission for payload byte
+            (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION
+        );
     }
 
     /**
