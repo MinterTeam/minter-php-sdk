@@ -259,12 +259,16 @@ class MinterTx
                 break;
         }
 
-        return bcadd(
-            // gas price
-            bcmul($gas, self::FEE_DEFAULT_MULTIPLIER),
-            // commission for payload byte
-            (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION
+        // multiplied gas price
+        $gasPrice = bcmul($gas, self::FEE_DEFAULT_MULTIPLIER);
+
+        // commission for payload and serviceData bytes
+        $commission = bcadd(
+            (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION,
+            (strlen($this->serviceData) / 2) * self::PAYLOAD_COMMISSION
         );
+
+        return bcadd($gasPrice, $commission);
     }
 
     /**
