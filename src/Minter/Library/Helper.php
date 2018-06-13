@@ -21,6 +21,7 @@ class Helper
      */
     public static function hexDecode(string $hex): string
     {
+        $hex = empty($hex) ? '0' : $hex;
         return gmp_strval(gmp_init($hex, 16), 10);
     }
 

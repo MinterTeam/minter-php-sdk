@@ -70,7 +70,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
             'to' => Helper::addWalletPrefix($txData[1]),
 
             // Convert value from PIP to BIP
-            'value' => MinterConverter::convertValue(Helper::hexDecode(empty($txData[2]) ? '0' : $txData[2]), 'bip')
+            'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
         ];
     }
 }
