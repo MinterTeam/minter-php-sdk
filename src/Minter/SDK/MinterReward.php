@@ -19,12 +19,12 @@ class MinterReward
     CONST MAX_REWARD = 111;
 
     /**
-     * Get reward by the block number
+     * Get reward by the block number in PIP
      *
      * @param int $blockNumber
-     * @return int
+     * @return string
      */
-    public static function get(int $blockNumber): int
+    public static function get(int $blockNumber): string
     {
         // check that block number is correct
         if($blockNumber <= 0) {
@@ -40,8 +40,9 @@ class MinterReward
         }
 
         $reward = self::formula($blockNumber);
+        $reward = $reward > self::MAX_REWARD ? self::MAX_REWARD : $reward;
 
-        return $reward > self::MAX_REWARD ? self::MAX_REWARD : $reward;
+        return MinterConverter::convertValue((string)$reward, 'pip');
     }
 
     /**
