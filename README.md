@@ -347,7 +347,7 @@ $check = new MinterCheck([
 
 echo $check->sign('your private key here'); 
 
-// Mx.......
+// Mc.......
 
 ```
 
