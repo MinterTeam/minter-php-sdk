@@ -5,6 +5,7 @@ namespace Minter\SDK\MinterCoins;
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
+use Minter\SDK\MinterPrefix;
 
 /**
  * Class MinterDeclareCandidacyTx
@@ -49,7 +50,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
 
             // Remove Minter wallet prefix and convert hex string to binary
             'pubkey' => hex2bin(
-                Helper::removeWalletPrefix($this->data['pubkey'])
+                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
             ),
 
             // Define commission field
@@ -73,7 +74,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             'address' => Helper::addWalletPrefix($txData[0]),
 
             // Add Minter wallet prefix to string
-            'pubkey' => Helper::addWalletPrefix($txData[1]),
+            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[1],
 
             // Decode hex string to number
             'commission' => Helper::hexDecode($txData[2]),

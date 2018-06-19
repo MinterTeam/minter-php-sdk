@@ -66,9 +66,9 @@ send(string $tx): \stdClass
 ###### Example
 
 ```php
-$api->send('Mxf86d010101a6e58a4d494e540000000000009432143b4d9674b13b0868da425d049fd66910ebae843b9aca001ba0f0c64ae99c1f3f1acb9ad44cc1beeb3e29339353841b2a25dfa14529c41f6bbea02055b472434f7119ea5d7e928a2c357d9f5189b396cd1908bb1f9940391a79e4')
+$api->send('f86d010101a6e58a4d494e540000000000009432143b4d9674b13b0868da425d049fd66910ebae843b9aca001ba0f0c64ae99c1f3f1acb9ad44cc1beeb3e29339353841b2a25dfa14529c41f6bbea02055b472434f7119ea5d7e928a2c357d9f5189b396cd1908bb1f9940391a79e4')
 
-// {code: 0, tx: "Mx2f37ad1c22cf912c02a9f00c735a039d7da3169b"}
+// {code: 0, tx: "Mt2f37ad1c22cf912c02a9f00c735a039d7da3169b"}
 ```
 
 ### getTransactionsFrom
@@ -191,7 +191,7 @@ $tx = new MinterTx([
     'type' => MinterDeclareCandidacyTx::TYPE,
     'data' => [
         'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
-        'pubkey' => 'Mx023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
+        'pubkey' => 'Mp023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
         'commission' => '10',
         'stake' => '5'
     ],
@@ -213,7 +213,7 @@ $tx = new MinterTx([
     'gasPrice' => 1,
     'type' => MinterDelegateTx::TYPE,
     'data' => [
-        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
+        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
         'stake' => '5'
     ],
     'payload' => '',
@@ -234,7 +234,7 @@ $tx = new MinterTx([
     'gasPrice' => 1,
     'type' => MinterSetCandidateOnTx::TYPE,
     'data' => [
-        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
+        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
     ],
     'payload' => '',
     'serviceData' => ''
@@ -254,7 +254,7 @@ $tx = new MinterTx([
     'gasPrice' => 1,
     'type' => MinterSetCandidateOffTx::TYPE,
     'data' => [
-        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
+        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
     ],
     'payload' => '',
     'serviceData' => ''

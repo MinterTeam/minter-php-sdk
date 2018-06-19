@@ -3,7 +3,7 @@
 namespace Minter\Library;
 
 use kornrunner\Keccak;
-use Minter\SDK\MinterWallet;
+use Minter\SDK\MinterPrefix;
 use Elliptic\EC;
 
 class Helper
@@ -63,7 +63,19 @@ class Helper
      */
     public static function removeWalletPrefix(string $string): string
     {
-        return substr($string, strlen(MinterWallet::PREFIX));
+        return self::removePrefix($string, MinterPrefix::ADDRESS);
+    }
+
+    /**
+     * Remove prefix
+     *
+     * @param string $string
+     * @param string $prefix
+     * @return string
+     */
+    public static function removePrefix(string $string, string $prefix): string
+    {
+        return substr($string, strlen($prefix));
     }
 
     /**
@@ -74,7 +86,7 @@ class Helper
      */
     public static function addWalletPrefix(string $string): string
     {
-        return MinterWallet::PREFIX . $string;
+        return MinterPrefix::ADDRESS . $string;
     }
 
     /**

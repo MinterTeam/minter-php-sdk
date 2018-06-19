@@ -32,7 +32,7 @@ final class MinterConvertCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf869010102a0df8a4d4e54000000000000008a53505254455354000000880de0b6b3a764000080801ba09ea1259e0b94b0e136c54ddf9fe97aefb47c6208a307a692169f4f7c8606d24aa030fee0c7978dde0aa9ab814593ab3c99c1be3d0ce0ceeb607f25a29acf3a958c';
+    const VALID_SIGNATURE = 'f869010102a0df8a4d4e54000000000000008a53505254455354000000880de0b6b3a764000080801ba09ea1259e0b94b0e136c54ddf9fe97aefb47c6208a307a692169f4f7c8606d24aa030fee0c7978dde0aa9ab814593ab3c99c1be3d0ce0ceeb607f25a29acf3a958c';
 
     /**
      * Test to decode data for MinterConvertCoinTx

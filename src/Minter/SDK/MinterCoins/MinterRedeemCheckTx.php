@@ -4,6 +4,7 @@ namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
+use Minter\SDK\MinterPrefix;
 
 /**
  * Class MinterRedeemCheckTx
@@ -41,7 +42,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
         return [
             // Remove Minter wallet prefix and convert hex string to binary
             'check' => hex2bin(
-                Helper::removeWalletPrefix($this->data['check'])
+                Helper::removePrefix($this->data['check'], MinterPrefix::CHECK)
             ),
 
             // Convert hex string to binary
@@ -59,7 +60,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Add Minter wallet prefix to hex string
-            'check' => Helper::addWalletPrefix($txData[0]),
+            'check' => MinterPrefix::CHECK . $txData[0],
 
             // Define proof field
             'proof' => $txData[1],

@@ -5,6 +5,7 @@ namespace Minter\SDK\MinterCoins;
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
+use Minter\SDK\MinterPrefix;
 
 /**
  * Class MinterDelegateTx
@@ -42,7 +43,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
         return [
             // Remove Minter wallet prefix and convert hex string to binary
             'pubkey' => hex2bin(
-                Helper::removeWalletPrefix($this->data['pubkey'])
+                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
             ),
 
             // Convert stake field from BIP to PIP
@@ -60,7 +61,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Add Minter wallet prefix to string
-            'pubkey' => Helper::addWalletPrefix($txData[0]),
+            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
             // Convert stake from PIP to BIP
             'stake' => MinterConverter::convertValue(Helper::hexDecode($txData[1]), 'bip')

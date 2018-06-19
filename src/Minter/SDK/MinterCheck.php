@@ -110,9 +110,8 @@ class MinterCheck
         $this->structure = array_merge($this->structure, Helper::formatSignatureParams($signature));
 
         // rlp encode data and add Minter wallet prefix
-        return Helper::addWalletPrefix(
-            $this->rlp->encode($this->structure)->toString('hex')
-        );
+        return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
+
     }
 
     /**

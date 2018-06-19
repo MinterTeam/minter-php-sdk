@@ -145,9 +145,7 @@ class MinterTx
         $tx = array_merge($tx, Helper::formatSignatureParams($signature));
 
         // add "Mx" prefix to transaction
-        $this->txSigned = Helper::addWalletPrefix(
-            $this->rlp->encode($tx)->toString('hex')
-        );
+        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
         return $this->txSigned;
     }
@@ -204,13 +202,10 @@ class MinterTx
         }
 
         // prepare transaction
-        $tx = Helper::removeWalletPrefix($this->txSigned);
-        $tx = hex2bin(dechex(strlen($tx) / 2) . $tx);
+        $tx = hex2bin(dechex(strlen($this->txSigned) / 2) . $this->txSigned);
 
         // make RIPEMD160 hash of transaction
-        return Helper::addWalletPrefix(
-            hash('ripemd160', $tx)
-        );
+        return MinterPrefix::TRANSACTION . hash('ripemd160', $tx);
     }
 
     /**
@@ -379,9 +374,7 @@ class MinterTx
      */
     protected function rlpToHex(string $data): array
     {
-        $data = $this->rlp->decode(
-            '0x' . str_replace(MinterWallet::PREFIX, '', $data)
-        );
+        $data = $this->rlp->decode('0x' . $data);
 
         foreach ($data as $key => $value) {
             $data[$key] = $value->toString('hex');

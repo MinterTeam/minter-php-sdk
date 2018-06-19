@@ -21,7 +21,7 @@ class MinterPrefix
     const PUBLIC_KEY = 'Mp';
 
     /**
-     * Minter reedem check prefix
+     * Minter redeem check prefix
      */
     const CHECK = 'Mc';
 

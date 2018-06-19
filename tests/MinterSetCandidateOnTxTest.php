@@ -19,13 +19,13 @@ final class MinterSetCandidateOnTxTest extends TestCase
      * Predefined data
      */
     const DATA = [
-        'pubkey' => 'Mx0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
+        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
     ];
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'Mxf86b010108a2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4380801ba0476c75739d054211b575576a2edf6b5766776420b0886202ceed8b24e4139e4ea0055fab7f20def30f1e7bac79229bb77889c1dbfb7a016a3b3a461e8486978348';
+    const VALID_SIGNATURE = 'f86b010108a2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4380801ba0476c75739d054211b575576a2edf6b5766776420b0886202ceed8b24e4139e4ea0055fab7f20def30f1e7bac79229bb77889c1dbfb7a016a3b3a461e8486978348';
 
     /**
      * Test to decode data for MinterSetCandidateOnTx

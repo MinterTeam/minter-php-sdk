@@ -15,11 +15,6 @@ use BIP\BIP44;
 class MinterWallet
 {
     /**
-     * Prefix for address
-     */
-    const PREFIX = 'Mx';
-
-    /**
      * Amount of entropy bits
      */
     const BIP44_ENTROPY_BITS = 128;
@@ -82,7 +77,7 @@ class MinterWallet
     {
         $hash = Keccak::hash(hex2bin($publicKey), 256);
 
-        return self::PREFIX . substr($hash, -40);
+        return MinterPrefix::ADDRESS . substr($hash, -40);
     }
 
     /**
@@ -93,6 +88,6 @@ class MinterWallet
      */
     public static function validateAddress(string $address): bool
     {
-        return strlen($address) === 42 && substr($address, 0, 2) === self::PREFIX && ctype_xdigit(substr($address, -40));
+        return strlen($address) === 42 && substr($address, 0, 2) === MinterPrefix::ADDRESS && ctype_xdigit(substr($address, -40));
     }
 }

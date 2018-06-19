@@ -4,6 +4,7 @@ namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
+use Minter\SDK\MinterPrefix;
 
 /**
  * Class MinterSetCandidateOnTx
@@ -40,7 +41,7 @@ class MinterSetCandidateOnTx extends MinterCoinTx implements MinterTxInterface
         return [
             // Remove Minter wallet prefix and convert hex string to binary
             'pubkey' => hex2bin(
-                Helper::removeWalletPrefix($this->data['pubkey'])
+                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
             ),
         ];
     }
@@ -55,7 +56,7 @@ class MinterSetCandidateOnTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Add Minter wallet prefix to string
-            'pubkey' => Helper::addWalletPrefix($txData[0]),
+            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
         ];
     }
 }
