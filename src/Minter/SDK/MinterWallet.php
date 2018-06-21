@@ -65,7 +65,7 @@ class MinterWallet
         secp256k1_ec_pubkey_create($context, $publicKeyResource, $privateKey);
 
         $publicKey = null;
-        secp256k1_ec_pubkey_serialize($context, $publicKeyResource, $publicKey, false);
+        secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
 
         return substr(bin2hex($publicKey), 2, 130);
     }
