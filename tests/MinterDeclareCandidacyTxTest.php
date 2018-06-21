@@ -13,22 +13,23 @@ final class MinterDeclareCandidacyTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '05ddcd4e6f7d248ed1388f0091fe345bf9bf4fc2390384e26005e7675c98b3c1';
+    const PRIVATE_KEY = '6e1df6ec69638d152f563c5eca6c13cdb5db4055861efc11ec1cdd578afd96bf';
 
     /**
      * Predefined data
      */
     const DATA = [
-        'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
-        'pubkey' => 'Mp023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
+        'address' => 'Mx9f7fd953c2c69044b901426831ed03ee0bd0597a',
+        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
         'commission' => '10',
+        'coin' => 'MNT',
         'stake' => '5'
     ];
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f88d010104b843f84194a7bc33954f1ce855ed1a8c768fdd32ed927def47a1023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c020a884563918244f4000080801ca05ec1cba9ebd9fad0c46a64b1302e3064e2e2581c894c0d3a2691d068cd28399ea06665ed86a76020934bd9a4f85d21f2e9c01ab1900dc6cfd378b35b38d743f35a';
+    const VALID_SIGNATURE = 'f897010104b84df84b949f7fd953c2c69044b901426831ed03ee0bd0597aa00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a430a8a4d4e5400000000000000884563918244f4000080801ba050962a29f39f2c73a1093a137f561206a6850cae8d52ad84d1087d1fcc06b83ca045a74417aa3cc9edf6471151fceb14b5408b882a4b594efd3dead9b92ae64a7f';
 
     /**
      * Test to decode data for MinterDeclareCandidacyTx

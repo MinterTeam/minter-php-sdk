@@ -30,6 +30,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
      */
     public $data = [
         'pubkey' => '',
+        'coin' => '',
         'stake' => ''
     ];
 
@@ -45,6 +46,9 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
             'pubkey' => hex2bin(
                 Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
             ),
+
+            // Convert coin name
+            'coin' => MinterConverter::convertCoinName($this->data['coin']),
 
             // Convert stake field from BIP to PIP
             'stake' => MinterConverter::convertValue($this->data['stake'], 'pip')
@@ -63,8 +67,11 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
             // Add Minter wallet prefix to string
             'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
+            // Pack coin name
+            'coin' => Helper::pack2hex($txData[1]),
+
             // Convert stake from PIP to BIP
-            'stake' => MinterConverter::convertValue(Helper::hexDecode($txData[1]), 'bip')
+            'stake' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
         ];
     }
 }

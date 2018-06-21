@@ -4,7 +4,6 @@ namespace Minter\Library;
 
 use kornrunner\Keccak;
 use Minter\SDK\MinterPrefix;
-use Elliptic\EC;
 
 class Helper
 {
@@ -128,16 +127,34 @@ class Helper
     /**
      * Format signature V R S parameters
      *
-     * @param EC\Signature $signature
+     * @param string $message
+     * @param string $privateKey
      * @return array
      */
-    public static function formatSignatureParams(EC\Signature $signature): array
+    public static function ecdsaSign(string $message, string $privateKey): array
     {
-        $r = self::padToEven($signature->r->toString('hex'));
-        $s = self::padToEven($signature->s->toString('hex'));
+        // convert params to binary
+        $privateKey = hex2bin($privateKey);
+        $message = hex2bin($message);
+
+        // create curve context
+        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+        /** @var resource $signatureSource */
+        $signatureSource = '';
+        secp256k1_ecdsa_sign_recoverable($context, $signatureSource, $message, $privateKey);
+
+        $signature = null;
+        $recoveryParam = null;
+        secp256k1_ecdsa_recoverable_signature_serialize_compact($context, $signatureSource, $signature, $recoveryParam);
+
+        $signature = bin2hex($signature);
+
+        $r = substr($signature, 0, 64);
+        $s = substr($signature, 64, 64);
 
         return [
-            'v' => $signature->recoveryParam + self::V_BITS,
+            'v' => $recoveryParam + self::V_BITS,
             'r' => hex2bin($r),
             's' => hex2bin($s)
         ];

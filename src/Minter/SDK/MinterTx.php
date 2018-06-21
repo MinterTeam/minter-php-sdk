@@ -2,18 +2,18 @@
 
 namespace Minter\SDK;
 
-use kornrunner\Keccak;
-use Elliptic\EC;
 use Web3p\RLP\RLP;
 use Minter\Library\Helper;
-use Minter\SDK\MinterCoins\MinterDelegateTx;
-use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
-use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
-use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
-use Minter\SDK\MinterCoins\MinterConvertCoinTx;
-use Minter\SDK\MinterCoins\MinterCreateCoinTx;
-use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
-use Minter\SDK\MinterCoins\MinterSendCoinTx;
+use Minter\SDK\MinterCoins\{
+    MinterDelegateTx,
+    MinterRedeemCheckTx,
+    MinterSetCandidateOffTx,
+    MinterSetCandidateOnTx,
+    MinterConvertCoinTx,
+    MinterCreateCoinTx,
+    MinterDeclareCandidacyTx,
+    MinterSendCoinTx
+};
 
 /**
  * Class MinterTx
@@ -34,7 +34,7 @@ class MinterTx
     protected $rlp;
 
     /**
-     * tx structure
+     * Minter transaction structure
      *
      * @var array
      */
@@ -137,14 +137,9 @@ class MinterTx
             $this->rlp->encode($tx)->toString('hex')
         );
 
-        // create elliptic curve and sign
-        $ellipticCurve = new EC('secp256k1');
-        $signature = $ellipticCurve->sign($keccak, $privateKey, 'hex', ['canonical' => true]);
-
         // prepare special V R S bytes and add them to transaction
-        $tx = array_merge($tx, Helper::formatSignatureParams($signature));
+        $tx = array_merge($tx, Helper::ecdsaSign($keccak, $privateKey));
 
-        // add "Mx" prefix to transaction
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
         return $this->txSigned;
@@ -169,25 +164,41 @@ class MinterTx
             $this->rlp->encode($shortTx)->toString('hex')
         );
 
+        // convert message to binary
+        $msg = hex2bin($msg);
+
         // define the recovery param
         $recoveryParam = $tx['v'] === Helper::V_BITS ? 0 : 1;
 
         // define the signature
         $signature = [
-            'r' => $tx['r'],
-            's' => $tx['s'],
+            'r' => hex2bin($tx['r']),
+            's' => hex2bin($tx['s']),
             'recoveryParam' => $recoveryParam
         ];
 
-        // create elliptic curve
-        $ellipticCurve = new EC('secp256k1');
-        $point = $ellipticCurve->recoverPubKey($msg, $signature, $recoveryParam, 'hex');
+        // create context for curve
+        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-        // generate public key from point
-        return MinterWallet::generatePublicKey([
-            'pub' => $point,
-            'pubEnc' => 'hex'
-        ]);
+        /** @var resource $signatureSource */
+        $signatureResource = null;
+        secp256k1_ecdsa_recoverable_signature_parse_compact(
+            $context,
+            $signatureResource,
+            $signature['r'] . $signature['s'],
+            $signature['recoveryParam']
+        );
+
+        /** @var resource $publicKeyResource */
+        $publicKeyResource = null;
+        secp256k1_ecdsa_recover($context, $publicKeyResource, $signatureResource, $msg);
+
+        $publicKey = '';
+        secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
+
+        $publicKey = substr(bin2hex($publicKey), 2, 130);
+
+        return $publicKey;
     }
 
     /**
@@ -279,8 +290,8 @@ class MinterTx
         $tx = $this->rlpToHex($tx);
 
         // pack data of transaction to hex string
-        $dataIndex = array_search('data', $this->structure);
-        $tx[$dataIndex] = $this->rlpToHex($tx[$dataIndex]);
+      //  $dataIndex = array_search('data', $this->structure);
+        $tx[3] = $this->rlpToHex($tx[3]);
 
         // encode transaction data
         return $this->encode($this->prepareResult($tx), true);
@@ -350,7 +361,7 @@ class MinterTx
     {
         $result = [];
         foreach($this->structure as $key => $field) {
-            if(in_array($field, ['r', 's', 'data'])) {
+            if($field === 'r' || $field === 's' || $field === 'data') {
                 $result[$field] = $tx[$key];
             }
             elseif($field === 'payload' || $field === 'serviceData') {

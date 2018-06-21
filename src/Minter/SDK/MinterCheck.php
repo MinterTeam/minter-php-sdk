@@ -1,7 +1,7 @@
 <?php
 
 namespace Minter\SDK;
-use Elliptic\EC;
+
 use Minter\Library\Helper;
 use Web3p\RLP\RLP;
 
@@ -93,7 +93,7 @@ class MinterCheck
         $passphrase = hash('sha256', $this->passphrase);
 
         // create elliptic curve and sign
-        $signature = $this->createSignature($msgHash, $passphrase);
+        $signature = Helper::ecdsaSign($msgHash, $passphrase);
 
         // define lock field
         $this->structure['lock'] = $this->formatLockFromSignature($signature);
@@ -103,11 +103,7 @@ class MinterCheck
             array_slice($this->structure, 0, 5)
         );
 
-        // create signature with msg and private key
-        $signature = $this->createSignature($msgHashWithLock, $privateKey);
-
-        // update structure
-        $this->structure = array_merge($this->structure, Helper::formatSignatureParams($signature));
+        $this->structure = array_merge($this->structure, Helper::ecdsaSign($msgHashWithLock, $privateKey));
 
         // rlp encode data and add Minter wallet prefix
         return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
@@ -132,7 +128,7 @@ class MinterCheck
 
         // get SHA 256 hash of password and create EC signature
         $passphrase = hash('sha256', $this->passphrase);
-        $signature = $this->createSignature($addressHash, $passphrase);
+        $signature = Helper::ecdsaSign($addressHash, $passphrase);
 
         // return formatted proof
         return bin2hex(
@@ -191,20 +187,6 @@ class MinterCheck
     }
 
     /**
-     * Create EC signature
-     *
-     * @param string $msg
-     * @param string $passphrase
-     * @return EC\Signature
-     */
-    protected function createSignature(string $msg, string $passphrase): EC\Signature
-    {
-        $ellipticCurve = new EC('secp256k1');
-
-        return $ellipticCurve->sign($msg, $passphrase, 'hex', ['canonical' => true]);
-    }
-
-    /**
      * Validate that input fields are correct
      *
      * @param array $fields
@@ -226,13 +208,13 @@ class MinterCheck
     /**
      * Prepare lock field
      *
-     * @param EC\Signature $signature
+     * @param array $signature
      * @return string
      */
-    protected function formatLockFromSignature(EC\Signature $signature): string
+    protected function formatLockFromSignature(array $signature): string
     {
-        $recovery = $signature->recoveryParam === 1 ? '01' : '00';
+        $recovery = $signature['v'] === 1 ? '01' : '00';
 
-        return hex2bin($signature->r->toString('hex') . $signature->s->toString('hex') . $recovery);
+        return $signature['r'] . $signature['s'] . hex2bin($recovery);
     }
 }

@@ -13,20 +13,21 @@ final class MinterDelegateTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '05ddcd4e6f7d248ed1388f0091fe345bf9bf4fc2390384e26005e7675c98b3c1';
+    const PRIVATE_KEY = '6e1df6ec69638d152f563c5eca6c13cdb5db4055861efc11ec1cdd578afd96bf';
 
     /**
      * Predefined data
      */
     const DATA = [
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
-        'stake' => '5'
+        'coin' => 'MNT',
+        'stake' => '10'
     ];
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f874010105abeaa00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43884563918244f4000080801ca0a5e6375c5986dcace542702cad718696fb0c150239034a6c1579543ab84f5f79a070e83841357c218d36d1714aef4ef98e1fd6e87fe4367d5f6c3a2faaee953e39';
+    const VALID_SIGNATURE = 'f87f010105b6f5a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a438a4d4e5400000000000000888ac7230489e8000080801ba01b9b56a0afc402b1024598f588f42e70451faff4d9e792bf22ebaab3b0d1ff87a05459960eddd579e1a019ab3b8b57133a67fec58b0e047d52ce76e16d2a613459';
 
     /**
      * Test to decode data for MinterDelegateTx

@@ -4,8 +4,6 @@ namespace Minter\SDK;
 
 use BitWasp\BitcoinLib\BIP39\BIP39;
 use kornrunner\Keccak;
-use Elliptic\EC;
-use Elliptic\EC\KeyPair;
 use BIP\BIP44;
 
 /**
@@ -37,10 +35,7 @@ class MinterWallet
         $seed = BIP39::mnemonicToSeedHex($mnemonic, '');
         $privateKey = BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
 
-        $publicKey = self::generatePublicKey([
-            'priv' => $privateKey,
-            'privEnc' => 'hex'
-        ]);
+        $publicKey = self::privateToPublic($privateKey);
 
         $address = self::getAddressFromPublicKey($publicKey);
 
@@ -55,15 +50,24 @@ class MinterWallet
     /**
      * Generate public key
      *
-     * @param array $options
+     * @param string $privateKey
      * @return string
      */
-    public static function generatePublicKey(array $options): string
+    public static function privateToPublic(string $privateKey): string
     {
-        $ec = new EC('secp256k1');
-        $keyPair = new KeyPair($ec, $options);
+        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-        return substr($keyPair->getPublic('hex'), 2, 130);
+        // convert key to binary
+        $privateKey = hex2bin($privateKey);
+
+        /** @var $publicKeyResource */
+        $publicKeyResource = null;
+        secp256k1_ec_pubkey_create($context, $publicKeyResource, $privateKey);
+
+        $publicKey = null;
+        secp256k1_ec_pubkey_serialize($context, $publicKeyResource, $publicKey, false);
+
+        return substr(bin2hex($publicKey), 2, 130);
     }
 
     /**
