@@ -14,6 +14,11 @@ class MinterReward
     const TOTAL_BLOCKS_COUNT = 44512766;
 
     /**
+     * Total blocks for reward with extra 1ns
+     */
+    const TOTAL_BLOCKS_COUNT_WITH_PLUS = 44512784;
+
+    /**
      * Max reward
      */
     CONST MAX_REWARD = 111;
@@ -31,12 +36,12 @@ class MinterReward
             throw new \InvalidArgumentException('Block number should be greater than 0');
         }
 
-        if($blockNumber > self::TOTAL_BLOCKS_COUNT) {
-            return 0;
+        if($blockNumber > self::TOTAL_BLOCKS_COUNT_WITH_PLUS) {
+            return MinterConverter::convertValue('0', 'pip');
         }
 
         if($blockNumber > self::TOTAL_BLOCKS_COUNT) {
-            return 1;
+            return MinterConverter::convertValue('1', 'pip');
         }
 
         $reward = self::formula($blockNumber);
