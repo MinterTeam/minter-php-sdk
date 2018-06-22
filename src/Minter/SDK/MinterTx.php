@@ -198,7 +198,7 @@ class MinterTx
 
         $publicKey = substr(bin2hex($publicKey), 2, 130);
 
-        return $publicKey;
+        return MinterPrefix::PUBLIC_KEY . $publicKey;
     }
 
     /**

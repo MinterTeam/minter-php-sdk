@@ -5,6 +5,7 @@ namespace Minter\SDK;
 use BitWasp\BitcoinLib\BIP39\BIP39;
 use kornrunner\Keccak;
 use BIP\BIP44;
+use Minter\Library\Helper;
 
 /**
  * Class MinterWallet
@@ -67,7 +68,7 @@ class MinterWallet
         $publicKey = null;
         secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
 
-        return substr(bin2hex($publicKey), 2, 130);
+        return MinterPrefix::PUBLIC_KEY . substr(bin2hex($publicKey), 2, 130);
     }
 
     /**
@@ -79,6 +80,10 @@ class MinterWallet
      */
     public static function getAddressFromPublicKey(string $publicKey): string
     {
+        // remove public key
+        $publicKey = Helper::removePrefix($publicKey, MinterPrefix::PUBLIC_KEY);
+
+        // create keccak hash
         $hash = Keccak::hash(hex2bin($publicKey), 256);
 
         return MinterPrefix::ADDRESS . substr($hash, -40);
