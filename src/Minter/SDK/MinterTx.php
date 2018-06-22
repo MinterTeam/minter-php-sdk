@@ -172,8 +172,8 @@ class MinterTx
 
         // define the signature
         $signature = [
-            'r' => hex2bin($tx['r']),
-            's' => hex2bin($tx['s']),
+            'r' => hex2bin(str_repeat('0', 64 - strlen($tx['r'])) . $tx['r']),
+            's' => hex2bin(str_repeat('0', 64 - strlen($tx['s'])) . $tx['s']),
             'recoveryParam' => $recoveryParam
         ];
 
