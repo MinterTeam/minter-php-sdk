@@ -150,8 +150,11 @@ class Helper
 
         $signature = bin2hex($signature);
 
-        $r = substr($signature, 0, 64);
-        $s = substr($signature, 64, 64);
+        $r = ltrim(substr($signature, 0, 64), '0');
+        $s = ltrim(substr($signature, 64, 64), '0');
+
+        if(strlen($r) % 2 !== 0) $r = '0' . $r;
+        if(strlen($s) % 2 !== 0) $s = '0' . $s;
 
         return [
             'v' => $recoveryParam + self::V_BITS,
