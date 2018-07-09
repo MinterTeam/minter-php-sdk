@@ -2,6 +2,7 @@
 
 namespace Minter;
 
+use Minter\Library\Helper;
 use Minter\Library\Http;
 
 /**
@@ -71,6 +72,9 @@ class MinterAPI
      */
     public function getTransactionsFrom(string $address): \stdClass
     {
+        // prepare address for api request
+        $address = strtolower(Helper::removeWalletPrefix($address));
+
         return $this->get('/api/transactions', ['query' => "tx.from='" . $address . "'"]);
     }
 
@@ -83,6 +87,9 @@ class MinterAPI
      */
     public function getTransactionsTo(string $address): \stdClass
     {
+        // prepare address for api request
+        $address = strtolower(Helper::removeWalletPrefix($address));
+
         return $this->get('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
     }
 }
