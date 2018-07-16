@@ -20,7 +20,7 @@ class MinterSetCandidateOffTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Fee in PIP
      */
-    const COMMISSION = 1000;
+    const COMMISSION = '100000000000000000';
 
     /**
      * Set candidate off tx data

@@ -15,12 +15,12 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 7;
+    const TYPE = 8;
 
     /**
      * Fee in PIP
      */
-    const COMMISSION = 1000;
+    const COMMISSION = '10000000000000000';
 
     /**
      * Minter Redeem check tx data

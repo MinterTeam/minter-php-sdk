@@ -1,41 +1,41 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterConvertCoinTx;
+use Minter\SDK\MinterCoins\MinterSellCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterConvertCoinTx
+ * Class for testing MinterSendCoinTx
  */
-final class MinterConvertCoinTxTest extends TestCase
+final class MinterSellCoinTxTest extends TestCase
 {
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = 'b574d2a7151fcf0df573feae58015f85f6ebf38ea4b38c49196c6aceee27e189';
+    const PRIVATE_KEY = '4c9a495b52aeaa839e53c3eb2f2d6650d892277bde58a24bb6a396f2bb31aa37';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mx887c5de2515e788abb422c3e483496e1b1f3dff4';
+    const MINTER_ADDRESS = 'Mxfd250353d712dc19abf4c5453050b92ca7193285';
 
     /**
      * Predefined data
      */
     const DATA = [
-        'coin_from' => 'MNT',
-        'coin_to' => 'SPRTEST',
-        'value' => '1'
+        'coinToSell' => 'MNT',
+        'valueToSell' => '1',
+        'coinToBuy' => 'TEST'
     ];
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f869010102a0df8a4d4e54000000000000008a53505254455354000000880de0b6b3a764000080801ba09ea1259e0b94b0e136c54ddf9fe97aefb47c6208a307a692169f4f7c8606d24aa030fee0c7978dde0aa9ab814593ab3c99c1be3d0ce0ceeb607f25a29acf3a958c';
+    const VALID_SIGNATURE = 'f869010102a0df8a4d4e5400000000000000880de0b6b3a76400008a5445535400000000000080801ca0ce2568edba9a16aec2d37b25c40ef6874eddea2cf5bf2e2df13991c9e2f117c5a079fb4185eb29cd45b441eb8c5a09995fd43e2b4fa3ee85fad937e5254c9411f6';
 
     /**
-     * Test to decode data for MinterConvertCoinTx
+     * Test to decode data for MinterSendCoinTx
      */
     public function testDecode(): void
     {
@@ -46,14 +46,14 @@ final class MinterConvertCoinTxTest extends TestCase
     }
 
     /**
-     * Test signing MinterConvertCoinTx
+     * Test signing MinterSendCoinTx
      */
     public function testSign(): void
     {
         $tx = new MinterTx([
             'nonce' => 1,
             'gasPrice' => 1,
-            'type' => MinterConvertCoinTx::TYPE,
+            'type' => MinterSellCoinTx::TYPE,
             'data' => self::DATA,
             'payload' => '',
             'serviceData' => ''

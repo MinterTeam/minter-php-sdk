@@ -16,12 +16,12 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 5;
+    const TYPE = 6;
 
     /**
      * Fee in PIP
      */
-    const COMMISSION = 10000;
+    const COMMISSION = '100000000000000000';
 
     /**
      * Delegate tx data

@@ -137,20 +137,42 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>ConvertCoin</b> transaction
+* Sign the <b>SellCoinTx</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterConvertCoinTx;
+use Minter\SDK\MinterCoins\MinterSellCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
-    'type' => MinterConvertCoinTx::TYPE,
+    'type' => MinterSellCoinTx::TYPE,
     'data' => [
-         'coin_from' => 'MNT',
-         'coin_to' => 'TESTCOIN',
-         'value' => '1'
+         'coinToSell' => 'MNT',
+         'valueToSell' => '1',
+         'coinToBuy' => 'TEST'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>BuyCoinTx</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterBuyCoinTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterBuyCoinTx::TYPE,
+    'data' => [
+         'coinToBuy' => 'MNT',
+         'valueToBuy' => '1',
+         'coinToSell' => 'TEST'
     ],
     'payload' => '',
     'serviceData' => ''
@@ -281,6 +303,28 @@ $tx = new MinterTx([
     'data' => [
         'check' => 'your check',
         'proof' => 'created by MinterCheck proof'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>Unbound</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterUnboundTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'type' => MinterUnboundTx::TYPE,
+    'data' => [
+        'pubkey' => 'Mp....',
+        'coin' => 'MNT',
+        'value' => '1'
     ],
     'payload' => '',
     'serviceData' => ''

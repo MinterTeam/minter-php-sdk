@@ -16,12 +16,12 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 4;
+    const TYPE = 5;
 
     /**
      * Fee in PIP
      */
-    const COMMISSION = 100000;
+    const COMMISSION = '1000000000000000000';
 
     /**
      * Declare candidacy tx data

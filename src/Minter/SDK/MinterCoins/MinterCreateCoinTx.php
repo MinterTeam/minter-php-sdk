@@ -15,12 +15,12 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 3;
+    const TYPE = 4;
 
     /**
      * Fee in PIP
      */
-    const COMMISSION = 100000;
+    const COMMISSION = '1000000000000000000';
 
     /**
      * Send coin tx data

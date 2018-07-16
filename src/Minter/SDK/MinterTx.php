@@ -9,10 +9,12 @@ use Minter\SDK\MinterCoins\{
     MinterRedeemCheckTx,
     MinterSetCandidateOffTx,
     MinterSetCandidateOnTx,
-    MinterConvertCoinTx,
     MinterCreateCoinTx,
     MinterDeclareCandidacyTx,
-    MinterSendCoinTx
+    MinterSendCoinTx,
+    MinterUnboundTx,
+    MinterSellCoinTx,
+    MinterBuyCoinTx
 };
 
 /**
@@ -232,8 +234,12 @@ class MinterTx
                 $gas = MinterSendCoinTx::COMMISSION;
                 break;
 
-            case MinterConvertCoinTx::TYPE:
-                $gas = MinterConvertCoinTx::COMMISSION;
+            case MinterSellCoinTx::TYPE:
+                $gas = MinterSellCoinTx::COMMISSION;
+                break;
+
+            case MinterBuyCoinTx::TYPE:
+                $gas = MinterBuyCoinTx::COMMISSION;
                 break;
 
             case MinterCreateCoinTx::TYPE:
@@ -248,16 +254,20 @@ class MinterTx
                 $gas = MinterDelegateTx::COMMISSION;
                 break;
 
+            case MinterUnboundTx::TYPE:
+                $gas = MinterUnboundTx::COMMISSION;
+                break;
+
+            case MinterRedeemCheckTx::TYPE:
+                $gas = MinterRedeemCheckTx::COMMISSION;
+                break;
+
             case MinterSetCandidateOnTx::TYPE:
                 $gas = MinterSetCandidateOnTx::COMMISSION;
                 break;
 
             case MinterSetCandidateOffTx::TYPE:
                 $gas = MinterSetCandidateOffTx::COMMISSION;
-                break;
-
-            case MinterRedeemCheckTx::TYPE:
-                $gas = MinterRedeemCheckTx::COMMISSION;
                 break;
 
             default:
@@ -312,8 +322,12 @@ class MinterTx
                 $dataTx = new MinterSendCoinTx($tx['data'], $isHexFormat);
                 break;
 
-            case MinterConvertCoinTx::TYPE:
-                $dataTx = new MinterConvertCoinTx($tx['data'], $isHexFormat);
+            case MinterSellCoinTx::TYPE:
+                $dataTx = new MinterSellCoinTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterBuyCoinTx::TYPE:
+                $dataTx = new MinterBuyCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterCreateCoinTx::TYPE:
@@ -328,16 +342,20 @@ class MinterTx
                 $dataTx = new MinterDelegateTx($tx['data'], $isHexFormat);
                 break;
 
+            case MinterUnboundTx::TYPE:
+                $dataTx = new MinterUnboundTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterRedeemCheckTx::TYPE:
+                $dataTx = new MinterRedeemCheckTx($tx['data'], $isHexFormat);
+                break;
+
             case MinterSetCandidateOnTx::TYPE:
                 $dataTx = new MinterSetCandidateOnTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterSetCandidateOffTx::TYPE:
                 $dataTx = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
-                break;
-
-            case MinterRedeemCheckTx::TYPE:
-                $dataTx = new MinterRedeemCheckTx($tx['data'], $isHexFormat);
                 break;
 
             default:
