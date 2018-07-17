@@ -65,7 +65,7 @@ class MinterTx
     /**
      * All gas price multiplied by FEE DEFAULT (PIP)
      */
-    const FEE_DEFAULT_MULTIPLIER = 100000000;
+    const FEE_DEFAULT_MULTIPLIER = 1000000000000000;
 
     /**
      * MinterTx constructor.

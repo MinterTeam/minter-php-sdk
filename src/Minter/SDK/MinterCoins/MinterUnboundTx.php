@@ -19,9 +19,9 @@ class MinterUnboundTx extends MinterCoinTx implements MinterTxInterface
     const TYPE = 7;
 
     /**
-     * Fee in PIP
+     * Fee units
      */
-    const COMMISSION = '100000000000000000';
+    const COMMISSION = 100;
 
     /**
      * Minter Redeem check tx data

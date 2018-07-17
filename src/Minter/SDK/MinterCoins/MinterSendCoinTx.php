@@ -18,9 +18,9 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     const TYPE = 1;
 
     /**
-     * Fee in PIP
+     * Fee units
      */
-    const COMMISSION = '10000000000000000';
+    const COMMISSION = 10;
 
     /**
      * Send coin tx data
