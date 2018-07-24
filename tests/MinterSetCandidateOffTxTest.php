@@ -25,7 +25,7 @@ final class MinterSetCandidateOffTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f86b010109a2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4380801ba0cb30ae55441809b191f0294af1348514f51d03a4c5950b25546f043441af0060a07ecd8fc89c9b6491a7db82a6412b63a941079cf1ee8ea3fe1e201f1fa815b13d';
+    const VALID_SIGNATURE = 'f87601018a4d4e54000000000000000aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4380801ba050022f81c7f0c9bd562c2c061c1dd3d9061c2ab9286c5a6e68ed6f0fd5accaf5a00f8dbe26570e325cd919425b4eefea6b9ac0a4c93513b47c6e968e4312defaa5';
 
     /**
      * Test to decode data for MinterSetCandidateOffTx
@@ -45,6 +45,7 @@ final class MinterSetCandidateOffTxTest extends TestCase
         $tx = new MinterTx([
             'nonce' => 1,
             'gasPrice' => 1,
+            'gasCoin' => 'MNT',
             'type' => MinterSetCandidateOffTx::TYPE,
             'data' => self::DATA,
             'payload' => '',

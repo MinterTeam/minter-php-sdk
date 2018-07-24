@@ -92,4 +92,122 @@ class MinterAPI
 
         return $this->get('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
     }
+
+    /**
+     * Get status of node
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getStatus(): \stdClass
+    {
+        return $this->get('/api/status');
+    }
+
+    /**
+     * Returns list of active validators
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getValidators(): \stdClass
+    {
+        return $this->get('/api/validators');
+    }
+
+    /**
+     * Return estimate of buy coin transaction
+     *
+     * @param string $coinToSell
+     * @param string $valueToBuy
+     * @param string $coinToBuy
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
+    {
+        return $this->get('/api/estimateCoinBuy', [
+            'coin_to_sell' => $coinToSell,
+            'value_to_buy' => $valueToBuy,
+            'coin_to_buy' => $coinToBuy
+        ]);
+    }
+
+    /**
+     * Return estimate of sell coin transaction
+     *
+     * @param string $coinToSell
+     * @param string $valueToSell
+     * @param string $coinToBuy
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
+    {
+        return $this->get('/api/estimateCoinBuy', [
+            'coin_to_sell' => $coinToSell,
+            'value_to_sell' => $valueToSell,
+            'coin_to_buy' => $coinToBuy
+        ]);
+    }
+
+    /**
+     * Returns information about coin.
+     *
+     * @param string $coin
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getCoinInfo(string $coin): \stdClass
+    {
+        return $this->get('/api/coinInfo/' . $coin);
+    }
+
+    /**
+     * Returns block data at given height.
+     *
+     * @param int $height
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getBlock(int $height): \stdClass
+    {
+        return $this->get('/api/block/' . $height);
+    }
+
+    /**
+     * Returns transaction info
+     *
+     * @param string $hash
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getTransaction(string $hash): \stdClass
+    {
+        return $this->get('/api/transaction/' . $hash);
+    }
+
+    /**
+     * Returns amount of base coin (BIP or MNT) existing in the network. It counts block rewards, premine and relayed rewards.
+     *
+     * @param int $height
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getBaseCoinVolume(int $height): \stdClass
+    {
+        return $this->get('/api/bipVolume', ['height' => $height]);
+    }
+
+    /**
+     * Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
+     *
+     * @param string $publicKey
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getCandidate(string $publicKey): \stdClass
+    {
+        return $this->get('/api/candidate/' . $publicKey);
+    }
 }

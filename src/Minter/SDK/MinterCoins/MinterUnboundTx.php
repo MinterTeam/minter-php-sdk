@@ -16,7 +16,7 @@ class MinterUnboundTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 7;
+    const TYPE = 8;
 
     /**
      * Fee units

@@ -15,7 +15,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 8;
+    const TYPE = 9;
 
     /**
      * Fee units

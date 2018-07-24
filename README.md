@@ -16,6 +16,8 @@ composer require minter/minter-php-sdk
 
 ## Using MinterAPI
 
+You can get all valid responses and full documentation at [Minter Node Api](https://minter-go-node.readthedocs.io/en/latest/api.html)
+
 Create MinterAPI instance
 
 ```php
@@ -107,6 +109,79 @@ $api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 // result: {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
 ```
 
+### getStatus
+
+Returns node status info
+
+``
+getStatus(): \stdClass
+``
+
+### getValidators
+
+Returns list of active validators
+
+``
+getValidators(): \stdClass
+``
+
+### estimateCoinBuy
+
+Return estimate of buy coin transaction
+
+``
+estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
+``
+
+### estimateCoinSell
+
+Return estimate of sell coin transaction
+
+``
+estimateCoinBuy(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
+``
+
+### getCoinInfo
+
+Returns information about coin.
+
+``
+getCoinInfo(string $coin): \stdClass
+``
+
+### getBlock
+
+Returns block data at given height.
+
+``
+getBlock(int $height): \stdClass
+``
+
+### getTransaction
+
+Returns transaction info
+
+``
+getTransaction(string $hash): \stdClass
+``
+
+### getBaseCoinVolume
+
+Returns amount of base coin (BIP or MNT) existing in the network. It counts block rewards, premine and relayed rewards.
+
+``
+getBaseCoinVolume(int $height): \stdClass
+``
+
+### getCandidate
+
+Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
+
+``
+getCandidate(string $publicKey): \stdClass
+``
+
+
 ## Using MinterSDK
 
 ### Sign transaction
@@ -124,6 +199,7 @@ use Minter\SDK\MinterCoins\MinterSendCoinTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
         'coin' => 'MTN',
@@ -146,6 +222,7 @@ use Minter\SDK\MinterCoins\MinterSellCoinTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterSellCoinTx::TYPE,
     'data' => [
          'coinToSell' => 'MNT',
@@ -168,6 +245,7 @@ use Minter\SDK\MinterCoins\MinterBuyCoinTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterBuyCoinTx::TYPE,
     'data' => [
          'coinToBuy' => 'MNT',
@@ -190,6 +268,7 @@ use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterCreateCoinTx::TYPE,
     'data' => [
         'name' => 'TEST COIN',
@@ -214,6 +293,7 @@ use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterDeclareCandidacyTx::TYPE,
     'data' => [
         'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
@@ -237,6 +317,7 @@ use Minter\SDK\MinterCoins\MinterDelegateTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterDelegateTx::TYPE,
     'data' => [
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
@@ -259,6 +340,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterSetCandidateOnTx::TYPE,
     'data' => [
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
@@ -279,6 +361,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterSetCandidateOffTx::TYPE,
     'data' => [
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
@@ -299,6 +382,7 @@ use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterRedeemCheckTx::TYPE,
     'data' => [
         'check' => 'your check',
@@ -320,6 +404,7 @@ use Minter\SDK\MinterCoins\MinterUnboundTx;
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
+    'gasCoin' => 'MNT',
     'type' => MinterUnboundTx::TYPE,
     'data' => [
         'pubkey' => 'Mp....',

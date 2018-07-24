@@ -16,7 +16,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 5;
+    const TYPE = 6;
 
     /**
      * Fee units

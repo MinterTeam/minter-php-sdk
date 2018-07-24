@@ -43,6 +43,7 @@ class MinterTx
     protected $structure = [
         'nonce',
         'gasPrice',
+        'gasCoin',
         'type',
         'data',
         'payload',
@@ -300,8 +301,7 @@ class MinterTx
         $tx = $this->rlpToHex($tx);
 
         // pack data of transaction to hex string
-      //  $dataIndex = array_search('data', $this->structure);
-        $tx[3] = $this->rlpToHex($tx[3]);
+        $tx[4] = $this->rlpToHex($tx[4]);
 
         // encode transaction data
         return $this->encode($this->prepareResult($tx), true);
@@ -385,6 +385,11 @@ class MinterTx
             elseif($field === 'payload' || $field === 'serviceData') {
                 $result[$field] = Helper::pack2hex($tx[$key]);
             }
+            elseif($field === 'gasCoin') {
+                $result[$field] = MinterConverter::convertCoinName(
+                    Helper::pack2hex($tx[$key])
+                );
+            }
             else {
                 $result[$field] = hexdec($tx[$key]);
             }
@@ -420,6 +425,7 @@ class MinterTx
      */
     protected function txDataRlpEncode(array $tx): array
     {
+        $tx['gasCoin'] = MinterConverter::convertCoinName($tx['gasCoin']);
         $tx['data'] = $this->rlp->encode($tx['data']);
 
         return $tx;

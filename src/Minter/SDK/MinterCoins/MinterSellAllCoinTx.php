@@ -7,15 +7,15 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterBuyCoinTx
+ * Class MinterSellAllCoinTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
 {
     /**
      * Type
      */
-    const TYPE = 4;
+    const TYPE = 3;
 
     /**
      * Fee units
@@ -28,9 +28,8 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
      * @var array
      */
     public $data = [
-        'coinToBuy' => '',
-        'valueToBuy' => '',
         'coinToSell' => '',
+        'coinToBuy' => ''
     ];
 
     /**
@@ -42,13 +41,10 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Add nulls before symbol
-            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy']),
-
-            // Convert field from BIP to PIP
-            'valueToBuy' => MinterConverter::convertValue($this->data['valueToBuy'], 'pip'),
+            'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
 
             // Add nulls before symbol
-            'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell'])
+            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy'])
         ];
     }
 
@@ -62,13 +58,10 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Pack symbol
-            'coinToBuy' => Helper::pack2hex($txData[0]),
-
-            // Convert field from PIP to BIP
-            'valueToBuy' => MinterConverter::convertValue(Helper::hexDecode($txData[1]), 'bip'),
+            'coinToSell' => Helper::pack2hex($txData[0]),
 
             // Pack symbol
-            'coinToSell' => Helper::pack2hex($txData[2]),
+            'coinToBuy' => Helper::pack2hex($txData[1]),
         ];
     }
 }

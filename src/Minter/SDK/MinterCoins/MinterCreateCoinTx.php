@@ -15,7 +15,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 4;
+    const TYPE = 5;
 
     /**
      * Fee units

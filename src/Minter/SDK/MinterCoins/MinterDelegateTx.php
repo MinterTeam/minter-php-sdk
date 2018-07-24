@@ -16,7 +16,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 6;
+    const TYPE = 7;
 
     /**
      * Fee units
