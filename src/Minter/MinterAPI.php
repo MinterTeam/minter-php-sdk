@@ -48,7 +48,7 @@ class MinterAPI
     {
         $response = $this->get('/api/transactionCount/' . $address);
 
-        return $response->result + 1;
+        return $response->result->count + 1;
     }
 
     /**
