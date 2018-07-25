@@ -144,7 +144,7 @@ class MinterAPI
      */
     public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
     {
-        return $this->get('/api/estimateCoinBuy', [
+        return $this->get('/api/estimateCoinSell', [
             'coin_to_sell' => $coinToSell,
             'value_to_sell' => $valueToSell,
             'coin_to_buy' => $coinToBuy
