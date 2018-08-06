@@ -15,7 +15,7 @@ class MinterSetCandidateOnTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Type
      */
-    const TYPE = 11;
+    const TYPE = 10;
 
     /**
      * Fee units
