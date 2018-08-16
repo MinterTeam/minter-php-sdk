@@ -138,7 +138,7 @@ estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \std
 Return estimate of sell coin transaction
 
 ``
-estimateCoinBuy(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
+estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
 ``
 
 ### getCoinInfo
