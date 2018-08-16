@@ -5,6 +5,7 @@ namespace Minter\SDK;
 use BitWasp\BitcoinLib\BIP39\BIP39;
 use kornrunner\Keccak;
 use BIP\BIP44;
+use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 
 /**
@@ -56,19 +57,7 @@ class MinterWallet
      */
     public static function privateToPublic(string $privateKey): string
     {
-        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-
-        // convert key to binary
-        $privateKey = hex2bin($privateKey);
-
-        /** @var $publicKeyResource */
-        $publicKeyResource = null;
-        secp256k1_ec_pubkey_create($context, $publicKeyResource, $privateKey);
-
-        $publicKey = null;
-        secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
-
-        return MinterPrefix::PUBLIC_KEY . substr(bin2hex($publicKey), 2, 130);
+        return MinterPrefix::PUBLIC_KEY .  ECDSA::privateToPublic($privateKey);
     }
 
     /**

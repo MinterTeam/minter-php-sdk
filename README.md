@@ -6,13 +6,12 @@ This is a pure PHP SDK for working with <b>Minter</b> blockhain
 
 ## Installing
 
-Before using SDK you need to install secp256k1-php extension for PHP. 
-To install extension follow these [instructions](https://github.com/Bit-Wasp/secp256k1-php/blob/master/README.md).
-
-After that you can require SDK.
 ```bash
 composer require minter/minter-php-sdk
 ```
+
+For <b>fast sign and decoding</b> you need to install secp256k1-php extension for PHP
+To install extension follow these [instructions](https://github.com/Bit-Wasp/secp256k1-php/blob/master/README.md).
 
 ## Using MinterAPI
 

@@ -2,6 +2,8 @@
 
 namespace Minter\SDK;
 
+use Elliptic\EC;
+use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Web3p\RLP\RLP;
 
@@ -93,7 +95,7 @@ class MinterCheck
         $passphrase = hash('sha256', $this->passphrase);
 
         // create elliptic curve and sign
-        $signature = Helper::ecdsaSign($msgHash, $passphrase);
+        $signature = ECDSA::sign($msgHash, $passphrase);
 
         // define lock field
         $this->structure['lock'] = $this->formatLockFromSignature($signature);
@@ -103,7 +105,7 @@ class MinterCheck
             array_slice($this->structure, 0, 5)
         );
 
-        $this->structure = array_merge($this->structure, Helper::ecdsaSign($msgHashWithLock, $privateKey));
+        $this->structure = array_merge($this->structure, ECDSA::sign($msgHashWithLock, $privateKey));
 
         // rlp encode data and add Minter wallet prefix
         return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
@@ -128,7 +130,7 @@ class MinterCheck
 
         // get SHA 256 hash of password and create EC signature
         $passphrase = hash('sha256', $this->passphrase);
-        $signature = Helper::ecdsaSign($addressHash, $passphrase);
+        $signature = ECDSA::sign($addressHash, $passphrase);
 
         // return formatted proof
         return bin2hex(

@@ -4,6 +4,10 @@ namespace Minter\Library;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+/**
+ * Trait Http
+ * @package Minter\Library
+ */
 Trait Http
 {
     /**

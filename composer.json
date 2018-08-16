@@ -12,7 +12,8 @@
     "guzzlehttp/guzzle": "6.3",
     "minter/minter-php-bip-44": "dev-master",
     "bitwasp/bitcoin-lib": "1.0.4",
-    "bitwasp/secp256k1-php": "0.1.3"
+    "bitwasp/secp256k1-php": "0.1.3",
+    "simplito/elliptic-php": "1.0.3"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

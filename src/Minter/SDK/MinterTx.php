@@ -2,6 +2,7 @@
 
 namespace Minter\SDK;
 
+use Minter\Library\ECDSA;
 use Web3p\RLP\RLP;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
@@ -141,7 +142,7 @@ class MinterTx
         );
 
         // prepare special V R S bytes and add them to transaction
-        $tx = array_merge($tx, Helper::ecdsaSign($keccak, $privateKey));
+        $tx = array_merge($tx, ECDSA::sign($keccak, $privateKey));
 
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
@@ -167,39 +168,8 @@ class MinterTx
             $this->rlp->encode($shortTx)->toString('hex')
         );
 
-        // convert message to binary
-        $msg = hex2bin($msg);
-
-        // define the recovery param
-        $recoveryParam = $tx['v'] === Helper::V_BITS ? 0 : 1;
-
-        // define the signature
-        $signature = [
-            'r' => hex2bin(str_repeat('0', 64 - strlen($tx['r'])) . $tx['r']),
-            's' => hex2bin(str_repeat('0', 64 - strlen($tx['s'])) . $tx['s']),
-            'recoveryParam' => $recoveryParam
-        ];
-
-        // create context for curve
-        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-
-        /** @var resource $signatureSource */
-        $signatureResource = null;
-        secp256k1_ecdsa_recoverable_signature_parse_compact(
-            $context,
-            $signatureResource,
-            $signature['r'] . $signature['s'],
-            $signature['recoveryParam']
-        );
-
-        /** @var resource $publicKeyResource */
-        $publicKeyResource = null;
-        secp256k1_ecdsa_recover($context, $publicKeyResource, $signatureResource, $msg);
-
-        $publicKey = '';
-        secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
-
-        $publicKey = substr(bin2hex($publicKey), 2, 130);
+        // recover public key
+        $publicKey = ECDSA::recover($msg, $tx['r'], $tx['s'], $tx['v']);
 
         return MinterPrefix::PUBLIC_KEY . $publicKey;
     }
