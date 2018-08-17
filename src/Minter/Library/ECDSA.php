@@ -26,7 +26,7 @@ class ECDSA
     public static function sign(string $message, string $privateKey): array
     {
         if(function_exists('secp256k1_context_create')) {
-            return self::signViaExtensions($message, $privateKey);
+            return self::signViaExtension($message, $privateKey);
         }
 
         return self::signViaPurePHP($message, $privateKey);
@@ -61,45 +61,64 @@ class ECDSA
      */
     public static function privateToPublic(string $privateKey): string
     {
-        $publicKey = null;
-
         if(function_exists('secp256k1_context_create')) {
-            $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-
-            // convert key to binary
-            $privateKey = hex2bin($privateKey);
-
-            /** @var $publicKeyResource */
-            $publicKeyResource = null;
-            secp256k1_ec_pubkey_create($context, $publicKeyResource, $privateKey);
-
-            $publicKey = null;
-            secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
-
-            $publicKey = bin2hex($publicKey);
+            return self::privateToPublicViaExtension($privateKey);
         }
-        else {
-            // create elliptic curve and get public key
-            $ellipticCurve = new EC('secp256k1');
-            $keyPair = new KeyPair($ellipticCurve, [
-                'priv' => $privateKey,
-                'privEnc' => 'hex'
-            ]);
 
-            $publicKey = $keyPair->getPublic('hex');
-        }
+        return self::privateToPublicViaPurePHP($privateKey);
+    }
+
+    /**
+     * Convert private key to public key using PHP extension
+     *
+     * @param string $privateKey
+     * @return string
+     */
+    public static function privateToPublicViaExtension(string $privateKey): string
+    {
+        $context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
+
+        // convert key to binary
+        $privateKey = hex2bin($privateKey);
+
+        /** @var $publicKeyResource */
+        $publicKeyResource = null;
+        secp256k1_ec_pubkey_create($context, $publicKeyResource, $privateKey);
+
+        $publicKey = null;
+        secp256k1_ec_pubkey_serialize($context, $publicKey, $publicKeyResource, false);
+
+        return substr(bin2hex($publicKey), 2, 130);
+    }
+
+    /**
+     * Convert private key to public key using pure PHP
+     *
+     * @param string $privateKey
+     * @return string
+     */
+    public static function privateToPublicViaPurePHP(string $privateKey): string
+    {
+        // create elliptic curve and get public key
+        $ellipticCurve = new EC('secp256k1');
+        $keyPair = new KeyPair($ellipticCurve, [
+            'priv' => $privateKey,
+            'privEnc' => 'hex'
+        ]);
+
+        $publicKey = $keyPair->getPublic('hex');
 
         return substr($publicKey, 2, 130);
     }
 
     /**
-     * Sign via PHP extension
+     * Sign using PHP extension
      *
-     * @param $message
-     * @param $privateKey
+     * @param string $message
+     * @param string $privateKey
      * @return array
      */
-    public static function signViaExtensions($message, $privateKey): array
+    public static function signViaExtension(string $message, string $privateKey): array
     {
         // convert params to binary
         $privateKey = hex2bin($privateKey);
@@ -127,16 +146,17 @@ class ECDSA
     /**
      * Sign using pure PHP library
      *
-     * @param $message
-     * @param $privateKey
+     * @param string $message
+     * @param string $privateKey
      * @return array
      */
-    public static function signViaPurePHP($message, $privateKey): array
+    public static function signViaPurePHP(string $message, string $privateKey): array
     {
         // create elliptic curve and sign
         $ellipticCurve = new EC('secp256k1');
         $signature = $ellipticCurve->sign($message, $privateKey, 'hex', ['canonical' => true]);
 
+        // convert to hex
         $r = $signature->r->toString('hex');
         $s = $signature->s->toString('hex');
         $recovery = $signature->recoveryParam;
@@ -145,7 +165,7 @@ class ECDSA
     }
 
     /**
-     * Recover public key via PHP extension
+     * Recover public key using PHP extension
      *
      * @param string $msg
      * @param $r
@@ -188,7 +208,7 @@ class ECDSA
     }
 
     /**
-     * Recover public key via pure PHP library
+     * Recover public key using pure PHP library
      *
      * @param string $msg
      * @param string $r
@@ -209,12 +229,13 @@ class ECDSA
         $ellipticCurve = new EC('secp256k1');
         $point = $ellipticCurve->recoverPubKey($msg, $signature, $recovery, 'hex');
 
-        $keyPair = new KeyPair($ellipticCurve, [
+        // create key pair from point
+        $key = new KeyPair($ellipticCurve, [
             'pub' => $point,
             'pubEnc' => 'hex'
         ]);
 
-        return substr($keyPair->getPublic('hex'), 2, 130);
+        return substr($key->getPublic('hex'), 2, 130);
     }
 
     /**
