@@ -15,14 +15,14 @@ Trait Http
      *
      * @Client
      */
-    private $client;
+    protected $client;
 
     /**
      * set base api url
      *
      * @param string $url
      */
-    private function setApiUrl(string $url) : void {
+    protected function setApiUrl(string $url) : void {
 
         $this->client = new Client([
             'base_uri' => $url
@@ -37,7 +37,7 @@ Trait Http
      * @return mixed
      * @throws \Exception
      */
-    private function get(string $url, array $parameters = null)
+    protected function get(string $url, array $parameters = null)
     {
         try {
 
@@ -60,7 +60,7 @@ Trait Http
      * @return mixed
      * @throws \Exception
      */
-    private function post(string $url, array $parameters = [])
+    protected function post(string $url, array $parameters = [])
     {
         try {
 
