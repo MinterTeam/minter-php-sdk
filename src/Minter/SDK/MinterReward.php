@@ -11,17 +11,17 @@ class MinterReward
     /**
      * Total blocks for reward
      */
-    const TOTAL_BLOCKS_COUNT = 44512766;
+    const TOTAL_BLOCKS_COUNT = 43702612;
 
     /**
-     * Total blocks for reward with extra 1ns
+     * First reward
      */
-    const TOTAL_BLOCKS_COUNT_WITH_PLUS = 44512784;
+    CONST FIRST_REWARD = 333;
 
-    /**
-     * Max reward
+    /*
+     * Last reward
      */
-    CONST MAX_REWARD = 111;
+    CONST LAST_REWARD = 68;
 
     /**
      * Get reward by the block number in PIP
@@ -36,34 +36,29 @@ class MinterReward
             throw new \InvalidArgumentException('Block number should be greater than 0');
         }
 
-        if($blockNumber > self::TOTAL_BLOCKS_COUNT_WITH_PLUS) {
+        if($blockNumber > self::TOTAL_BLOCKS_COUNT) {
             return MinterConverter::convertValue('0', 'pip');
         }
 
-        if($blockNumber > self::TOTAL_BLOCKS_COUNT) {
-            return MinterConverter::convertValue('1', 'pip');
+        if($blockNumber === self::TOTAL_BLOCKS_COUNT) {
+            return MinterConverter::convertValue(self::LAST_REWARD, 'pip');
         }
 
         $reward = self::formula($blockNumber);
-        $reward = $reward > self::MAX_REWARD ? self::MAX_REWARD : $reward;
 
-        return MinterConverter::convertValue((string)$reward, 'pip');
+        return MinterConverter::convertValue($reward, 'pip');
     }
 
     /**
      * Calculate reward by formula
      *
      * @param int $blockNumber
-     * @return int
+     * @return string
      */
-    protected static function formula(int $blockNumber): int
+    protected static function formula(int $blockNumber): string
     {
-        $reward = (self::MAX_REWARD * (self::TOTAL_BLOCKS_COUNT - $blockNumber)) / self::TOTAL_BLOCKS_COUNT + 1;
+        $reward = self::FIRST_REWARD - ($blockNumber / 200000);
 
-        if($blockNumber <= self::TOTAL_BLOCKS_COUNT * 50 / 100) {
-            $reward = $reward * 15 / 10;
-        }
-
-        return $reward;
+        return ceil($reward);
     }
 }
