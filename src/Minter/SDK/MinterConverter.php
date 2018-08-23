@@ -25,7 +25,7 @@ class MinterConverter
     public static function convertValue(string $num, string $to)
     {
         if ($to === 'pip') {
-            return bcmul(self::DEFAULT, $num);
+            return bcmul(self::DEFAULT, $num, 0);
         } else if ($to === 'bip') {
             return Helper::niceNumber(bcdiv($num, self::DEFAULT, 25));
         }
