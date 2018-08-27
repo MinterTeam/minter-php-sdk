@@ -185,11 +185,11 @@ class MinterTx
             throw new \Exception('You need to sign transaction before');
         }
 
-        // prepare transaction
-        $tx = hex2bin(dechex(strlen($this->txSigned) / 2) . $this->txSigned);
+        // create SHA256 of tx
+        $tx = hash('sha256', hex2bin($this->txSigned));
 
-        // make RIPEMD160 hash of transaction
-        return MinterPrefix::TRANSACTION . hash('ripemd160', $tx);
+        // return first 40 symbols
+        return MinterPrefix::TRANSACTION . substr($tx, 0, 40);
     }
 
     /**
