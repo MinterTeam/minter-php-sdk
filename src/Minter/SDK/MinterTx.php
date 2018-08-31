@@ -2,8 +2,8 @@
 
 namespace Minter\SDK;
 
-use Minter\Library\ECDSA;
 use Web3p\RLP\RLP;
+use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
     MinterDelegateTx,
@@ -62,7 +62,7 @@ class MinterTx
     /**
      * Fee in PIP
      */
-    const PAYLOAD_COMMISSION = 500;
+    const PAYLOAD_COMMISSION = 2;
 
     /**
      * All gas price multiplied by FEE DEFAULT (PIP)
@@ -247,15 +247,15 @@ class MinterTx
         }
 
         // multiplied gas price
-        $gasPrice = bcmul($gas, self::FEE_DEFAULT_MULTIPLIER);
+        $gasPrice = bcmul($gas, self::FEE_DEFAULT_MULTIPLIER, 0);
 
         // commission for payload and serviceData bytes
         $commission = bcadd(
-            (strlen($this->payload) / 2) * self::PAYLOAD_COMMISSION,
-            (strlen($this->serviceData) / 2) * self::PAYLOAD_COMMISSION
+            strlen($this->payload) * bcmul(self::PAYLOAD_COMMISSION, self::FEE_DEFAULT_MULTIPLIER, 0),
+            strlen($this->serviceData) * bcmul(self::PAYLOAD_COMMISSION, self::FEE_DEFAULT_MULTIPLIER, 0)
         );
 
-        return bcadd($gasPrice, $commission);
+        return bcadd($gasPrice, $commission, 0);
     }
 
     /**
