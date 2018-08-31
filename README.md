@@ -180,6 +180,14 @@ Returns candidate’s info by provided public_key. It will respond with 404 code
 getCandidate(string $publicKey): \stdClass
 ``
 
+### getCandidates
+
+Returns list of candidates
+
+``
+getCandidates(): \stdClass
+``
+
 
 ## Using MinterSDK
 

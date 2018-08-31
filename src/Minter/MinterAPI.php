@@ -210,4 +210,15 @@ class MinterAPI
     {
         return $this->get('/api/candidate/' . $publicKey);
     }
+
+    /**
+     * Returns list of candidates
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getCandidates(): \stdClass
+    {
+        return $this->get('/api/candidates');
+    }
 }
