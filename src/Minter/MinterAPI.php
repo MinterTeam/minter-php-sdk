@@ -173,13 +173,7 @@ class MinterAPI
      */
     public function getBlock(int $height, $withEvents = false): \stdClass
     {
-        $uri = '/api/block/' . $height;
-
-        if ($withEvents === true) {
-            $uri .= '?withEvents=true';
-        }
-
-        return $this->get($uri);
+        return $this->get('/api/block/' . $height . ($withEvents ? '?withEvents=true' : ''));
     }
 
     /**
