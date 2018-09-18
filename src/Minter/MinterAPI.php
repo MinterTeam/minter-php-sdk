@@ -167,12 +167,13 @@ class MinterAPI
      * Returns block data at given height.
      *
      * @param int $height
+     * @param bool $withEvents
      * @return \stdClass
      * @throws \Exception
      */
-    public function getBlock(int $height): \stdClass
+    public function getBlock(int $height, $withEvents = false): \stdClass
     {
-        return $this->get('/api/block/' . $height);
+        return $this->get('/api/block/' . $height . ($withEvents ? '?withEvents=true' : ''));
     }
 
     /**
