@@ -2,7 +2,6 @@
 
 namespace Minter\SDK;
 
-use Elliptic\EC;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Web3p\RLP\RLP;
@@ -98,7 +97,7 @@ class MinterCheck
         $signature = ECDSA::sign($msgHash, $passphrase);
 
         // define lock field
-        $this->structure['lock'] = $this->formatLockFromSignature($signature);
+        $this->structure['lock'] = hex2bin($this->formatLockFromSignature($signature));
 
         // create message hash with lock field
         $msgHashWithLock = $this->serialize(
@@ -109,7 +108,6 @@ class MinterCheck
 
         // rlp encode data and add Minter wallet prefix
         return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
-
     }
 
     /**
@@ -133,9 +131,7 @@ class MinterCheck
         $signature = ECDSA::sign($addressHash, $passphrase);
 
         // return formatted proof
-        return bin2hex(
-            $this->formatLockFromSignature($signature)
-        );
+        return $this->formatLockFromSignature($signature);
     }
 
     /**
@@ -165,7 +161,7 @@ class MinterCheck
     protected function encode(array $check): array
     {
         return [
-            'nonce' => $check['nonce'],
+            'nonce' => hexdec($check['nonce']),
 
             'dueBlock' => $check['dueBlock'],
 
@@ -215,8 +211,8 @@ class MinterCheck
      */
     protected function formatLockFromSignature(array $signature): string
     {
-        $recovery = $signature['v'] === 1 ? '01' : '00';
+        $recovery = $signature['v'] === ECDSA::V_BITS ? '00' : '01';
 
-        return $signature['r'] . $signature['s'] . hex2bin($recovery);
+        return bin2hex($signature['r']) . bin2hex($signature['s']) . $recovery;
     }
 }
