@@ -40,13 +40,11 @@ Trait Http
     protected function get(string $url, array $parameters = null)
     {
         try {
-
             $response = $this->client->request('GET', $url, [
                 'query' => $parameters
             ])->getBody();
-
         } catch (RequestException $exception) {
-            throw $exception;
+            $response = $exception->getResponse()->getBody()->getContents();
         }
 
         return json_decode($response);
@@ -63,13 +61,11 @@ Trait Http
     protected function post(string $url, array $parameters = [])
     {
         try {
-
             $response = $this->client->request('POST', $url, [
                 'json' => $parameters
             ])->getBody();
-
         } catch (RequestException $exception) {
-            throw $exception;
+            $response = $exception->getResponse()->getBody()->getContents();
         }
 
         return json_decode($response);
