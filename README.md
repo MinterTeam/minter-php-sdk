@@ -4,6 +4,38 @@
 
 This is a pure PHP SDK for working with <b>Minter</b> blockhain
 
+* [Installation](#installing)
+* [Minter Api](#using-minterapi)
+	- [getBalance](#getbalance)
+	- [getNonce](#getnonce)
+	- [send](#send)
+	- [getTransactionsFrom](#gettransactionsfrom)
+	- [getTransactionsTo](#gettransactionsto)
+	- [getStatus](#getstatus)
+	- [getValidators](#getvalidators)
+	- [estimateCoinBuy](#estimatecoinbuy)
+	- [estimateCoinSell](#estimatecoinsell)
+	- [getCoinInfo](#getcoininfo)
+	- [getBlock](#getblock)
+	- [getTransaction](#gettransaction)
+	- [getBaseCoinVolume](#getbasecoinvolume)
+	- [getCandidate](#getcandidate)
+	- [getCandidates](#getcandidates)
+	
+* [Minter SDK](#using-minterapi)
+	- [SendCoin](#example-5)
+	- [SellCoinTx](#example-6)
+	- [SellAllCoin](#example-7)
+	- [BuyCoinTx](#example-8)
+	- [CreateCoin](#example-9)
+	- [DeclareCandidacy](#example-10)
+	- [Delegate](#example-11)
+	- [SetCandidateOn](#example-12)
+	- [SetCandidateOff](#example-13)
+	- [RedeemCheck](#example-14)
+	- [Decode Transaction](#decode-transaction)
+	- [Minter Check](#create-minter-check)
+
 ## Installing
 
 You need to ensure that you have installed <b>BCmath</b> extension for PHP.
@@ -219,7 +251,8 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>SellCoinTx</b> transaction
+###### Example
+* Sign the <b>SellCoin</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
@@ -242,6 +275,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>SellAllCoin</b> transaction
 
 ```php
@@ -264,7 +298,8 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Sign the <b>BuyCoinTx</b> transaction
+###### Example
+* Sign the <b>BuyCoin</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
@@ -287,6 +322,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>CreateCoin</b> transaction
 
 ```php
@@ -312,6 +348,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>DeclareCandidacy</b> transaction
 
 ```php
@@ -336,6 +373,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>Delegate</b> transaction
 
 ```php
@@ -359,6 +397,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>SetCandidateOn</b> transaction
 
 ```php
@@ -380,6 +419,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>SetCandidateOff</b> transaction
 
 ```php
@@ -401,6 +441,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>RedeemCheck</b> transaction
 
 ```php
@@ -423,6 +464,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
 * Sign the <b>Unbound</b> transaction
 
 ```php
