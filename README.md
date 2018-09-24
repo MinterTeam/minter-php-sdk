@@ -6,6 +6,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockhain
 
 ## Installing
 
+You need to ensure that you have installed <b>BCmath</b> extension for PHP.
+
 ```bash
 composer require minter/minter-php-sdk
 ```
@@ -232,6 +234,28 @@ $tx = new MinterTx([
          'coinToSell' => 'MNT',
          'valueToSell' => '1',
          'coinToBuy' => 'TEST'
+    ],
+    'payload' => '',
+    'serviceData' => ''
+]);
+
+$tx->sign('your private key')
+```
+
+* Sign the <b>SellAllCoin</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'gasCoin' => 'MNT',
+    'type' => MinterSellAllCoinTx::TYPE,
+    'data' => [
+         'coinToSell' => 'TEST',
+         'coinToBuy' => 'MNT'
     ],
     'payload' => '',
     'serviceData' => ''
