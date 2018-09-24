@@ -149,10 +149,10 @@ getCoinInfo(string $coin): \stdClass
 
 ### getBlock
 
-Returns block data at given height.
+Returns block data at given height. Set $withEvents to "true" to include the "events" in block data.
 
 ``
-getBlock(int $height): \stdClass
+getBlock(int $height, $withEvents = false): \stdClass
 ``
 
 ### getTransaction
