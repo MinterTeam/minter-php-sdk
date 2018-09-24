@@ -44,7 +44,7 @@ Trait Http
                 'query' => $parameters
             ])->getBody();
         } catch (RequestException $exception) {
-            $response = $exception->getResponse()->getBody()->getContents();
+            throw $exception;
         }
 
         return json_decode($response);
@@ -65,7 +65,7 @@ Trait Http
                 'json' => $parameters
             ])->getBody();
         } catch (RequestException $exception) {
-            $response = $exception->getResponse()->getBody()->getContents();
+            throw $exception;
         }
 
         return json_decode($response);
