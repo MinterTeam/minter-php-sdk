@@ -2,6 +2,7 @@
 
 namespace Minter\SDK;
 
+use InvalidArgumentException;
 use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
@@ -40,9 +41,8 @@ class MinterTx
         'data',
         'payload',
         'serviceData',
-        'v',
-        'r',
-        's'
+        'signatureType',
+        'signatureData'
     ];
 
     /**
@@ -59,6 +59,16 @@ class MinterTx
      * All gas price multiplied by FEE DEFAULT (PIP)
      */
     const FEE_DEFAULT_MULTIPLIER = 1000000000000000;
+
+    /**
+     * Type of single signature for the transaction
+     */
+    const SIGNATURE_SINGLE_TYPE = 1;
+
+    /**
+     * Type of multi signature for the transaction
+     */
+    const SIGNATURE_MULTI_TYPE = 2;
 
     /**
      * MinterTx constructor.
@@ -121,7 +131,7 @@ class MinterTx
     public function sign(string $privateKey): string
     {
         if(!is_array($this->tx)) {
-            throw new \Exception('Undefined tx');
+            throw new \Exception('Undefined transaction');
         }
 
         // encode data array to RPL
@@ -133,7 +143,9 @@ class MinterTx
         );
 
         // prepare special V R S bytes and add them to transaction
-        $tx = array_merge($tx, ECDSA::sign($keccak, $privateKey));
+        $tx['signatureData'] = $this->rlp->encode(
+            ECDSA::sign($keccak, $privateKey)
+        );
 
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
@@ -150,7 +162,7 @@ class MinterTx
     public function recoverPublicKey(array $tx): string
     {
         // prepare short transaction
-        $shortTx = array_diff_key($tx, ['v' => '', 'r' => '', 's' => '']);
+        $shortTx = array_diff_key($tx, ['signatureData' => '']);
         $shortTx = Helper::hex2binRecursive($shortTx);
         $shortTx = $this->txDataRlpEncode($shortTx);
 
@@ -160,7 +172,8 @@ class MinterTx
         );
 
         // recover public key
-        $publicKey = ECDSA::recover($msg, $tx['r'], $tx['s'], $tx['v']);
+        $signature = $tx['signatureData'];
+        $publicKey = ECDSA::recover($msg, $signature['r'], $signature['s'], $signature['v']);
 
         return MinterPrefix::PUBLIC_KEY . $publicKey;
     }
@@ -267,6 +280,7 @@ class MinterTx
 
         // pack data of transaction to hex string
         $tx[4] = $this->rlpToHex($tx[4]);
+        $tx[8] = $this->rlpToHex($tx[8]);
 
         // encode transaction data
         return $this->encode($this->prepareResult($tx), true);
@@ -282,6 +296,8 @@ class MinterTx
      */
     protected function encode(array $tx, bool $isHexFormat = false): array
     {
+        $this->validateTx($tx);
+
         switch ($tx['type']) {
             case MinterSendCoinTx::TYPE:
                 $dataTx = new MinterSendCoinTx($tx['data'], $isHexFormat);
@@ -348,7 +364,7 @@ class MinterTx
     {
         $result = [];
         foreach($this->structure as $key => $field) {
-            if($field === 'r' || $field === 's' || $field === 'data') {
+            if($field === 'data') {
                 $result[$field] = $tx[$key];
             }
             elseif($field === 'payload' || $field === 'serviceData') {
@@ -358,6 +374,13 @@ class MinterTx
                 $result[$field] = MinterConverter::convertCoinName(
                     Helper::pack2hex($tx[$key])
                 );
+            }
+            elseif($field === 'signatureData') {
+                $result[$field] = [
+                    'v' => hexdec($tx[$key][0]),
+                    'r' => $tx[$key][1],
+                    's' => $tx[$key][2]
+                ];
             }
             else {
                 $result[$field] = hexdec($tx[$key]);
@@ -398,5 +421,23 @@ class MinterTx
         $tx['data'] = $this->rlp->encode($tx['data']);
 
         return $tx;
+    }
+
+    /**
+     * Validate transaction structure
+     *
+     * @param array $tx
+     */
+    protected function validateTx(array $tx): void
+    {
+        // get keys of tx and prepare structure keys
+        $length = count($this->structure) - 1;
+        $tx = array_slice(array_keys($tx), 0, $length);
+        $structure = array_slice($this->structure, 0, $length);
+
+        // compare
+        if(!empty(array_diff_key($tx, $structure))) {
+            throw new InvalidArgumentException('Invalid transaction structure params');
+        }
     }
 }

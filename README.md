@@ -245,7 +245,8 @@ $tx = new MinterTx([
         'value' => '10'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -269,7 +270,8 @@ $tx = new MinterTx([
          'coinToBuy' => 'TEST'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -292,7 +294,8 @@ $tx = new MinterTx([
          'coinToBuy' => 'MNT'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -316,7 +319,8 @@ $tx = new MinterTx([
          'coinToSell' => 'TEST'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -342,7 +346,8 @@ $tx = new MinterTx([
         'crr' => 10
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -367,7 +372,8 @@ $tx = new MinterTx([
         'stake' => '5'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -391,7 +397,8 @@ $tx = new MinterTx([
         'stake' => '5'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -413,7 +420,8 @@ $tx = new MinterTx([
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -435,7 +443,8 @@ $tx = new MinterTx([
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -458,7 +467,8 @@ $tx = new MinterTx([
         'proof' => 'created by MinterCheck proof'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')
@@ -482,7 +492,8 @@ $tx = new MinterTx([
         'value' => '1'
     ],
     'payload' => '',
-    'serviceData' => ''
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
 ]);
 
 $tx->sign('your private key')

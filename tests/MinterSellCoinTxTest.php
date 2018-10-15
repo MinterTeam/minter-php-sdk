@@ -13,12 +13,12 @@ final class MinterSellCoinTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '4c9a495b52aeaa839e53c3eb2f2d6650d892277bde58a24bb6a396f2bb31aa37';
+    const PRIVATE_KEY = '07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mxfd250353d712dc19abf4c5453050b92ca7193285';
+    const MINTER_ADDRESS = 'Mx31e61a05adbd13c6b625262704bc305bf7725026';
 
     /**
      * Predefined data
@@ -32,7 +32,7 @@ final class MinterSellCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f87401018a4d4e540000000000000002a0df8a4d4e5400000000000000880de0b6b3a76400008a5445535400000000000080801ba068bced880aa12eab4a553637f498af0c760e85a175f0766abbd98515d081c9f8a0045c0476c55609529220c6305bd3c011b15d6104bea936402437625659a1d5fc';
+    const VALID_SIGNATURE = 'f87901018a4d4e540000000000000002a0df8a4d4e5400000000000000880de0b6b3a76400008a54455354000000000000808001b845f8431ba0c107aba36fed3695a13a0c847008c2e2845897f99f1600f9143821a4189e5099a04a757023d0bb11d6bbdaaff4bec2fe92265f550c520d44af560466126095ba68';
 
     /**
      * Test to decode data for MinterSendCoinTx
@@ -57,7 +57,8 @@ final class MinterSellCoinTxTest extends TestCase
             'type' => MinterSellCoinTx::TYPE,
             'data' => self::DATA,
             'payload' => '',
-            'serviceData' => ''
+            'serviceData' => '',
+            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
         ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);

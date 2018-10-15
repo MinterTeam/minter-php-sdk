@@ -25,7 +25,7 @@ final class MinterSetCandidateOffTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f87601018a4d4e54000000000000000ba2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a4380801ba06e7c31b9354ee66187de39c9089b6d94053a86ce918de9d15d4eb153b41f8020a054659a4beb46576e10fc04dd34a85fb0bb0b56a3ed75fab023de9f74988c6988';
+    const VALID_SIGNATURE = 'f87b01018a4d4e54000000000000000ba2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba00ec72ffccb429fff30108216641d413f4e9b07de839146912f9ec1b28c98d0b8a022b5e68a830aad449be5fbcf295f99577b7b2423ee49c956570c3d0b48a2c1c4';
 
     /**
      * Test to decode data for MinterSetCandidateOffTx
@@ -49,7 +49,8 @@ final class MinterSetCandidateOffTxTest extends TestCase
             'type' => MinterSetCandidateOffTx::TYPE,
             'data' => self::DATA,
             'payload' => '',
-            'serviceData' => ''
+            'serviceData' => '',
+            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
         ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
