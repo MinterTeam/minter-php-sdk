@@ -55,7 +55,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             ),
 
             // Define commission field
-            'commission' => $this->data['commission'],
+            'commission' => $this->data['commission'] === 0 ? '' : $this->data['commission'],
 
             // Convert coin name
             'coin' => MinterConverter::convertCoinName($this->data['coin']),

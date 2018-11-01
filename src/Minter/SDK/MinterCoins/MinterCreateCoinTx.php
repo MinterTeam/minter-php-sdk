@@ -56,7 +56,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'initialReserve' => MinterConverter::convertValue($this->data['initialReserve'], 'pip'),
 
             // Define crr field
-            'crr' => $this->data['crr']
+            'crr' => $this->data['crr'] === 0 ? '' : $this->data['crr']
         ];
     }
 
