@@ -18,14 +18,16 @@ Trait Http
     protected $client;
 
     /**
-     * set base api url
+     * Set base API url.
      *
      * @param string $url
      */
-    protected function setApiUrl(string $url) : void {
-
+    protected function setApiUrl(string $url): void
+    {
         $this->client = new Client([
-            'base_uri' => $url
+            'base_uri' => $url,
+            'connect_timeout' => 15.0,
+            'timeout' => 30.0,
         ]);
     }
 
