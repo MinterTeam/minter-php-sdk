@@ -2,7 +2,7 @@
 
 ## About
 
-This is a pure PHP SDK for working with <b>Minter</b> blockhain
+This is a pure PHP SDK for working with <b>Minter</b> blockchain
 
 * [Installation](#installing)
 * [Minter Api](#using-minterapi)
@@ -38,8 +38,6 @@ This is a pure PHP SDK for working with <b>Minter</b> blockhain
 
 ## Installing
 
-You need to ensure that you have installed <b>BCmath</b> extension for PHP.
-
 ```bash
 composer require minter/minter-php-sdk
 ```
@@ -53,7 +51,7 @@ Create MinterAPI instance
 ```php
 use Minter\MinterAPI;
 
-$nodeUrl = 'http://156.123.34.5:8841'; // example of a node url
+$nodeUrl = 'https://minter-node-1.testnet.minter.network:8841'; // example of a node url
 
 $api = new MinterAPI($nodeUrl);
 ```
@@ -109,7 +107,7 @@ $api->send('f873010101aae98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58
 
 ### getTransactionsFrom
 
-Returns list of outgoing transactions of an address
+Returns list of outgoing transactions of an address.
 
 ``
 getTransactionsFrom(string $minterAddress): \stdClass
@@ -125,7 +123,7 @@ $api->getTransactionsFrom('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
 ### getTransactionsTo
 
-Returns list of incoming transactions of an address
+Returns list of incoming transactions of an address.
 
 ``
 getTransactionsTo(string $minterAddress): \stdClass
@@ -141,7 +139,7 @@ $api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
 ### getStatus
 
-Returns node status info
+Returns node status info.
 
 ``
 getStatus(): \stdClass
@@ -149,7 +147,7 @@ getStatus(): \stdClass
 
 ### getValidators
 
-Returns list of active validators
+Returns list of active validators.
 
 ``
 getValidators(): \stdClass
@@ -157,7 +155,7 @@ getValidators(): \stdClass
 
 ### estimateCoinBuy
 
-Return estimate of buy coin transaction
+Return estimate of buy coin transaction.
 
 ``
 estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
@@ -165,7 +163,7 @@ estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \std
 
 ### estimateCoinSell
 
-Return estimate of sell coin transaction
+Return estimate of sell coin transaction.
 
 ``
 estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
@@ -189,7 +187,7 @@ getBlock(int $height, $withEvents = false): \stdClass
 
 ### getTransaction
 
-Returns transaction info
+Returns transaction info.
 
 ``
 getTransaction(string $hash): \stdClass
@@ -213,7 +211,7 @@ getCandidate(string $publicKey): \stdClass
 
 ### getCandidates
 
-Returns list of candidates
+Returns list of candidates.
 
 ``
 getCandidates(): \stdClass
@@ -224,7 +222,7 @@ getCandidates(): \stdClass
 
 ### Sign transaction
 
-Returns a signed tx
+Returns a signed tx.
 
 ###### Example
 
@@ -529,7 +527,7 @@ $hash = $tx->getHash();
 
 ### Decode transaction
 
-Returns an array with transaction data
+Returns an array with transaction data.
 
 ###### Example
 
