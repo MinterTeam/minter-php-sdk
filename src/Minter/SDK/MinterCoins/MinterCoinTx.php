@@ -62,6 +62,16 @@ abstract class MinterCoinTx implements MinterTxInterface
     }
 
     /**
+     * Get transaction data fee
+     *
+     * @return int
+     */
+    public function getFee()
+    {
+        return static::COMMISSION;
+    }
+
+    /**
      * Prepare data tx for signing
      *
      * @return array

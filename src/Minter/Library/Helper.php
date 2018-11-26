@@ -122,4 +122,21 @@ class Helper
 
         return Keccak::hash($binaryTx, 256);
     }
+
+    /**
+     * Convert RLP array to hex array
+     *
+     * @param array $rlp
+     * @return array
+     */
+    public static function rlpArrayToHexArray(array $rlp): array
+    {
+        return array_map(function($item) {
+            if(!is_array($item)) {
+                return $item->toString('hex');
+            }
+
+            return self::rlpArrayToHexArray($item);
+        }, $rlp);
+    }
 }

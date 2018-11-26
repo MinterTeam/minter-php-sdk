@@ -33,6 +33,9 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [SetCandidateOn](#example-12)
 	- [SetCandidateOff](#example-13)
 	- [RedeemCheck](#example-14)
+	- [Unbound](#example-15)
+	- [Get fee of transaction](#get-fee-of-transaction)
+	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#create-minter-check)
 
@@ -497,14 +500,19 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-* Calculate fee of transaction
+### Get fee of transaction
+
+* Calculate fee of transaction. You can get fee AFTER signing or decoding transaction.
 ```php
 use Minter\SDK\MinterTx;
 
 $tx = new MinterTx([....]);
+$sign = $tx->sign('your private key');
 
 $tx->getFee();
 ```
+
+### Get hash of transaction
 
 * Get hash of encoded transaction
 ```php

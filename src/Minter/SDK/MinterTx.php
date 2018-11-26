@@ -3,11 +3,12 @@
 namespace Minter\SDK;
 
 use InvalidArgumentException;
+use Exception;
 use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
-    MinterDelegateTx, MinterRedeemCheckTx, MinterSellAllCoinTx, MinterSetCandidateOffTx, MinterSetCandidateOnTx, MinterCreateCoinTx, MinterDeclareCandidacyTx, MinterSendCoinTx, MinterUnboundTx, MinterSellCoinTx, MinterBuyCoinTx
+    MinterCoinTx, MinterDelegateTx, MinterMultiSendTx, MinterRedeemCheckTx, MinterSellAllCoinTx, MinterSetCandidateOffTx, MinterSetCandidateOnTx, MinterCreateCoinTx, MinterDeclareCandidacyTx, MinterSendCoinTx, MinterUnboundTx, MinterSellCoinTx, MinterBuyCoinTx
 };
 
 /**
@@ -17,7 +18,7 @@ use Minter\SDK\MinterCoins\{
 class MinterTx
 {
     /**
-     * txData
+     * Transaction
      *
      * @var array
      */
@@ -49,6 +50,12 @@ class MinterTx
      * @var string
      */
     protected $txSigned;
+
+    /**
+     * Transaction data
+     * @var MinterCoinTx
+     */
+    protected $txDataObject;
 
     /**
      * Fee in PIP
@@ -204,55 +211,12 @@ class MinterTx
      */
     public function getFee(): string
     {
-        switch ($this->type) {
-            case MinterSendCoinTx::TYPE:
-                $gas = MinterSendCoinTx::COMMISSION;
-                break;
-
-            case MinterSellCoinTx::TYPE:
-                $gas = MinterSellCoinTx::COMMISSION;
-                break;
-
-            case MinterSellAllCoinTx::TYPE:
-                $gas = MinterSellAllCoinTx::COMMISSION;
-                break;
-
-            case MinterBuyCoinTx::TYPE:
-                $gas = MinterBuyCoinTx::COMMISSION;
-                break;
-
-            case MinterCreateCoinTx::TYPE:
-                $gas = MinterCreateCoinTx::COMMISSION;
-                break;
-
-            case MinterDeclareCandidacyTx::TYPE:
-                $gas = MinterDeclareCandidacyTx::COMMISSION;
-                break;
-
-            case MinterDelegateTx::TYPE:
-                $gas = MinterDelegateTx::COMMISSION;
-                break;
-
-            case MinterUnboundTx::TYPE:
-                $gas = MinterUnboundTx::COMMISSION;
-                break;
-
-            case MinterRedeemCheckTx::TYPE:
-                $gas = MinterRedeemCheckTx::COMMISSION;
-                break;
-
-            case MinterSetCandidateOnTx::TYPE:
-                $gas = MinterSetCandidateOnTx::COMMISSION;
-                break;
-
-            case MinterSetCandidateOffTx::TYPE:
-                $gas = MinterSetCandidateOffTx::COMMISSION;
-                break;
-
-            default:
-                throw new \Exception('Unknown transaction type');
-                break;
+        if(!$this->txDataObject) {
+            throw new Exception('You need to sign transaction before the calculating free');
         }
+
+        // get transaction data fee
+        $gas = $this->txDataObject->getFee();
 
         // multiplied gas price
         $gasPrice = bcmul($gas, self::FEE_DEFAULT_MULTIPLIER, 0);
@@ -292,7 +256,7 @@ class MinterTx
      * @param array $tx
      * @param bool $isHexFormat
      * @return array
-     * @throws \Exception
+     * @throws InvalidArgumentException
      */
     protected function encode(array $tx, bool $isHexFormat = false): array
     {
@@ -300,55 +264,59 @@ class MinterTx
 
         switch ($tx['type']) {
             case MinterSendCoinTx::TYPE:
-                $dataTx = new MinterSendCoinTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterSendCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterSellCoinTx::TYPE:
-                $dataTx = new MinterSellCoinTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterSellCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterSellAllCoinTx::TYPE:
-                $dataTx = new MinterSellAllCoinTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterSellAllCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterBuyCoinTx::TYPE:
-                $dataTx = new MinterBuyCoinTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterBuyCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterCreateCoinTx::TYPE:
-                $dataTx = new MinterCreateCoinTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterCreateCoinTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterDeclareCandidacyTx::TYPE:
-                $dataTx = new MinterDeclareCandidacyTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterDeclareCandidacyTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterDelegateTx::TYPE:
-                $dataTx = new MinterDelegateTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterDelegateTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterUnboundTx::TYPE:
-                $dataTx = new MinterUnboundTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterUnboundTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterRedeemCheckTx::TYPE:
-                $dataTx = new MinterRedeemCheckTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterRedeemCheckTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterSetCandidateOnTx::TYPE:
-                $dataTx = new MinterSetCandidateOnTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterSetCandidateOnTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterSetCandidateOffTx::TYPE:
-                $dataTx = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
+                $this->txDataObject = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterMultiSendTx::TYPE:
+                $this->txDataObject = new MinterMultiSendTx($tx['data'], $isHexFormat);
                 break;
 
             default:
-                throw new \Exception('Unknown transaction type');
+                throw new InvalidArgumentException('Unknown transaction type');
                 break;
         }
 
-        $tx['data'] = $dataTx->data;
+        $tx['data'] = $this->txDataObject->data;
 
         return $tx;
     }
@@ -403,7 +371,11 @@ class MinterTx
         $data = $this->rlp->decode('0x' . $data);
 
         foreach ($data as $key => $value) {
-            $data[$key] = $value->toString('hex');
+            if(is_array($value)) {
+                $data[$key] = Helper::rlpArrayToHexArray($value);
+            } else {
+                $data[$key] = $value->toString('hex');
+            }
         }
 
         return (array) $data;
