@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterCreateCoinTx
+ * Class for testing MinterSellAllCoinTxTest
  */
-final class MinterCreateCoinTxTest extends TestCase
+final class MinterSellAllCoinTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -24,21 +24,18 @@ final class MinterCreateCoinTxTest extends TestCase
      * Predefined data
      */
     const DATA = [
-        'name' => 'SUPER TEST',
-        'symbol' => 'SPRTEST',
-        'initialAmount' => '100',
-        'initialReserve' => '10',
-        'crr' => 10
+        'coinToSell' => 'MNT',
+        'coinToBuy' => 'TEST',
+        'minimumValueToBuy' => '1'
     ];
 
     /**
      * Predefined valid signature
      */
-
-    const VALID_SIGNATURE = '0xf88401018a4d4e540000000000000005abea8a535550455220544553548a5350525445535400000089056bc75e2d63100000888ac7230489e800000a808001b845f8431ca0cab62b0670de21a16df3bc11af2553964c9fc5ae18b2adaa43d43f826bc143eea014e564991ab69f41a325fb90022ef3556921a6757c3b69d487051dde11c5d84a';
+    const VALID_SIGNATURE = '0xf87901018a4d4e540000000000000003a0df8a4d4e54000000000000008a54455354000000000000880de0b6b3a7640000808001b845f8431ba0476aaacb5034bde2be2b9cc068782b1f3467d6b16a58ac445a172efba8910173a0212a580b5cd2a460aec45ffdfed20d4c59dc04f03b865197ab6dba9a615651c5';
 
     /**
-     * Test to decode data for MinterCreateCoinTx
+     * Test to decode data for MinterSendCoinTx
      */
     public function testDecode(): void
     {
@@ -49,7 +46,7 @@ final class MinterCreateCoinTxTest extends TestCase
     }
 
     /**
-     * Test signing MinterCreateCoinTx
+     * Test signing MinterSendCoinTx
      */
     public function testSign(): void
     {
@@ -57,7 +54,7 @@ final class MinterCreateCoinTxTest extends TestCase
             'nonce' => 1,
             'gasPrice' => 1,
             'gasCoin' => 'MNT',
-            'type' => MinterCreateCoinTx::TYPE,
+            'type' => MinterSellAllCoinTx::TYPE,
             'data' => self::DATA,
             'payload' => '',
             'serviceData' => '',

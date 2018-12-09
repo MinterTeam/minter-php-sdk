@@ -88,7 +88,7 @@ class MinterTx
         $this->rlp = new RLP;
 
         if(is_string($tx)) {
-            $this->txSigned = $tx;
+            $this->txSigned = Helper::removePrefix($tx, MinterPrefix::TRANSACTION);
             $this->tx = $this->decode($tx);
         }
 
@@ -156,7 +156,7 @@ class MinterTx
 
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
-        return $this->txSigned;
+        return MinterPrefix::TRANSACTION . $this->txSigned;
     }
 
     /**

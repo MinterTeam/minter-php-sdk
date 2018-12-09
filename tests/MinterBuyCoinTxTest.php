@@ -24,15 +24,16 @@ final class MinterBuyCoinTxTest extends TestCase
      * Predefined data
      */
     const DATA = [
-        'coinToBuy' => 'MNT',
+        'coinToBuy' => 'TEST',
         'valueToBuy' => '1',
-        'coinToSell' => 'TEST'
+        'coinToSell' => 'MNT',
+        'maximumValueToSell' => '1'
     ];
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f87901018a4d4e540000000000000004a0df8a4d4e5400000000000000880de0b6b3a76400008a54455354000000000000808001b845f8431ba0ad46cda1456aad92f6ff21ff37b810bcd928beb1e346b4321a7661eed7ea696aa01ab1e07fb7d98d31ba342c98d93010bedc3cbeebbb6277a892bbdb92d7c00e8d';
+    const VALID_SIGNATURE = '0xf88401018a4d4e540000000000000004abea8a54455354000000000000880de0b6b3a76400008a4d4e54000000000000008a31000000000000000000808001b845f8431ba0c30019067fe6ede8d5dff8e6977ac19d02a34159ff6f9ac270879b1154ae738ba07038e90b2ba9d5a779a3eb41de5f55679b4b144f8e8ab03ac1d1ea7952531235';
 
     /**
      * Test to decode data for MinterSendCoinTx

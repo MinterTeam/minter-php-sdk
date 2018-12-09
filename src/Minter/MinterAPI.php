@@ -2,7 +2,6 @@
 
 namespace Minter;
 
-use Minter\Library\Helper;
 use Minter\Library\Http;
 
 /**
@@ -26,74 +25,6 @@ class MinterAPI
     }
 
     /**
-     * Get balance by address
-     *
-     * @param string $address
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getBalance(string $address): \stdClass
-    {
-        return $this->get('/api/balance/' . $address);
-    }
-
-    /**
-     * Get nonce
-     *
-     * @param string $address
-     * @return int
-     * @throws \Exception
-     */
-    public function getNonce(string $address): int
-    {
-        $response = $this->get('/api/transactionCount/' . $address);
-
-        return $response->result->count + 1;
-    }
-
-    /**
-     * Send tx
-     *
-     * @param string $tx
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function send(string $tx): \stdClass
-    {
-        return $this->post('/api/sendTransaction', ['transaction' => $tx]);
-    }
-
-    /**
-     * Get outcoming transactions by address
-     *
-     * @param string $address
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getTransactionsFrom(string $address): \stdClass
-    {
-        // prepare address for api request
-        $address = strtolower(Helper::removeWalletPrefix($address));
-
-        return $this->get('/api/transactions', ['query' => "tx.from='" . $address . "'"]);
-    }
-
-    /**
-     * Get incoming transactions by address
-     *
-     * @param string $address
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getTransactionsTo(string $address): \stdClass
-    {
-        // prepare address for api request
-        $address = strtolower(Helper::removeWalletPrefix($address));
-
-        return $this->get('/api/transactions', ['query' => "tx.to='" . $address . "'"]);
-    }
-
-    /**
      * Get status of node
      *
      * @return \stdClass
@@ -101,7 +32,20 @@ class MinterAPI
      */
     public function getStatus(): \stdClass
     {
-        return $this->get('/api/status');
+        return $this->get('/status');
+    }
+
+    /**
+     * This endpoint shows candidate’s info by provided public_key.
+     * It will respond with 404 code if candidate is not found.
+     *
+     * @param string $publicKey
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getCandidate(string $publicKey): \stdClass
+    {
+        return $this->get('/candidate/?pubkey=' . $publicKey);
     }
 
     /**
@@ -112,29 +56,93 @@ class MinterAPI
      */
     public function getValidators(): \stdClass
     {
-        return $this->get('/api/validators');
+        return $this->get('/validators');
     }
 
     /**
-     * Return estimate of buy coin transaction
+     * Returns the balance of given account and the number of outgoing transaction.
      *
-     * @param string $coinToSell
-     * @param string $valueToBuy
-     * @param string $coinToBuy
+     * @param string $address
      * @return \stdClass
      * @throws \Exception
      */
-    public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
+    public function getBalance(string $address): \stdClass
     {
-        return $this->get('/api/estimateCoinBuy', [
-            'coin_to_sell' => $coinToSell,
-            'value_to_buy' => $valueToBuy,
-            'coin_to_buy' => $coinToBuy
-        ]);
+        return $this->get('/address', ['address' => $address]);
     }
 
     /**
-     * Return estimate of sell coin transaction
+     * Sends transaction to the Minter Network.
+     *
+     * @param string $tx
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function send(string $tx): \stdClass
+    {
+        return $this->get('/send_transaction', ['tx' => $tx]);
+    }
+
+    /**
+     * Returns transaction info.
+     *
+     * @param string $hash
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getTransaction(string $hash): \stdClass
+    {
+        return $this->get('/transaction/',  ['hash' => $hash]);
+    }
+
+    /**
+     * Returns block data at given height.
+     *
+     * @param int $height
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getBlock(int $height): \stdClass
+    {
+        return $this->get('/block', ['height' => $height]);
+    }
+
+    /**
+     * Returns events at given height.
+     *
+     * @param int $height
+     * @return \stdClass
+     */
+    public function getEvents(int $height): \stdClass
+    {
+        return $this->get('/events', ['height' => $height]);
+    }
+
+    /**
+     * Returns list of candidates.
+     *
+     * @return \stdClass
+     * @throws \Exception
+     */
+    public function getCandidates(): \stdClass
+    {
+        return $this->get('/candidates');
+    }
+
+    /**
+     * Returns information about coin.
+     * Note: this method does not return information about base coins (MNT and BIP).
+     *
+     * @param string $symbol
+     * @return \stdClass
+     */
+    public function getCoinInfo(string $symbol): \stdClass
+    {
+        return $this->get('/coin_info', ['symbol' => $symbol]);
+    }
+
+    /**
+     * Return estimate of sell coin transaction.
      *
      * @param string $coinToSell
      * @param string $valueToSell
@@ -144,7 +152,7 @@ class MinterAPI
      */
     public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
     {
-        return $this->get('/api/estimateCoinSell', [
+        return $this->get('/estimateCoinSell', [
             'coin_to_sell' => $coinToSell,
             'value_to_sell' => $valueToSell,
             'coin_to_buy' => $coinToBuy
@@ -152,74 +160,31 @@ class MinterAPI
     }
 
     /**
-     * Returns information about coin.
+     * Return estimate of buy coin transaction.
      *
-     * @param string $coin
+     * @param string $coinToSell
+     * @param string $valueToBuy
+     * @param string $coinToBuy
      * @return \stdClass
      * @throws \Exception
      */
-    public function getCoinInfo(string $coin): \stdClass
+    public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
     {
-        return $this->get('/api/coinInfo/' . $coin);
+        return $this->get('/estimateCoinBuy', [
+            'coin_to_sell' => $coinToSell,
+            'value_to_buy' => $valueToBuy,
+            'coin_to_buy' => $coinToBuy
+        ]);
     }
 
     /**
-     * Returns block data at given height.
+     * Return estimate of transaction.
      *
-     * @param int $height
-     * @param bool $withEvents
+     * @param string $tx
      * @return \stdClass
-     * @throws \Exception
      */
-    public function getBlock(int $height, $withEvents = false): \stdClass
+    public function estimateTxCommission(string $tx): \stdClass
     {
-        return $this->get('/api/block/' . $height . ($withEvents ? '?withEvents=true' : ''));
-    }
-
-    /**
-     * Returns transaction info
-     *
-     * @param string $hash
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getTransaction(string $hash): \stdClass
-    {
-        return $this->get('/api/transaction/' . $hash);
-    }
-
-    /**
-     * Returns amount of base coin (BIP or MNT) existing in the network. It counts block rewards, premine and relayed rewards.
-     *
-     * @param int $height
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getBaseCoinVolume(int $height): \stdClass
-    {
-        return $this->get('/api/bipVolume', ['height' => $height]);
-    }
-
-    /**
-     * Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
-     *
-     * @param string $publicKey
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getCandidate(string $publicKey): \stdClass
-    {
-        return $this->get('/api/candidate/' . $publicKey);
-    }
-
-    /**
-     * Returns list of candidates
-     *
-     * @return \stdClass
-     * @throws \Exception
-     */
-    public function getCandidates(): \stdClass
-    {
-        return $this->get('/api/candidates');
+        return $this->get('/estimate_tx_commission', ['tx' => $tx]);
     }
 }

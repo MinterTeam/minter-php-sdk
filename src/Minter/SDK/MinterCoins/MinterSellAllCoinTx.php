@@ -29,7 +29,8 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
      */
     public $data = [
         'coinToSell' => '',
-        'coinToBuy' => ''
+        'coinToBuy' => '',
+        'minimumValueToBuy' => ''
     ];
 
     /**
@@ -44,7 +45,10 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
             'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
 
             // Add nulls before symbol
-            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy'])
+            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy']),
+
+            // Convert field from BIP to PIP
+            'minimumValueToBuy' => MinterConverter::convertValue($this->data['minimumValueToBuy'], 'pip')
         ];
     }
 
@@ -62,6 +66,9 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
 
             // Pack symbol
             'coinToBuy' => Helper::pack2hex($txData[1]),
+
+            // Convert field from PIP to BIP
+            'minimumValueToBuy' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
         ];
     }
 }
