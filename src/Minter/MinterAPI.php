@@ -45,7 +45,7 @@ class MinterAPI
      */
     public function getCandidate(string $publicKey): \stdClass
     {
-        return $this->get('/candidate/?pubkey=' . $publicKey);
+        return $this->get('/candidate', ['pubkey' => $publicKey]);
     }
 
     /**
@@ -103,7 +103,7 @@ class MinterAPI
      */
     public function getTransaction(string $hash): \stdClass
     {
-        return $this->get('/transaction/',  ['hash' => $hash]);
+        return $this->get('/transaction',  ['hash' => $hash]);
     }
 
     /**
@@ -163,7 +163,7 @@ class MinterAPI
      */
     public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
     {
-        return $this->get('/estimateCoinSell', [
+        return $this->get('/estimate_coin_sell', [
             'coin_to_sell' => $coinToSell,
             'value_to_sell' => $valueToSell,
             'coin_to_buy' => $coinToBuy
@@ -181,7 +181,7 @@ class MinterAPI
      */
     public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
     {
-        return $this->get('/estimateCoinBuy', [
+        return $this->get('/estimate_coin_buy', [
             'coin_to_sell' => $coinToSell,
             'value_to_buy' => $valueToBuy,
             'coin_to_buy' => $coinToBuy
