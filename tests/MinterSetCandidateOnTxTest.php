@@ -25,7 +25,7 @@ final class MinterSetCandidateOnTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = 'f87b01018a4d4e54000000000000000aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba0273463d2b0a7149edf889f92c394cb89e47f00be17460eac0300cc8601c0dcafa0118b651cb3f05cd403a6adcd97b943552da3b0a75ee99eaf01619d973184dbe1';
+    const VALID_SIGNATURE = '0xf87b01018a4d4e54000000000000000aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba0273463d2b0a7149edf889f92c394cb89e47f00be17460eac0300cc8601c0dcafa0118b651cb3f05cd403a6adcd97b943552da3b0a75ee99eaf01619d973184dbe1';
 
     /**
      * Test to decode data for MinterSetCandidateOnTx

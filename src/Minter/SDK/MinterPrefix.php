@@ -28,5 +28,5 @@ class MinterPrefix
     /**
      * Minter transaction prefix
      */
-    const TRANSACTION = 'Mt';
+    const TRANSACTION = '0x';
 }

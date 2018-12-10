@@ -9,18 +9,17 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [getBalance](#getbalance)
 	- [getNonce](#getnonce)
 	- [send](#send)
-	- [getTransactionsFrom](#gettransactionsfrom)
-	- [getTransactionsTo](#gettransactionsto)
 	- [getStatus](#getstatus)
 	- [getValidators](#getvalidators)
 	- [estimateCoinBuy](#estimatecoinbuy)
 	- [estimateCoinSell](#estimatecoinsell)
 	- [getCoinInfo](#getcoininfo)
 	- [getBlock](#getblock)
+	- [getEvents](#getevents)
 	- [getTransaction](#gettransaction)
-	- [getBaseCoinVolume](#getbasecoinvolume)
 	- [getCandidate](#getcandidate)
 	- [getCandidates](#getcandidates)
+	- [estimateTxCommission](#estimatetxcommission)
 	
 * [Minter SDK](#using-minterapi)
 	- [SendCoin](#example-5)
@@ -34,6 +33,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [SetCandidateOff](#example-13)
 	- [RedeemCheck](#example-14)
 	- [Unbound](#example-15)
+	- [MultiSend](#example-16)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -61,7 +61,7 @@ $api = new MinterAPI($nodeUrl);
 
 ### getBalance
 
-Returns coins list and balance of an address.
+Returns coins list, balance and transaction count (for nonce) of an address.
 
 ``
 getBalance(string $minterAddress): \stdClass
@@ -72,24 +72,22 @@ getBalance(string $minterAddress): \stdClass
 ```php
 $api->getBalance('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
-// result: {MTN: 1000000, TESTCOIN: 2000000}
+// {"jsonrpc": "2.0", "id": "", "result": { "balance": { ... }, "transaction_count": "0"}}
 
 ```
 
 ### getNonce
 
-Returns current nonce of an address.
+Returns next transaction number (nonce) of an address.
 
 ``
-getNonce(string $minterAddress): integer
+getNonce(string $minterAddress): int
 ``
 
 ###### Example
 
 ```php
 $api->getNonce('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
-
-// 5
 ```
 
 ### send
@@ -104,40 +102,6 @@ send(string $tx): \stdClass
 
 ```php
 $api->send('f873010101aae98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58cded61ee99880de0b6b3a764000080801ca0ae0ee912484b9bf3bee785f4cbac118793799450e0de754667e2c18faa510301a04f1e4ed5fad4b489a1065dc1f5255b356ab9a2ce4b24dde35bcb9dc43aba019c')
-
-// {code: 0, tx: "Mt2f37ad1c22cf912c02a9f00c735a039d7da3169b"}
-```
-
-### getTransactionsFrom
-
-Returns list of outgoing transactions of an address.
-
-``
-getTransactionsFrom(string $minterAddress): \stdClass
-``
-
-###### Example
-
-```php
-$api->getTransactionsFrom('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
-
-// result: {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
-```
-
-### getTransactionsTo
-
-Returns list of incoming transactions of an address.
-
-``
-getTransactionsTo(string $minterAddress): \stdClass
-``
-
-###### Example
-
-```php
-$api->getTransactionsTo('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
-
-// result: {code: 0, result: [{ height: 1, index: 0, proof: ..., tx: 'Mx...', tx_result: {...} }]}
 ```
 
 ### getStatus
@@ -175,6 +139,7 @@ estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \s
 ### getCoinInfo
 
 Returns information about coin.
+Note: this method does not return information about base coins (MNT and BIP).
 
 ``
 getCoinInfo(string $coin): \stdClass
@@ -182,10 +147,18 @@ getCoinInfo(string $coin): \stdClass
 
 ### getBlock
 
-Returns block data at given height. Set $withEvents to "true" to include the "events" in block data.
+Returns block data at given height.
 
 ``
-getBlock(int $height, $withEvents = false): \stdClass
+getBlock(int $height): \stdClass
+``
+
+### getEvents
+
+Returns events at given height.
+
+``
+getEvents(int $height): \stdClass
 ``
 
 ### getTransaction
@@ -194,14 +167,6 @@ Returns transaction info.
 
 ``
 getTransaction(string $hash): \stdClass
-``
-
-### getBaseCoinVolume
-
-Returns amount of base coin (BIP or MNT) existing in the network. It counts block rewards, premine and relayed rewards.
-
-``
-getBaseCoinVolume(int $height): \stdClass
 ``
 
 ### getCandidate
@@ -218,6 +183,14 @@ Returns list of candidates.
 
 ``
 getCandidates(): \stdClass
+``
+
+### estimateTxCommission
+
+Return estimate of transaction.
+
+``
+estimateTxCommission(string $tx): \stdClass
 ``
 
 
@@ -268,7 +241,8 @@ $tx = new MinterTx([
     'data' => [
          'coinToSell' => 'MNT',
          'valueToSell' => '1',
-         'coinToBuy' => 'TEST'
+         'coinToBuy' => 'TEST',
+         'minimumValueToBuy' => 1
     ],
     'payload' => '',
     'serviceData' => '',
@@ -292,7 +266,8 @@ $tx = new MinterTx([
     'type' => MinterSellAllCoinTx::TYPE,
     'data' => [
          'coinToSell' => 'TEST',
-         'coinToBuy' => 'MNT'
+         'coinToBuy' => 'MNT',
+         'minimumValueToBuy' => 1
     ],
     'payload' => '',
     'serviceData' => '',
@@ -317,7 +292,8 @@ $tx = new MinterTx([
     'data' => [
          'coinToBuy' => 'MNT',
          'valueToBuy' => '1',
-         'coinToSell' => 'TEST'
+         'coinToSell' => 'TEST',
+         'minimumValueToBuy' => 1
     ],
     'payload' => '',
     'serviceData' => '',
@@ -491,6 +467,39 @@ $tx = new MinterTx([
         'pubkey' => 'Mp....',
         'coin' => 'MNT',
         'value' => '1'
+    ],
+    'payload' => '',
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>MultiSend</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterMultiSendTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'gasCoin' => 'MNT',
+    'type' => MinterMultiSendTx::TYPE,
+    'data' => [
+        'list' => [
+            [
+                'coin' => 'MTN',
+                'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
+                'value' => '10'
+            ], [
+                'coin' => 'MTN',
+                'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee92',
+                'value' => '15'
+            ]
+        ]
     ],
     'payload' => '',
     'serviceData' => '',
