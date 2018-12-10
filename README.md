@@ -7,6 +7,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 * [Installation](#installing)
 * [Minter Api](#using-minterapi)
 	- [getBalance](#getbalance)
+	- [getNonce](#getnonce)
 	- [send](#send)
 	- [getStatus](#getstatus)
 	- [getValidators](#getvalidators)
@@ -71,8 +72,22 @@ getBalance(string $minterAddress): \stdClass
 ```php
 $api->getBalance('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
-// result: {MTN: 1000000, TESTCOIN: 2000000}
+// {"jsonrpc": "2.0", "id": "", "result": { "balance": { ... }, "transaction_count": "0"}}
 
+```
+
+### getNonce
+
+Returns next transaction number (nonce) of an address.
+
+``
+getNonce(string $minterAddress): int
+``
+
+###### Example
+
+```php
+$api->getNonce('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 ```
 
 ### send
@@ -87,8 +102,6 @@ send(string $tx): \stdClass
 
 ```php
 $api->send('f873010101aae98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58cded61ee99880de0b6b3a764000080801ca0ae0ee912484b9bf3bee785f4cbac118793799450e0de754667e2c18faa510301a04f1e4ed5fad4b489a1065dc1f5255b356ab9a2ce4b24dde35bcb9dc43aba019c')
-
-// {code: 0, tx: "Mt2f37ad1c22cf912c02a9f00c735a039d7da3169b"}
 ```
 
 ### getStatus

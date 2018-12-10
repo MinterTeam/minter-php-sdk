@@ -72,6 +72,17 @@ class MinterAPI
     }
 
     /**
+     * Returns nonce.
+     *
+     * @param string $address
+     * @return int
+     */
+    public function getNonce(string $address): int
+    {
+        return $this->getBalance($address)->result->transaction_count + 1;
+    }
+
+    /**
      * Sends transaction to the Minter Network.
      *
      * @param string $tx
