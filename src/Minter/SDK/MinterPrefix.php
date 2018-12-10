@@ -26,6 +26,11 @@ class MinterPrefix
     const CHECK = 'Mc';
 
     /**
+     * Minter transaction hash prefix
+     */
+    const TRANSACTION_HASH = 'Mt';
+
+    /**
      * Minter transaction prefix
      */
     const TRANSACTION = '0x';

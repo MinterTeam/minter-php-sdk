@@ -200,7 +200,7 @@ class MinterTx
         $tx = hash('sha256', hex2bin($this->txSigned));
 
         // return first 40 symbols
-        return MinterPrefix::TRANSACTION . substr($tx, 0, 40);
+        return MinterPrefix::TRANSACTION_HASH . substr($tx, 0, 40);
     }
 
     /**
