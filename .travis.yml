@@ -1,0 +1,14 @@
+language: php
+
+php:
+  - 7.1
+
+branches:
+  only:
+      - master
+
+install:
+    - composer install
+
+script:
+    - vendor/bin/phpunit tests
