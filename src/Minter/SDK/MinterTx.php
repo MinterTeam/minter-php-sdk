@@ -8,7 +8,19 @@ use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
-    MinterCoinTx, MinterDelegateTx, MinterMultiSendTx, MinterRedeemCheckTx, MinterSellAllCoinTx, MinterSetCandidateOffTx, MinterSetCandidateOnTx, MinterCreateCoinTx, MinterDeclareCandidacyTx, MinterSendCoinTx, MinterUnboundTx, MinterSellCoinTx, MinterBuyCoinTx
+    MinterCoinTx,
+    MinterDelegateTx,
+    MinterMultiSendTx,
+    MinterRedeemCheckTx,
+    MinterSellAllCoinTx,
+    MinterSetCandidateOffTx,
+    MinterSetCandidateOnTx,
+    MinterCreateCoinTx,
+    MinterDeclareCandidacyTx,
+    MinterSendCoinTx,
+    MinterUnboundTx,
+    MinterSellCoinTx,
+    MinterBuyCoinTx
 };
 
 /**
@@ -332,26 +344,36 @@ class MinterTx
     {
         $result = [];
         foreach($this->structure as $key => $field) {
-            if($field === 'data') {
-                $result[$field] = $tx[$key];
-            }
-            elseif($field === 'payload' || $field === 'serviceData') {
-                $result[$field] = Helper::pack2hex($tx[$key]);
-            }
-            elseif($field === 'gasCoin') {
-                $result[$field] = MinterConverter::convertCoinName(
-                    Helper::pack2hex($tx[$key])
-                );
-            }
-            elseif($field === 'signatureData') {
-                $result[$field] = [
-                    'v' => hexdec($tx[$key][0]),
-                    'r' => $tx[$key][1],
-                    's' => $tx[$key][2]
-                ];
-            }
-            else {
-                $result[$field] = hexdec($tx[$key]);
+            switch ($field) {
+                case 'data':
+                    $result[$field] = $tx[$key];
+                    break;
+
+                case 'payload':
+                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    break;
+
+                case 'serviceData':
+                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    break;
+
+                case 'gasCoin':
+                    $result[$field] = MinterConverter::convertCoinName(
+                        Helper::pack2hex($tx[$key])
+                    );
+                    break;
+
+                case 'signatureData':
+                    $result[$field] = [
+                        'v' => hexdec($tx[$key][0]),
+                        'r' => $tx[$key][1],
+                        's' => $tx[$key][2]
+                    ];
+                    break;
+
+                default:
+                    $result[$field] = hexdec($tx[$key]);
+                    break;
             }
         }
 

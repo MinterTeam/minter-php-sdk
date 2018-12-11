@@ -38,6 +38,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#create-minter-check)
+* [Tests](#tests)
 
 ## Installing
 
@@ -589,4 +590,12 @@ use Minter\SDK\MinterCheck;
 $check = new MinterCheck('your Minter address here', 'your pass phrase');
 
 echo $check->createProof(); 
+```
+
+## Tests
+
+To run unit tests: 
+
+```bash
+vendor/bin/phpunit tests
 ```

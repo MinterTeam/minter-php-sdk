@@ -6,7 +6,7 @@ use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterSellAllCoinTxTest
+ * Class for testing MinterSellAllCoinTx
  */
 final class MinterSellAllCoinTxTest extends TestCase
 {
