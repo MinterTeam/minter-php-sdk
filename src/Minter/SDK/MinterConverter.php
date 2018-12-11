@@ -3,6 +3,7 @@
 namespace Minter\SDK;
 
 use Minter\Library\Helper;
+use InvalidArgumentException;
 
 /**
  * Class MinterConverter
@@ -39,6 +40,11 @@ class MinterConverter
      */
     public static function convertCoinName(string $symbol): string
     {
-        return $symbol  . str_repeat(chr(0), 10 - strlen($symbol));
+        $countOfNulls = 10 - strlen($symbol);
+        if($countOfNulls < 0) {
+            throw new InvalidArgumentException('Coin name could have no more than 10 symbols.');
+        }
+
+        return $symbol  . str_repeat(chr(0), $countOfNulls);
     }
 }

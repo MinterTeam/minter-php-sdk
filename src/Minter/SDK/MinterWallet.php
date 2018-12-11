@@ -38,14 +38,14 @@ class MinterWallet
         $privateKey = BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
 
         $publicKey = self::privateToPublic($privateKey);
-
         $address = self::getAddressFromPublicKey($publicKey);
 
         return [
+            'seed' => $seed,
             'address' => $address,
-            'private_key' => $privateKey,
             'mnemonic' => $mnemonic,
-            'seed' => $seed
+            'public_key' => $publicKey,
+            'private_key' => $privateKey
         ];
     }
     
