@@ -156,7 +156,7 @@ class MinterTx
 
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
-        return MinterPrefix::TRANSACTION . $this->txSigned;
+        return MinterPrefix::TRANSACTION . $this->txSigned . 'test';
     }
 
     /**
