@@ -52,7 +52,7 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
             'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
 
             // Convert field from BIP to PIP
-            'maximumValueToSell' => MinterConverter::convertCoinName($this->data['maximumValueToSell'])
+            'maximumValueToSell' => MinterConverter::convertValue($this->data['maximumValueToSell'], 'pip')
         ];
     }
 
