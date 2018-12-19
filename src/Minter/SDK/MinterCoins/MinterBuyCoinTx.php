@@ -75,7 +75,7 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
             'coinToSell' => Helper::pack2hex($txData[2]),
 
             // Convert field from PIP to BIP
-            'maximumValueToSell' => MinterConverter::convertValue(Helper::hexDecode($txData[1]), 'bip')
+            'maximumValueToSell' => MinterConverter::convertValue(Helper::hexDecode($txData[3]), 'bip')
         ];
     }
 }
