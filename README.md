@@ -294,7 +294,7 @@ $tx = new MinterTx([
          'coinToBuy' => 'MNT',
          'valueToBuy' => '1',
          'coinToSell' => 'TEST',
-         'minimumValueToBuy' => 1
+         'maximumValueToSell' => 1
     ],
     'payload' => '',
     'serviceData' => '',
