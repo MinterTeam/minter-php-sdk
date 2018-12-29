@@ -182,8 +182,10 @@ getCandidate(string $publicKey): \stdClass
 
 Returns list of candidates.
 
+$height is optional parameter.
+
 ``
-getCandidates(): \stdClass
+getCandidates(?int $height = null): \stdClass
 ``
 
 ### estimateTxCommission

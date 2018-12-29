@@ -135,9 +135,9 @@ class MinterAPI
      * @return \stdClass
      * @throws \Exception
      */
-    public function getCandidates(): \stdClass
+    public function getCandidates(?int $height = null): \stdClass
     {
-        return $this->get('/candidates');
+        return $this->get('/candidates', ($height ? ['height' => $height] : null));
     }
 
     /**
