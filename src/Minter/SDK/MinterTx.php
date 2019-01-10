@@ -18,7 +18,7 @@ use Minter\SDK\MinterCoins\{
     MinterCreateCoinTx,
     MinterDeclareCandidacyTx,
     MinterSendCoinTx,
-    MinterUnboundTx,
+    MinterUnbondTx,
     MinterSellCoinTx,
     MinterBuyCoinTx
 };
@@ -303,8 +303,8 @@ class MinterTx
                 $this->txDataObject = new MinterDelegateTx($tx['data'], $isHexFormat);
                 break;
 
-            case MinterUnboundTx::TYPE:
-                $this->txDataObject = new MinterUnboundTx($tx['data'], $isHexFormat);
+            case MinterUnbondTx::TYPE:
+                $this->txDataObject = new MinterUnbondTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterRedeemCheckTx::TYPE:
