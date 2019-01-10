@@ -20,6 +20,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [getCandidate](#getcandidate)
 	- [getCandidates](#getcandidates)
 	- [estimateTxCommission](#estimatetxcommission)
+	- [getTransactions](#gettransactions)
 	
 * [Minter SDK](#using-minterapi)
 	- [SendCoin](#example-5)
@@ -194,6 +195,14 @@ Return estimate of transaction.
 
 ``
 estimateTxCommission(string $tx): \stdClass
+``
+
+### getTransactions
+
+Return transactions by query.
+
+``
+getTransactions(string $query): \stdClass
 ``
 
 

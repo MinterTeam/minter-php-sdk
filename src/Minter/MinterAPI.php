@@ -198,4 +198,15 @@ class MinterAPI
     {
         return $this->get('/estimate_tx_commission', ['tx' => $tx]);
     }
+
+    /**
+     * Get transactions by query.
+     *
+     * @param string $query
+     * @return \stdClass
+     */
+    public function getTransactions(string $query): \stdClass
+    {
+        return $this->get('/transactions', ['query' => $query]);
+    }
 }
