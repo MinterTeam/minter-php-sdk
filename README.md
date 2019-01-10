@@ -205,6 +205,14 @@ Return transactions by query.
 getTransactions(string $query): \stdClass
 ``
 
+### getUnconfirmedTxs
+
+Return unconfirmed transactions.
+
+``
+getUnconfirmedTxs(?int $limit = null): \stdClass
+``
+
 
 ## Using MinterSDK
 

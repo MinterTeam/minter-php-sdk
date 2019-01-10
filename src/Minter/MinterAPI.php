@@ -209,4 +209,15 @@ class MinterAPI
     {
         return $this->get('/transactions', ['query' => $query]);
     }
+
+    /**
+     * Returns unconfirmed transactions.
+     *
+     * @param int|null $limit
+     * @return \stdClass
+     */
+    public function getUnconfirmedTxs(?int $limit = null): \stdClass
+    {
+        return $this->get('/unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
+    }
 }
