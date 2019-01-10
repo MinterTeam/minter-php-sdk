@@ -20,6 +20,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [getCandidate](#getcandidate)
 	- [getCandidates](#getcandidates)
 	- [estimateTxCommission](#estimatetxcommission)
+	- [getTransactions](#gettransactions)
 	
 * [Minter SDK](#using-minterapi)
 	- [SendCoin](#example-5)
@@ -32,7 +33,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [SetCandidateOn](#example-12)
 	- [SetCandidateOff](#example-13)
 	- [RedeemCheck](#example-14)
-	- [Unbound](#example-15)
+	- [Unbond](#example-15)
 	- [MultiSend](#example-16)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
@@ -182,8 +183,10 @@ getCandidate(string $publicKey): \stdClass
 
 Returns list of candidates.
 
+$height is optional parameter.
+
 ``
-getCandidates(): \stdClass
+getCandidates(?int $height = null): \stdClass
 ``
 
 ### estimateTxCommission
@@ -192,6 +195,22 @@ Return estimate of transaction.
 
 ``
 estimateTxCommission(string $tx): \stdClass
+``
+
+### getTransactions
+
+Return transactions by query.
+
+``
+getTransactions(string $query): \stdClass
+``
+
+### getUnconfirmedTxs
+
+Return unconfirmed transactions.
+
+``
+getUnconfirmedTxs(?int $limit = null): \stdClass
 ``
 
 
@@ -453,17 +472,17 @@ $tx->sign('your private key')
 ```
 
 ###### Example
-* Sign the <b>Unbound</b> transaction
+* Sign the <b>Unbond</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterUnboundTx;
+use Minter\SDK\MinterCoins\MinterUnbondTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
-    'type' => MinterUnboundTx::TYPE,
+    'type' => MinterUnbondTx::TYPE,
     'data' => [
         'pubkey' => 'Mp....',
         'coin' => 'MNT',

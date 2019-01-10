@@ -135,9 +135,9 @@ class MinterAPI
      * @return \stdClass
      * @throws \Exception
      */
-    public function getCandidates(): \stdClass
+    public function getCandidates(?int $height = null): \stdClass
     {
-        return $this->get('/candidates');
+        return $this->get('/candidates', ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -197,5 +197,27 @@ class MinterAPI
     public function estimateTxCommission(string $tx): \stdClass
     {
         return $this->get('/estimate_tx_commission', ['tx' => $tx]);
+    }
+
+    /**
+     * Get transactions by query.
+     *
+     * @param string $query
+     * @return \stdClass
+     */
+    public function getTransactions(string $query): \stdClass
+    {
+        return $this->get('/transactions', ['query' => $query]);
+    }
+
+    /**
+     * Returns unconfirmed transactions.
+     *
+     * @param int|null $limit
+     * @return \stdClass
+     */
+    public function getUnconfirmedTxs(?int $limit = null): \stdClass
+    {
+        return $this->get('/unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
     }
 }

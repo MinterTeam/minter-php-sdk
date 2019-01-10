@@ -8,10 +8,10 @@ use Minter\SDK\MinterConverter;
 use Minter\SDK\MinterPrefix;
 
 /**
- * Class MinterUnboundTx
+ * Class MinterUnbondTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterUnboundTx extends MinterCoinTx implements MinterTxInterface
+class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
 {
     /**
      * Type
@@ -24,7 +24,7 @@ class MinterUnboundTx extends MinterCoinTx implements MinterTxInterface
     const COMMISSION = 100;
 
     /**
-     * Minter Redeem check tx data
+     * Unbond tx data
      *
      * @var array
      */
