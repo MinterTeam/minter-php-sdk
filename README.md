@@ -611,6 +611,16 @@ $check = new MinterCheck('your Minter address here', 'your pass phrase');
 echo $check->createProof(); 
 ```
 
+* Decode check
+
+```php
+use Minter\SDK\MinterCheck;
+
+$check = new MinterCheck('your Minter check here');
+
+$check->getBody(); 
+```
+
 ## Tests
 
 To run unit tests: 
