@@ -21,6 +21,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [getCandidates](#getcandidates)
 	- [estimateTxCommission](#estimatetxcommission)
 	- [getTransactions](#gettransactions)
+	- [getUnconfirmedTxs](#getunconfirmedtxs)
 	
 * [Minter SDK](#using-minterapi)
 	- [SendCoin](#example-5)
