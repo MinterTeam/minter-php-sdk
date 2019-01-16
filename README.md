@@ -36,6 +36,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [RedeemCheck](#example-12)
 	- [Unbond](#example-13)
 	- [MultiSend](#example-14)
+	- [EditCandidate](#example-15)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -521,6 +522,31 @@ $tx = new MinterTx([
                 'value' => '15'
             ]
         ]
+    ],
+    'payload' => '',
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>EditCandidate</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'gasCoin' => 'MNT',
+    'type' => MinterEditCandidateTx::TYPE,
+    'data' => [
+        'pubkey' => 'candidate public key',
+        'reward_address' => 'Minter address for rewards',
+        'owner_address' => 'Minter address of owner'
     ],
     'payload' => '',
     'serviceData' => '',

@@ -8,19 +8,11 @@ use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
-    MinterCoinTx,
-    MinterDelegateTx,
-    MinterMultiSendTx,
-    MinterRedeemCheckTx,
-    MinterSellAllCoinTx,
-    MinterSetCandidateOffTx,
-    MinterSetCandidateOnTx,
-    MinterCreateCoinTx,
-    MinterDeclareCandidacyTx,
-    MinterSendCoinTx,
-    MinterUnbondTx,
-    MinterSellCoinTx,
-    MinterBuyCoinTx
+    MinterCoinTx, MinterDelegateTx, MinterEditCandidateTx,
+    MinterMultiSendTx, MinterRedeemCheckTx, MinterSellAllCoinTx,
+    MinterSetCandidateOffTx, MinterSetCandidateOnTx, MinterCreateCoinTx,
+    MinterDeclareCandidacyTx, MinterSendCoinTx, MinterUnbondTx,
+    MinterSellCoinTx, MinterBuyCoinTx
 };
 
 /**
@@ -156,12 +148,12 @@ class MinterTx
         // encode data array to RPL
         $tx = $this->txDataRlpEncode($this->tx);
 
-        // create kessak hash from transaction
+        // create keccak hash from transaction
         $keccak = Helper::createKeccakHash(
             $this->rlp->encode($tx)->toString('hex')
         );
 
-        // prepare special V R S bytes and add them to transaction
+        // prepare special [V, R, S] signature bytes and add them to transaction
         $tx['signatureData'] = $this->rlp->encode(
             ECDSA::sign($keccak, $privateKey)
         );
@@ -321,6 +313,10 @@ class MinterTx
 
             case MinterMultiSendTx::TYPE:
                 $this->txDataObject = new MinterMultiSendTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterEditCandidateTx::TYPE:
+                $this->txDataObject = new MinterEditCandidateTx($tx['data'], $isHexFormat);
                 break;
 
             default:
