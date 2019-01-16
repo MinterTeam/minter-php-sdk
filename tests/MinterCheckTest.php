@@ -37,7 +37,7 @@ final class MinterCheckTest extends TestCase
     /**
      * Test that Minter Check return valid signature
      */
-    public function test_sign_check()
+    public function testSignCheck()
     {
         $check = new MinterCheck([
             'nonce' => 1,
@@ -54,12 +54,33 @@ final class MinterCheckTest extends TestCase
     /**
      * Test that Minter Check create valid proof
      */
-    public function test_create_proof()
+    public function testCreateProof()
     {
         $check = new MinterCheck(self::ADDRESS, self::PASSPHRASE);
 
         $proof = $check->createProof();
 
         $this->assertSame(self::VALID_PROOF, $proof);
+    }
+
+    /**
+     * Test that Minter Check return valid array after decoding.
+     */
+    public function testDecodeCheck()
+    {
+        $check = new MinterCheck(self::VALID_CHECK);
+
+        $this->assertSame([
+            'nonce' => 1,
+            'dueBlock' => 999999,
+            'coin' => 'MNT',
+            'value' => '10',
+            'lock' => 'ada7ad273bef8a1d22f3e314fdfad1e19b90b1fe8dc7eeb30bd1d391e89af8642af029c138c2e379b95d6bc71b26c531ea155d9435e156a3d113a14c912dfebf00',
+            'v' => 27,
+            'r' => 'eb3d47f227c3da3b29e09234ad24c49296f177234f3c9700d780712a656c338b',
+            's' => '5726e0ed31ab98c07869a99f22e84165fe4a777b0bac7bcf287532210cae1bba'
+        ], $check->getBody());
+
+        $this->assertSame('Mxce931863b9c94a526d94acd8090c1c5955a6eb4b', $check->getOwnerAddress());
     }
 }

@@ -50,36 +50,38 @@ class MinterCheck
      *
      * MinterCheck constructor.
      * @param $checkOrAddress
-     * @param string $passphrase
+     * @param string|null $passphrase
      */
-    public function __construct($checkOrAddress, string $passphrase)
+    public function __construct($checkOrAddress, ?string $passphrase = null)
     {
         $this->rlp = new RLP;
-
-        $this->passphrase = $passphrase;
 
         if(is_array($checkOrAddress)) {
             $this->structure = $this->defineProperties($checkOrAddress);
         }
 
-        if(is_string($checkOrAddress)) {
+        if(is_string($checkOrAddress) && !$passphrase) {
+            $this->structure = $this->decode($checkOrAddress);
+        }
+        else if(is_string($checkOrAddress)) {
             $this->minterAddress = $checkOrAddress;
         }
+
+        $this->passphrase = $passphrase;
     }
 
     /**
-     * Get
+     * Get check structure.
      *
-     * @param string $name
-     * @return mixed
+     * @return array
      */
-    public function __get($name)
+    public function getBody(): array
     {
-        return $this->structure[$name];
+        return $this->structure;
     }
 
     /**
-     *
+     * Sign check
      *
      * @param string $privateKey
      * @return string
@@ -132,6 +134,83 @@ class MinterCheck
 
         // return formatted proof
         return $this->formatLockFromSignature($signature);
+    }
+
+    /**
+     * Get owner address from decoded body.
+     *
+     * @return string
+     */
+    public function getOwnerAddress(): string
+    {
+        // get decoded body
+        $body = $this->getBody();
+
+        // remove signature
+        $data = array_diff_key($body, ['v' => '', 'r' => '', 's' => '']);
+        $data = array_merge($data, $this->encode($data));
+
+        // convert to hex
+        foreach ($data as $key => $value) {
+            if(!ctype_digit($value)) continue;
+            $data[$key] = Helper::dechex($value);
+        }
+
+        // convert to binary
+        $data = Helper::hex2binRecursive($data);
+
+        // create keccak hash from transaction
+        $msg = Helper::createKeccakHash(
+            $this->rlp->encode($data)->toString('hex')
+        );
+
+        // recover public key
+        $publicKey = ECDSA::recover($msg, $body['r'], $body['s'], $body['v']);
+        $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
+
+        return  MinterWallet::getAddressFromPublicKey($publicKey);
+    }
+
+    /**
+     * Decode check.
+     *
+     * @param string $check
+     * @return array
+     */
+    protected function decode(string $check): array
+    {
+        // prepare check string and convert to hex array
+        $check = Helper::removePrefix($check, MinterPrefix::CHECK);
+        $check = $this->rlp->decode('0x' . $check);
+        $check = Helper::rlpArrayToHexArray($check);
+
+        // prepare decoded data
+        $data = [];
+        foreach ($check as $key => $value) {
+            $field = $this->structure[$key];
+            switch ($field) {
+                case 'coin':
+                    $data[$field] = Helper::pack2hex($value);
+                    break;
+
+                case 'value':
+                    $data[$field] = MinterConverter::convertValue(Helper::hexDecode($value), 'bip');
+                    break;
+
+                default:
+                    if(in_array($field, ['dueBlock', 'nonce', 'v'])) {
+                        $data[$field] = hexdec($value);
+                    }
+                    else {
+                        $data[$field] = $value;
+                    }
+                    break;
+            }
+        }
+
+        $structure = array_flip($this->structure);
+
+        return array_merge($structure, $data);
     }
 
     /**

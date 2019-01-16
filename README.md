@@ -21,20 +21,22 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [getCandidates](#getcandidates)
 	- [estimateTxCommission](#estimatetxcommission)
 	- [getTransactions](#gettransactions)
+	- [getUnconfirmedTxs](#getunconfirmedtxs)
 	
-* [Minter SDK](#using-minterapi)
-	- [SendCoin](#example-5)
-	- [SellCoinTx](#example-6)
-	- [SellAllCoin](#example-7)
-	- [BuyCoinTx](#example-8)
-	- [CreateCoin](#example-9)
-	- [DeclareCandidacy](#example-10)
-	- [Delegate](#example-11)
-	- [SetCandidateOn](#example-12)
-	- [SetCandidateOff](#example-13)
-	- [RedeemCheck](#example-14)
-	- [Unbond](#example-15)
-	- [MultiSend](#example-16)
+* [Minter SDK](#using-mintersdk)
+	- [SendCoin](#example-3)
+	- [SellCoinTx](#example-4)
+	- [SellAllCoin](#example-5)
+	- [BuyCoinTx](#example-6)
+	- [CreateCoin](#example-7)
+	- [DeclareCandidacy](#example-8)
+	- [Delegate](#example-9)
+	- [SetCandidateOn](#example-10)
+	- [SetCandidateOff](#example-11)
+	- [RedeemCheck](#example-12)
+	- [Unbond](#example-13)
+	- [MultiSend](#example-14)
+	- [EditCandidate](#example-15)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -529,6 +531,31 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
+* Sign the <b>EditCandidate</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'gasPrice' => 1,
+    'gasCoin' => 'MNT',
+    'type' => MinterEditCandidateTx::TYPE,
+    'data' => [
+        'pubkey' => 'candidate public key',
+        'reward_address' => 'Minter address for rewards',
+        'owner_address' => 'Minter address of owner'
+    ],
+    'payload' => '',
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
+]);
+
+$tx->sign('your private key')
+```
+
 ### Get fee of transaction
 
 * Calculate fee of transaction. You can get fee AFTER signing or decoding transaction.
@@ -609,6 +636,18 @@ use Minter\SDK\MinterCheck;
 $check = new MinterCheck('your Minter address here', 'your pass phrase');
 
 echo $check->createProof(); 
+```
+
+* Decode check
+
+```php
+use Minter\SDK\MinterCheck;
+
+$check = new MinterCheck('your Minter check here');
+
+$check->getBody();  // check body
+
+$check->getOwnerAddress(); // check owner address
 ```
 
 ## Tests
