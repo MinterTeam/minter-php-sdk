@@ -137,12 +137,47 @@ class MinterCheck
     }
 
     /**
+     * Get owner address from decoded body.
+     *
+     * @return string
+     */
+    public function getOwnerAddress(): string
+    {
+        // get decoded body
+        $body = $this->getBody();
+
+        // remove signature
+        $data = array_diff_key($body, ['v' => '', 'r' => '', 's' => '']);
+        $data = array_merge($data, $this->encode($data));
+
+        // convert to hex
+        foreach ($data as $key => $value) {
+            if(!ctype_digit($value)) continue;
+            $data[$key] = Helper::dechex($value);
+        }
+
+        // convert to binary
+        $data = Helper::hex2binRecursive($data);
+
+        // create keccak hash from transaction
+        $msg = Helper::createKeccakHash(
+            $this->rlp->encode($data)->toString('hex')
+        );
+
+        // recover public key
+        $publicKey = ECDSA::recover($msg, $body['r'], $body['s'], $body['v']);
+        $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
+
+        return  MinterWallet::getAddressFromPublicKey($publicKey);
+    }
+
+    /**
      * Decode check.
      *
      * @param string $check
      * @return array
      */
-    public function decode(string $check): array
+    protected function decode(string $check): array
     {
         // prepare check string and convert to hex array
         $check = Helper::removePrefix($check, MinterPrefix::CHECK);

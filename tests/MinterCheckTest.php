@@ -80,5 +80,7 @@ final class MinterCheckTest extends TestCase
             'r' => 'eb3d47f227c3da3b29e09234ad24c49296f177234f3c9700d780712a656c338b',
             's' => '5726e0ed31ab98c07869a99f22e84165fe4a777b0bac7bcf287532210cae1bba'
         ], $check->getBody());
+
+        $this->assertSame('Mxce931863b9c94a526d94acd8090c1c5955a6eb4b', $check->getOwnerAddress());
     }
 }

@@ -24,6 +24,18 @@ class Helper
     }
 
     /**
+     * Convert number to hex string
+     *
+     * @param string $number
+     * @return string
+     */
+    public static function dechex(string $number): string
+    {
+        $hex = gmp_strval(gmp_init($number, 10), 16);
+        return (strlen($hex) % 2 != 0) ? '0' . $hex : $hex;
+    }
+
+    /**
      * Pack to hex string and remove nulls
      *
      * @param $data

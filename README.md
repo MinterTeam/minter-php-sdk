@@ -619,7 +619,9 @@ use Minter\SDK\MinterCheck;
 
 $check = new MinterCheck('your Minter check here');
 
-$check->getBody(); 
+$check->getBody();  // check body
+
+$check->getOwnerAddress(); // check owner address
 ```
 
 ## Tests
