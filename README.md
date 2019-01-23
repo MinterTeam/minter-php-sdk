@@ -22,6 +22,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [estimateTxCommission](#estimatetxcommission)
 	- [getTransactions](#gettransactions)
 	- [getUnconfirmedTxs](#getunconfirmedtxs)
+	- [getMaxGasPrice](#getmaxgasprice)
+	- [getMinGasPrice](#getmingasprice)
 	
 * [Minter SDK](#using-mintersdk)
 	- [SendCoin](#example-3)
@@ -68,7 +70,7 @@ $api = new MinterAPI($nodeUrl);
 Returns coins list, balance and transaction count (for nonce) of an address.
 
 ``
-getBalance(string $minterAddress): \stdClass
+getBalance(string $minterAddress, ?int $height = null): \stdClass
 ``
 
 ###### Example
@@ -121,7 +123,7 @@ getStatus(): \stdClass
 Returns list of active validators.
 
 ``
-getValidators(): \stdClass
+getValidators(?int $height = null): \stdClass
 ``
 
 ### estimateCoinBuy
@@ -129,7 +131,7 @@ getValidators(): \stdClass
 Return estimate of buy coin transaction.
 
 ``
-estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \stdClass
+estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null): \stdClass
 ``
 
 ### estimateCoinSell
@@ -137,7 +139,7 @@ estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy): \std
 Return estimate of sell coin transaction.
 
 ``
-estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy): \stdClass
+estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
 ``
 
 ### getCoinInfo
@@ -146,7 +148,7 @@ Returns information about coin.
 Note: this method does not return information about base coins (MNT and BIP).
 
 ``
-getCoinInfo(string $coin): \stdClass
+getCoinInfo(string $coin, ?int $height = null): \stdClass
 ``
 
 ### getBlock
@@ -178,7 +180,7 @@ getTransaction(string $hash): \stdClass
 Returns candidate’s info by provided public_key. It will respond with 404 code if candidate is not found.
 
 ``
-getCandidate(string $publicKey): \stdClass
+getCandidate(string $publicKey, ?int $height = null): \stdClass
 ``
 
 ### getCandidates
@@ -209,10 +211,26 @@ getTransactions(string $query): \stdClass
 
 ### getUnconfirmedTxs
 
-Return unconfirmed transactions.
+Returns unconfirmed transactions.
 
 ``
 getUnconfirmedTxs(?int $limit = null): \stdClass
+``
+
+### getMaxGasPrice
+
+Returns current max gas price.
+
+``
+getMaxGasPrice(?int $height = null): \stdClass
+``
+
+### getMinGasPrice
+
+Returns current min gas price.
+
+``
+getMinGasPrice(): \stdClass
 ``
 
 
