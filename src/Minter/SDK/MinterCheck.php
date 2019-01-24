@@ -46,7 +46,7 @@ class MinterCheck
     ];
 
     /**
-     * Define RLP, password and encode/decode check
+     * Define RLP, password and encode/decode check.
      *
      * MinterCheck constructor.
      * @param $checkOrAddress
@@ -81,7 +81,17 @@ class MinterCheck
     }
 
     /**
-     * Sign check
+     * Get owner address from decoded check.
+     *
+     * @return string
+     */
+    public function getOwnerAddress(): string
+    {
+        return $this->minterAddress;
+    }
+
+    /**
+     * Sign check.
      *
      * @param string $privateKey
      * @return string
@@ -113,7 +123,7 @@ class MinterCheck
     }
 
     /**
-     * Create proof by address and passphrase
+     * Create proof by address and passphrase.
      *
      * @return string
      * @throws \Exception
@@ -134,41 +144,6 @@ class MinterCheck
 
         // return formatted proof
         return $this->formatLockFromSignature($signature);
-    }
-
-    /**
-     * Get owner address from decoded body.
-     *
-     * @return string
-     */
-    public function getOwnerAddress(): string
-    {
-        // get decoded body
-        $body = $this->getBody();
-
-        // remove signature
-        $data = array_diff_key($body, ['v' => '', 'r' => '', 's' => '']);
-        $data = array_merge($data, $this->encode($data));
-
-        // convert to hex
-        foreach ($data as $key => $value) {
-            if(!ctype_digit($value)) continue;
-            $data[$key] = Helper::dechex($value);
-        }
-
-        // convert to binary
-        $data = Helper::hex2binRecursive($data);
-
-        // create keccak hash from transaction
-        $msg = Helper::createKeccakHash(
-            $this->rlp->encode($data)->toString('hex')
-        );
-
-        // recover public key
-        $publicKey = ECDSA::recover($msg, $body['r'], $body['s'], $body['v']);
-        $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
-
-        return  MinterWallet::getAddressFromPublicKey($publicKey);
     }
 
     /**
@@ -210,11 +185,41 @@ class MinterCheck
 
         $structure = array_flip($this->structure);
 
+        // set owner address
+        list($body, $signature) = array_chunk($check, 5);
+        $this->setOwnerAddress($body, $signature);
+
         return array_merge($structure, $data);
     }
 
     /**
-     * Merge input fields with structure
+     * Set check owner address.
+     *
+     * @param array $body
+     * @param array $signature
+     */
+    protected function setOwnerAddress(array $body, array $signature): void
+    {
+        // convert to binary
+        $data = Helper::hex2binRecursive($body);
+
+        // create keccak hash from transaction
+        $msg = Helper::createKeccakHash(
+            $this->rlp->encode($data)->toString('hex')
+        );
+
+        list($v, $r, $s) = $signature;
+        $v = hexdec($v);
+
+        // recover public key
+        $publicKey = ECDSA::recover($msg, $r, $s, $v);
+        $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
+
+        $this->minterAddress = MinterWallet::getAddressFromPublicKey($publicKey);
+    }
+
+    /**
+     * Merge input fields with structure.
      *
      * @param array $check
      * @return array
@@ -232,7 +237,7 @@ class MinterCheck
     }
 
     /**
-     * Encode input fields
+     * Encode input fields.
      *
      * @param array $check
      * @return array
@@ -240,7 +245,7 @@ class MinterCheck
     protected function encode(array $check): array
     {
         return [
-            'nonce' => hexdec($check['nonce']),
+            'nonce' => dechex($check['nonce']),
 
             'dueBlock' => $check['dueBlock'],
 
@@ -251,7 +256,7 @@ class MinterCheck
     }
 
     /**
-     * Create message Keccak hash from structure fields limited by number of fields
+     * Create message Keccak hash from structure fields limited by number of fields.
      *
      * @return array
      */
@@ -264,7 +269,7 @@ class MinterCheck
     }
 
     /**
-     * Validate that input fields are correct
+     * Validate that input fields are correct.
      *
      * @param array $fields
      * @return bool
@@ -283,7 +288,7 @@ class MinterCheck
     }
 
     /**
-     * Prepare lock field
+     * Prepare lock field.
      *
      * @param array $signature
      * @return string
