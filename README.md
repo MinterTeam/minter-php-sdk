@@ -6,24 +6,26 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 
 * [Installation](#installing)
 * [Minter Api](#using-minterapi)
-	- [getBalance](#getbalance)
-	- [getNonce](#getnonce)
-	- [send](#send)
-	- [getStatus](#getstatus)
-	- [getValidators](#getvalidators)
-	- [estimateCoinBuy](#estimatecoinbuy)
-	- [estimateCoinSell](#estimatecoinsell)
-	- [getCoinInfo](#getcoininfo)
-	- [getBlock](#getblock)
-	- [getEvents](#getevents)
-	- [getTransaction](#gettransaction)
-	- [getCandidate](#getcandidate)
-	- [getCandidates](#getcandidates)
-	- [estimateTxCommission](#estimatetxcommission)
-	- [getTransactions](#gettransactions)
-	- [getUnconfirmedTxs](#getunconfirmedtxs)
-	- [getMaxGasPrice](#getmaxgasprice)
-	- [getMinGasPrice](#getmingasprice)
+    - Methods:
+	    - [getBalance](#getbalance)
+	    - [getNonce](#getnonce)
+	    - [send](#send)
+	    - [getStatus](#getstatus)
+	    - [getValidators](#getvalidators)
+	    - [estimateCoinBuy](#estimatecoinbuy)
+	    - [estimateCoinSell](#estimatecoinsell)
+	    - [getCoinInfo](#getcoininfo)
+	    - [getBlock](#getblock)
+	    - [getEvents](#getevents)
+	    - [getTransaction](#gettransaction)
+	    - [getCandidate](#getcandidate)
+	    - [getCandidates](#getcandidates)
+	    - [estimateTxCommission](#estimatetxcommission)
+	    - [getTransactions](#gettransactions)
+	    - [getUnconfirmedTxs](#getunconfirmedtxs)
+	    - [getMaxGasPrice](#getmaxgasprice)
+	    - [getMinGasPrice](#getmingasprice)
+	- [Error handling](#errorhandling)
 	
 * [Minter SDK](#using-mintersdk)
 	- [SendCoin](#example-3)
@@ -232,6 +234,34 @@ Returns current min gas price.
 ``
 getMinGasPrice(): \stdClass
 ``
+
+### Error handling
+
+Example of how you can handle errors and get the response body.
+
+```php
+use Minter\MinterAPI;
+use GuzzleHttp\Exception\RequestException;
+
+// create instance
+$api = new MinterAPI('node url here');
+
+try {
+    // success response
+    $response = $api->send('signed tx here');
+} catch(RequestException $exception) {
+    // short exception message
+    $message = $exception->getMessage();
+    
+    // error response in json
+    $content = $exception->getResponse()
+                    ->getBody()
+                    ->getContents();
+    
+    // error response as array
+    $error = json_decode($content, true);                
+}
+```
 
 
 ## Using MinterSDK
