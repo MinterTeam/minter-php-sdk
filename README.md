@@ -416,6 +416,7 @@ $tx = new MinterTx([
         'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
         'pubkey' => 'Mp023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
         'commission' => 10,
+        'coin' => 'MNT',
         'stake' => '5'
     ],
     'payload' => '',
