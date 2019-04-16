@@ -280,6 +280,7 @@ use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterSendCoinTx::TYPE,
@@ -305,6 +306,7 @@ use Minter\SDK\MinterCoins\MinterSellCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterSellCoinTx::TYPE,
@@ -331,6 +333,7 @@ use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterSellAllCoinTx::TYPE,
@@ -356,6 +359,7 @@ use Minter\SDK\MinterCoins\MinterBuyCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterBuyCoinTx::TYPE,
@@ -382,6 +386,7 @@ use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterCreateCoinTx::TYPE,
@@ -409,6 +414,7 @@ use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterDeclareCandidacyTx::TYPE,
@@ -436,6 +442,7 @@ use Minter\SDK\MinterCoins\MinterDelegateTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterDelegateTx::TYPE,
@@ -461,6 +468,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterSetCandidateOnTx::TYPE,
@@ -484,6 +492,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterSetCandidateOffTx::TYPE,
@@ -507,6 +516,7 @@ use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterRedeemCheckTx::TYPE,
@@ -531,6 +541,7 @@ use Minter\SDK\MinterCoins\MinterUnbondTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterUnbondTx::TYPE,
@@ -556,6 +567,7 @@ use Minter\SDK\MinterCoins\MinterMultiSendTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterMultiSendTx::TYPE,
@@ -589,6 +601,7 @@ use Minter\SDK\MinterCoins\MinterEditCandidateTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
     'gasCoin' => 'MNT',
     'type' => MinterEditCandidateTx::TYPE,
@@ -666,6 +679,7 @@ use Minter\SDK\MinterCheck;
 
 $check = new MinterCheck([
     'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'dueBlock' => 999999,
     'coin' => 'MNT',
     'value' => '10'
