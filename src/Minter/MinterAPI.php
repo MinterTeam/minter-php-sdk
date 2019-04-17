@@ -46,7 +46,7 @@ class MinterAPI
      */
     public function getCandidate(string $publicKey, ?int $height = null): \stdClass
     {
-        $params = ['pubkey' => $publicKey];
+        $params = ['pub_key' => $publicKey];
 
         if($height) {
             $params['height'] = $height;
