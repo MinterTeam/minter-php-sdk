@@ -27,7 +27,7 @@ final class MinterUnbondTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf88f01018a4d4e540000000000000008b6f5a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a438a4d4e5400000000000000888ac7230489e80000808001b845f8431ba0250c4ef7c13a9421503c1109c3119eca4739463299755c58900cd00d6f43f94ca078746cc2fa6deeb8e3e568260e606ac37f7670f2d73cb28c02142c2fc5bfcf5f';
+    const VALID_SIGNATURE = '0xf88f0102018a4d4e540000000000000008b6f5a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a438a4d4e5400000000000000888ac7230489e80000808001b844f8421ca0ff5766c85847b37a276f3f9d027fb7c99745920fa395c7bd399cedd8265c5e1d9f791bcdfe4d1bc1e73ada7bf833103c828f22d83189dad2b22ad28a54aacf2a';
 
     /**
      * Test to decode data for MinterUnbondTx
@@ -46,6 +46,7 @@ final class MinterUnbondTxTest extends TestCase
     {
         $tx = new MinterTx([
             'nonce' => 1,
+            'chainId' => MinterTx::TESTNET_CHAIN_ID,
             'gasPrice' => 1,
             'gasCoin' => 'MNT',
             'type' => MinterUnbondTx::TYPE,

@@ -40,6 +40,7 @@ class MinterTx
      */
     protected $structure = [
         'nonce',
+        'chainId',
         'gasPrice',
         'gasCoin',
         'type',
@@ -80,6 +81,12 @@ class MinterTx
      * Type of multi signature for the transaction
      */
     const SIGNATURE_MULTI_TYPE = 2;
+
+    /** Mainnet chain id */
+    const MAINNET_CHAIN_ID = 1;
+
+    /** Testnet chain id */
+    const TESTNET_CHAIN_ID = 2;
 
     /**
      * MinterTx constructor.
@@ -247,8 +254,8 @@ class MinterTx
         $tx = $this->rlpToHex($tx);
 
         // pack data of transaction to hex string
-        $tx[4] = $this->rlpToHex($tx[4]);
-        $tx[8] = $this->rlpToHex($tx[8]);
+        $tx[5] = $this->rlpToHex($tx[5]);
+        $tx[9] = $this->rlpToHex($tx[9]);
 
         // encode transaction data
         return $this->encode($this->prepareResult($tx), true);

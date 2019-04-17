@@ -15,6 +15,7 @@ final class MinterTxTest extends TestCase
      */
     const TX = [
         'nonce' => 1,
+        'chainId' => 2,
         'gasPrice' => 1,
         'gasCoin' => 'MNT',
         'type' => 1,
@@ -33,6 +34,7 @@ final class MinterTxTest extends TestCase
      */
     const INTERMEDIATE_TX = [
         'nonce' => 1,
+        'chainId' => 2,
         'gasPrice' => 1,
         'gasCoin' => 'MNT',
         'type' => 1,
@@ -45,9 +47,9 @@ final class MinterTxTest extends TestCase
         'serviceData' => '',
         'signatureType' => 1,
         'signatureData' => [
-            'v' => 27,
-            'r' => '5163017775fefa4d56f71ae50a8ddf361628fddc1101365b2eb6fd9b5dbdc250',
-            's' => '2fbdc56b6cf963206f807e2899f05e4fac71f43c9adfd11ea6baa7585b8b8115'
+            'v' => 28,
+            'r' => '1f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4',
+            's' => '1bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a'
         ]
     ];
 
@@ -64,12 +66,12 @@ final class MinterTxTest extends TestCase
     /**
      * Predefined valid transaction
      */
-    const VALID_TX = '0xf88301018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ba05163017775fefa4d56f71ae50a8ddf361628fddc1101365b2eb6fd9b5dbdc250a02fbdc56b6cf963206f807e2899f05e4fac71f43c9adfd11ea6baa7585b8b8115';
+    const VALID_TX = '0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a';
 
     /**
      * Predefined valid hash
      */
-    const VALID_HASH = 'Mt823ded85fc5dca098836333851144f88d5c8896b';
+    const VALID_HASH = 'Mt13b73500c171006613fa8e82cc8b29857af1d63a';
 
     /**
      * Test signing.

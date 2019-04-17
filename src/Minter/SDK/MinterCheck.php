@@ -36,6 +36,7 @@ class MinterCheck
      */
     protected $structure = [
         'nonce',
+        'chainId',
         'dueBlock',
         'coin',
         'value',
@@ -100,7 +101,7 @@ class MinterCheck
     {
         // create message hash and passphrase by first 4 fields
         $msgHash = $this->serialize(
-            array_slice($this->structure, 0, 4)
+            array_slice($this->structure, 0, 5)
         );
 
         $passphrase = hash('sha256', $this->passphrase);
@@ -113,7 +114,7 @@ class MinterCheck
 
         // create message hash with lock field
         $msgHashWithLock = $this->serialize(
-            array_slice($this->structure, 0, 5)
+            array_slice($this->structure, 0, 6)
         );
 
         $this->structure = array_merge($this->structure, ECDSA::sign($msgHashWithLock, $privateKey));
@@ -158,11 +159,12 @@ class MinterCheck
         $check = Helper::removePrefix($check, MinterPrefix::CHECK);
         $check = $this->rlp->decode('0x' . $check);
         $check = Helper::rlpArrayToHexArray($check);
-
+        
         // prepare decoded data
         $data = [];
         foreach ($check as $key => $value) {
             $field = $this->structure[$key];
+
             switch ($field) {
                 case 'coin':
                     $data[$field] = Helper::pack2hex($value);
@@ -173,11 +175,9 @@ class MinterCheck
                     break;
 
                 default:
-                    if(in_array($field, ['dueBlock', 'nonce', 'v'])) {
+                    $data[$field] = $value;
+                    if(in_array($field, ['dueBlock', 'nonce', 'v', 'chainId'])) {
                         $data[$field] = hexdec($value);
-                    }
-                    else {
-                        $data[$field] = $value;
                     }
                     break;
             }
@@ -186,7 +186,7 @@ class MinterCheck
         $structure = array_flip($this->structure);
 
         // set owner address
-        list($body, $signature) = array_chunk($check, 5);
+        list($body, $signature) = array_chunk($check, 6);
         $this->setOwnerAddress($body, $signature);
 
         return array_merge($structure, $data);
@@ -246,6 +246,8 @@ class MinterCheck
     {
         return [
             'nonce' => dechex($check['nonce']),
+
+            'chainId' => dechex($check['chainId']),
 
             'dueBlock' => $check['dueBlock'],
 

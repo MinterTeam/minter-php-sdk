@@ -32,7 +32,7 @@ final class MinterEditCandidateTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf8a701018a4d4e54000000000000000eb84df84ba04ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b89489e5dc185e6bab772ac8e00cf3fb3f4cb0931c4794e731fcddd37bb6e72286597d22516c8ba3ddffa0808001b845f8431ba091e2c43e13e14a869f5f941e9fa2e676d79c0125aad281646f912d4919f9895fa07182db16d2279c158a3506b4867c46e42c7c3f9d82ca1f957fdfb636dfe78217';
+    const VALID_SIGNATURE = '0xf8a80102018a4d4e54000000000000000eb84df84ba04ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b89489e5dc185e6bab772ac8e00cf3fb3f4cb0931c4794e731fcddd37bb6e72286597d22516c8ba3ddffa0808001b845f8431ca0421470f27f78231b669c1bf1fcc56168954d64fbb7dc3ff021bab01311fab6eaa075e86365d98c87e806fcbc5c542792f569e19d8ae7af671d9ba4679acc86d35e';
 
     /**
      * Test to decode data for MinterEditCandidateTx
@@ -52,6 +52,7 @@ final class MinterEditCandidateTxTest extends TestCase
     {
         $tx = new MinterTx([
             'nonce' => 1,
+            'chainId' => MinterTx::TESTNET_CHAIN_ID,
             'gasPrice' => 1,
             'gasCoin' => 'MNT',
             'type' => MinterEditCandidateTx::TYPE,

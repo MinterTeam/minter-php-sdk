@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Minter\SDK\MinterCheck;
+use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +28,7 @@ final class MinterCheckTest extends TestCase
     /**
      * Predefined valid check string
      */
-    CONST VALID_CHECK = 'Mcf89f01830f423f8a4d4e5400000000000000888ac7230489e80000b841ada7ad273bef8a1d22f3e314fdfad1e19b90b1fe8dc7eeb30bd1d391e89af8642af029c138c2e379b95d6bc71b26c531ea155d9435e156a3d113a14c912dfebf001ba0eb3d47f227c3da3b29e09234ad24c49296f177234f3c9700d780712a656c338ba05726e0ed31ab98c07869a99f22e84165fe4a777b0bac7bcf287532210cae1bba';
+    CONST VALID_CHECK = 'Mcf8a00102830f423f8a4d4e5400000000000000888ac7230489e80000b8419200e3c947484ced3268eebd1810d640ac0d6c6a099e4d87e074bab6a5751a324540e1e53907a10c9fb73f944490a737034de4a8bae96e707b5acbf8015dd8cb001ba0cbbc87bc7018f2c3bcaea67968713389addc3bf72f698b8b44ffddc384fca230a07ff35524aaca365fdac2eb25d29e9ba8431484fcb2b890d6d940d2527daeca22';
 
     /**
      * Predefined valid proof
@@ -41,6 +42,7 @@ final class MinterCheckTest extends TestCase
     {
         $check = new MinterCheck([
             'nonce' => 1,
+            'chainId' => MinterTx::TESTNET_CHAIN_ID,
             'dueBlock' => 999999,
             'coin' => 'MNT',
             'value' => 10
@@ -72,13 +74,14 @@ final class MinterCheckTest extends TestCase
 
         $this->assertSame([
             'nonce' => 1,
+            'chainId' => MinterTx::TESTNET_CHAIN_ID,
             'dueBlock' => 999999,
             'coin' => 'MNT',
             'value' => '10',
-            'lock' => 'ada7ad273bef8a1d22f3e314fdfad1e19b90b1fe8dc7eeb30bd1d391e89af8642af029c138c2e379b95d6bc71b26c531ea155d9435e156a3d113a14c912dfebf00',
+            'lock' => '9200e3c947484ced3268eebd1810d640ac0d6c6a099e4d87e074bab6a5751a324540e1e53907a10c9fb73f944490a737034de4a8bae96e707b5acbf8015dd8cb00',
             'v' => 27,
-            'r' => 'eb3d47f227c3da3b29e09234ad24c49296f177234f3c9700d780712a656c338b',
-            's' => '5726e0ed31ab98c07869a99f22e84165fe4a777b0bac7bcf287532210cae1bba'
+            'r' => 'cbbc87bc7018f2c3bcaea67968713389addc3bf72f698b8b44ffddc384fca230',
+            's' => '7ff35524aaca365fdac2eb25d29e9ba8431484fcb2b890d6d940d2527daeca22'
         ], $check->getBody());
 
         $this->assertSame('Mxce931863b9c94a526d94acd8090c1c5955a6eb4b', $check->getOwnerAddress());
