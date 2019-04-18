@@ -21,7 +21,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Fee units
      */
-    const COMMISSION = 100;
+    const COMMISSION = 200;
 
     /**
      * Delegate tx data
