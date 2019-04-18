@@ -20,7 +20,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Fee units
      */
-    const COMMISSION = 10;
+    const COMMISSION = 30;
 
     /**
      * Minter Redeem check tx data

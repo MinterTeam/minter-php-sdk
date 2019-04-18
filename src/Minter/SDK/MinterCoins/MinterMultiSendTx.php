@@ -18,7 +18,7 @@ class MinterMultiSendTx extends MinterCoinTx implements MinterTxInterface
     /**
      * Fee units
      */
-    const COMMISSION = 1;
+    const COMMISSION = 5;
 
     /**
      * Send coin tx data
