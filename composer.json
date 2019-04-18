@@ -10,7 +10,7 @@
     "ext-bcmath": "*",
     "kornrunner/keccak": "1.0",
     "guzzlehttp/guzzle": "^6.3",
-    "minter/minter-php-bip-44": "dev-master",
+    "minter/minter-php-bip-44": "0.0.1",
     "bitwasp/bitcoin-lib": "1.0.4",
     "bitwasp/secp256k1-php": "0.1.3",
     "simplito/elliptic-php": "1.0.3",
