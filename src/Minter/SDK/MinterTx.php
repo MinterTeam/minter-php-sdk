@@ -4,6 +4,7 @@ namespace Minter\SDK;
 
 use InvalidArgumentException;
 use Exception;
+use Web3p\RLP\Buffer;
 use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
@@ -154,6 +155,8 @@ class MinterTx
 
         // encode data array to RPL
         $tx = $this->txDataRlpEncode($this->tx);
+        // TODO: temp fix. 
+	    $tx['payload'] = new Buffer(str_split($tx['payload'], 1));
 
         // create keccak hash from transaction
         $keccak = Helper::createKeccakHash(
