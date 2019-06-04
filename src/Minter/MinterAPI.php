@@ -278,4 +278,21 @@ class MinterAPI
     {
         return $this->get('/min_gas_price');
     }
+
+    /**
+     * Returns missed blocks by validator public key.
+     *
+     * @param string $pubKey
+     * @param int|null $height
+     * @return \stdClass
+     */
+    public function getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
+    {
+        $params = ['pub_key' => $pubKey];
+        if($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('/missed_blocks', $params);
+    }
 }
