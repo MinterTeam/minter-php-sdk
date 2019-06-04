@@ -25,6 +25,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getUnconfirmedTxs](#getunconfirmedtxs)
 	    - [getMaxGasPrice](#getmaxgasprice)
 	    - [getMinGasPrice](#getmingasprice)
+	    - [getMissedBlocks](#getmissedblocks)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
@@ -233,6 +234,14 @@ Returns current min gas price.
 
 ``
 getMinGasPrice(): \stdClass
+``
+
+### getMissedBlocks
+
+Returns missed blocks by validator public key.
+
+``
+getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
 ``
 
 ### Error handling
