@@ -151,9 +151,19 @@ class MinterAPI
      * @return \stdClass
      * @throws \Exception
      */
-    public function getCandidates(?int $height = null): \stdClass
+    public function getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
     {
-        return $this->get('/candidates', ($height ? ['height' => $height] : null));
+        $params = [];
+
+        if($includeStakes) {
+            $params['include_stakes'] = 'true';
+        }
+
+        if($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('/candidates', $params);
     }
 
     /**
