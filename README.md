@@ -193,7 +193,7 @@ Returns list of candidates.
 $height is optional parameter.
 
 ``
-getCandidates(?int $height = null): \stdClass
+getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
 ``
 
 ### estimateTxCommission
