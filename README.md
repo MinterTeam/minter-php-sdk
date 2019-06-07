@@ -46,6 +46,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#create-minter-check)
+	- [Minter Wallet](#minter-wallet)
 * [Tests](#tests)
 
 ## Installing
@@ -720,6 +721,58 @@ $check = new MinterCheck('your Minter check here');
 $check->getBody();  // check body
 
 $check->getOwnerAddress(); // check owner address
+```
+
+### Minter Wallet
+
+###### Example
+
+* Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$wallet = MinterWallet::create();
+```
+
+* Generate mnemonic.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$mnemonic = MinterWallet::generateMnemonic();
+```
+
+* Get seed from mnemonic.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$seed = MinterWallet::mnemonicToSeed($mnemonic);
+```
+
+* Get private key from seed.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$privateKey = MinterWallet::seedToPrivateKey($seed);
+```
+
+* Get public key from private key.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$publicKey = MinterWallet::privateToPublic($privateKey);
+```
+
+* Get Minter address from public key.
+
+```php
+use Minter\SDK\MinterWallet;
+
+$address = MinterWallet::getAddressFromPublicKey($publicKey);
 ```
 
 ## Tests

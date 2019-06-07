@@ -24,6 +24,11 @@ final class MinterWalletTest extends TestCase
      */
     const VALID_ADDRESS = 'Mx17b1240ba6d45258f836b45ae0c4fc1106f5ce59';
 
+    // Data for testing mnemonicToSeed, seedToPrivateKey
+    const MNEMONIC = 'suffer draft bacon typical start retire air sniff large biology mail diagram';
+    const VALID_SEED = '33fa1096997d9b0f47469463710b3a2e91971144265b281dc71f831539a3b8e3413e5969e5ffb4d3c5a37cfa0f964bcc779efe4ae37fceef048175105caad624';
+    const VALID_PRIVATE_KEY_FROM_SEED = 'd3520cc797f12b8a81e805ddf5a5bf8b994e347003ea25c9ccaecb5073f3fef1';
+
     /**
      * Test converting private key to public key.
      */
@@ -102,5 +107,21 @@ final class MinterWalletTest extends TestCase
             $wallet['public_key'],
             MinterWallet::privateToPublic($wallet['private_key'])
         );
+    }
+
+    /**
+     * Test mnemonic to seed.
+     */
+    public function testMnemonicToSeed()
+    {
+        $this->assertEquals(self::VALID_SEED, MinterWallet::mnemonicToSeed(self::MNEMONIC));
+    }
+
+    /**
+     * Test seed to private key.
+     */
+    public function testSeedToPrivateKey()
+    {
+        $this->assertEquals(self::VALID_PRIVATE_KEY_FROM_SEED, MinterWallet::seedToPrivateKey(self::VALID_SEED));
     }
 }
