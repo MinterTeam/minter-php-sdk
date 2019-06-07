@@ -32,11 +32,9 @@ class MinterWallet
      */
     public static function create(): array
     {
-        $entropy = BIP39::generateEntropy(self::BIP44_ENTROPY_BITS);
-        $mnemonic = BIP39::entropyToMnemonic($entropy);
-        $seed = BIP39::mnemonicToSeedHex($mnemonic, '');
-        $privateKey = BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
-
+        $mnemonic = self::generateMnemonic();
+        $seed = self::mnemonicToSeed($mnemonic);
+        $privateKey = self::seedToPrivateKey($seed);
         $publicKey = self::privateToPublic($privateKey);
         $address = self::getAddressFromPublicKey($publicKey);
 
@@ -48,7 +46,7 @@ class MinterWallet
             'private_key' => $privateKey
         ];
     }
-    
+
     /**
      * Generate public key
      *
@@ -57,7 +55,7 @@ class MinterWallet
      */
     public static function privateToPublic(string $privateKey): string
     {
-        return MinterPrefix::PUBLIC_KEY .  ECDSA::privateToPublic($privateKey);
+        return MinterPrefix::PUBLIC_KEY . ECDSA::privateToPublic($privateKey);
     }
 
     /**
@@ -76,6 +74,40 @@ class MinterWallet
         $hash = Keccak::hash(hex2bin($publicKey), 256);
 
         return MinterPrefix::ADDRESS . substr($hash, -40);
+    }
+
+    /**
+     * Generate mnemonic phrase from entropy.
+     *
+     * @return string
+     */
+    public static function generateMnemonic(): string
+    {
+        return BIP39::entropyToMnemonic(
+            BIP39::generateEntropy(self::BIP44_ENTROPY_BITS)
+        );
+    }
+
+    /**
+     * Get seed from the mnemonic phrase.
+     *
+     * @param string $mnemonic
+     * @return string
+     */
+    public static function mnemonicToSeed(string $mnemonic): string
+    {
+        return BIP39::mnemonicToSeedHex($mnemonic, '');
+    }
+
+    /**
+     * Get private key from seed.
+     *
+     * @param string $seed
+     * @return string
+     */
+    public static function seedToPrivateKey(string $seed): string
+    {
+        return BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
     }
 
     /**
