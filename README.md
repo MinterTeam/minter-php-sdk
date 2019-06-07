@@ -46,6 +46,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#create-minter-check)
+	- [Minter Wallet](#minter-wallet)
 * [Tests](#tests)
 
 ## Installing
