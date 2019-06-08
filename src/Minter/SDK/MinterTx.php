@@ -29,9 +29,7 @@ class MinterTx
      */
     protected $tx;
 
-    /**
-     * @var RLP
-     */
+    /** @var RLP */
     protected $rlp;
 
     /**
@@ -63,24 +61,16 @@ class MinterTx
      */
     protected $txDataObject;
 
-    /**
-     * Fee in PIP
-     */
+    /** Fee in PIP */
     const PAYLOAD_COMMISSION = 2;
 
-    /**
-     * All gas price multiplied by FEE DEFAULT (PIP)
-     */
+    /** All gas price multiplied by FEE DEFAULT (PIP) */
     const FEE_DEFAULT_MULTIPLIER = 1000000000000000;
 
-    /**
-     * Type of single signature for the transaction
-     */
+    /** Type of single signature for the transaction */
     const SIGNATURE_SINGLE_TYPE = 1;
 
-    /**
-     * Type of multi signature for the transaction
-     */
+    /** Type of multi signature for the transaction */
     const SIGNATURE_MULTI_TYPE = 2;
 
     /** Mainnet chain id */
@@ -274,7 +264,10 @@ class MinterTx
      */
     protected function encode(array $tx, bool $isHexFormat = false): array
     {
+        // validate transaction structure
         $this->validateTx($tx);
+        // order transaction params in right order
+        $tx = array_replace(array_intersect_key(array_flip($this->structure), $tx), $tx);
 
         switch ($tx['type']) {
             case MinterSendCoinTx::TYPE:
