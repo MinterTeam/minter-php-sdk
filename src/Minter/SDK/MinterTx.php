@@ -266,7 +266,7 @@ class MinterTx
     {
         // validate transaction structure
         $this->validateTx($tx);
-        // order transaction params in right order
+        // make right order in transaction params
         $tx = array_replace(array_intersect_key(array_flip($this->structure), $tx), $tx);
 
         switch ($tx['type']) {
