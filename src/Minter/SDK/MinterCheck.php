@@ -298,7 +298,7 @@ class MinterCheck
     protected function formatLockFromSignature(array $signature): string
     {
         $recovery = $signature['v'] === ECDSA::V_BITS ? '00' : '01';
-
-        return bin2hex($signature['r']) . bin2hex($signature['s']) . $recovery;
+        $recovered = bin2hex($signature['r']) . bin2hex($signature['s']) . $recovery;
+        return str_pad($recovered, 130, '0', STR_PAD_LEFT);
     }
 }
