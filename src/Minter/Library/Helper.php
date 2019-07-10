@@ -4,6 +4,7 @@ namespace Minter\Library;
 
 use kornrunner\Keccak;
 use Minter\SDK\MinterPrefix;
+use Web3p\RLP\Buffer;
 
 /**
  * Class Helper
@@ -150,5 +151,22 @@ class Helper
 
             return self::rlpArrayToHexArray($item);
         }, $rlp);
+    }
+
+    /**
+     * Create buffer from data recursively.
+     *
+     * @param $data
+     * @return array|Buffer
+     */
+    public static function hex2buffer($data)
+    {
+        if(is_array($data)) {
+            return array_map(function($item) {
+                return self::hex2buffer($item);
+            }, $data);
+        }
+
+        return new Buffer($data, 'hex');
     }
 }

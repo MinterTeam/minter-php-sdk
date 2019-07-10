@@ -113,11 +113,11 @@ class MinterCheck
         $this->structure['lock'] = hex2bin($this->formatLockFromSignature($signature));
 
         // create message hash with lock field
-        $msgHashWithLock = $this->serialize(
-            array_slice($this->structure, 0, 6)
-        );
+        $msgHashWithLock = $this->serialize(array_slice($this->structure, 0, 6));
 
-        $this->structure = array_merge($this->structure, ECDSA::sign($msgHashWithLock, $privateKey));
+        // create signature
+        $signature = ECDSA::sign($msgHashWithLock, $privateKey);
+        $this->structure = array_merge($this->structure, Helper::hex2buffer($signature));
 
         // rlp encode data and add Minter wallet prefix
         return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
@@ -297,8 +297,8 @@ class MinterCheck
      */
     protected function formatLockFromSignature(array $signature): string
     {
-        $recovery = $signature['v'] === ECDSA::V_BITS ? '00' : '01';
+        $recovery = hexdec($signature['v']) === ECDSA::V_BITS ? '00' : '01';
 
-        return bin2hex($signature['r']) . bin2hex($signature['s']) . $recovery;
+        return $signature['r'] . $signature['s'] . $recovery;
     }
 }
