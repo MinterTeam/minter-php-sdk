@@ -62,10 +62,10 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Pack symbol
-            'coinToSell' => Helper::pack2hex($txData[0]),
+            'coinToSell' => Helper::hex2str($txData[0]),
 
             // Pack symbol
-            'coinToBuy' => Helper::pack2hex($txData[1]),
+            'coinToBuy' => Helper::hex2str($txData[1]),
 
             // Convert field from PIP to BIP
             'minimumValueToBuy' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')

@@ -70,10 +70,10 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Pack name
-            'name' => Helper::pack2hex($txData[0]),
+            'name' => Helper::hex2str($txData[0]),
 
             // Pack symbol
-            'symbol' => Helper::pack2hex($txData[1]),
+            'symbol' => Helper::hex2str($txData[1]),
 
             // Convert field from PIP to BIP
             'initialAmount' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip'),

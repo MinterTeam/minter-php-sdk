@@ -106,9 +106,9 @@ class ECDSA
         $s = Helper::padToEven($s);
 
         return [
-            'v' => $recovery + self::V_BITS,
-            'r' => hex2bin($r),
-            's' => hex2bin($s)
+            'v' => dechex($recovery + self::V_BITS),
+            'r' => $r,
+            's' => $s
         ];
     }
 }

@@ -145,7 +145,6 @@ class MinterTx
 
         // encode data array to RPL
         $tx = $this->txDataRlpEncode($this->tx);
-        // TODO: temp fix. 
 	    $tx['payload'] = new Buffer(str_split($tx['payload'], 1));
 
         // create keccak hash from transaction
@@ -154,10 +153,12 @@ class MinterTx
         );
 
         // prepare special [V, R, S] signature bytes and add them to transaction
+        $signature = ECDSA::sign($keccak, $privateKey);
         $tx['signatureData'] = $this->rlp->encode(
-            ECDSA::sign($keccak, $privateKey)
+            Helper::hex2buffer($signature)
         );
 
+        // pack transaction to hex string
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
@@ -349,16 +350,16 @@ class MinterTx
                     break;
 
                 case 'payload':
-                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    $result[$field] = Helper::hex2str($tx[$key]);
                     break;
 
                 case 'serviceData':
-                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    $result[$field] = Helper::hex2str($tx[$key]);
                     break;
 
                 case 'gasCoin':
                     $result[$field] = MinterConverter::convertCoinName(
-                        Helper::pack2hex($tx[$key])
+                        Helper::hex2str($tx[$key])
                     );
                     break;
 

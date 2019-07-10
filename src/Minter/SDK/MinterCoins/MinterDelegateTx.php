@@ -68,7 +68,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
             'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
             // Pack coin name
-            'coin' => Helper::pack2hex($txData[1]),
+            'coin' => Helper::hex2str($txData[1]),
 
             // Convert stake from PIP to BIP
             'stake' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
