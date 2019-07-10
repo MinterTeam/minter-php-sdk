@@ -4,6 +4,7 @@ namespace Minter\SDK;
 
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
+use Web3p\RLP\Buffer;
 use Web3p\RLP\RLP;
 
 /**
@@ -100,9 +101,7 @@ class MinterCheck
     public function sign(string $privateKey): string
     {
         // create message hash and passphrase by first 4 fields
-        $msgHash = $this->serialize(
-            array_slice($this->structure, 0, 5)
-        );
+        $msgHash = $this->serialize(array_slice($this->structure, 0, 5));
 
         $passphrase = hash('sha256', $this->passphrase);
 
@@ -159,15 +158,16 @@ class MinterCheck
         $check = Helper::removePrefix($check, MinterPrefix::CHECK);
         $check = $this->rlp->decode('0x' . $check);
         $check = Helper::rlpArrayToHexArray($check);
-        
+
         // prepare decoded data
         $data = [];
         foreach ($check as $key => $value) {
             $field = $this->structure[$key];
 
             switch ($field) {
+                case 'nonce':
                 case 'coin':
-                    $data[$field] = Helper::pack2hex($value);
+                    $data[$field] = Helper::hex2str($value);
                     break;
 
                 case 'value':
@@ -176,20 +176,18 @@ class MinterCheck
 
                 default:
                     $data[$field] = $value;
-                    if(in_array($field, ['dueBlock', 'nonce', 'v', 'chainId'])) {
+                    if(in_array($field, ['dueBlock', 'v', 'chainId'])) {
                         $data[$field] = hexdec($value);
                     }
                     break;
             }
         }
 
-        $structure = array_flip($this->structure);
-
         // set owner address
-        list($body, $signature) = array_chunk($check, 6);
+        list($body, $signature) = array_chunk($data, 6, true);
         $this->setOwnerAddress($body, $signature);
 
-        return array_merge($structure, $data);
+        return $data;
     }
 
     /**
@@ -200,19 +198,16 @@ class MinterCheck
      */
     protected function setOwnerAddress(array $body, array $signature): void
     {
-        // convert to binary
-        $data = Helper::hex2binRecursive($body);
+        // encode check to rlp
+        $lock = array_pop($body);
+        $check = $this->encode($body);
+        $check['lock'] = hex2bin($lock);
 
-        // create keccak hash from transaction
-        $msg = Helper::createKeccakHash(
-            $this->rlp->encode($data)->toString('hex')
-        );
-
-        list($v, $r, $s) = $signature;
-        $v = hexdec($v);
+        // create keccak hash from check
+        $msg = $this->serialize($check);
 
         // recover public key
-        $publicKey = ECDSA::recover($msg, $r, $s, $v);
+        $publicKey = ECDSA::recover($msg, $signature['r'], $signature['s'], $signature['v']);
         $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
 
         $this->minterAddress = MinterWallet::getAddressFromPublicKey($publicKey);
@@ -245,7 +240,9 @@ class MinterCheck
     protected function encode(array $check): array
     {
         return [
-            'nonce' => dechex($check['nonce']),
+            'nonce' => Helper::hexDecode(
+                Helper::str2hex($check['nonce'])
+            ),
 
             'chainId' => dechex($check['chainId']),
 
@@ -284,6 +281,10 @@ class MinterCheck
             if(!isset($structure[$field])) {
                 return false;
             }
+
+            if($field === 'nonce' && strlen($fieldValue) > 32) {
+                return false;
+            }
         }
 
         return true;
@@ -297,8 +298,10 @@ class MinterCheck
      */
     protected function formatLockFromSignature(array $signature): string
     {
+        $r = str_pad($signature['r'], 64, '0', STR_PAD_LEFT);
+        $s = str_pad($signature['s'], 64, '0', STR_PAD_LEFT);
         $recovery = hexdec($signature['v']) === ECDSA::V_BITS ? '00' : '01';
 
-        return $signature['r'] . $signature['s'] . $recovery;
+        return $r . $s. $recovery;
     }
 }

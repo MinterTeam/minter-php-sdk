@@ -68,7 +68,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
             'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
             // Pack binary to string
-            'coin' => Helper::pack2hex($txData[1]),
+            'coin' => Helper::hex2str($txData[1]),
 
             // Convert value from PIP to BIP
             'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')

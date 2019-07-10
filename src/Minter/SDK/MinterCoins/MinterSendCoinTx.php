@@ -64,7 +64,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Pack binary to string
-            'coin' => Helper::pack2hex($txData[0]),
+            'coin' => Helper::hex2str($txData[0]),
 
             // Add Minter wallet prefix to string
             'to' => Helper::addWalletPrefix($txData[1]),

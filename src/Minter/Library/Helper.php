@@ -42,7 +42,7 @@ class Helper
      * @param $data
      * @return string
      */
-    public static function pack2hex(string $data): string
+    public static function hex2str(string $data): string
     {
         return str_replace(chr(0), '', pack('H*', $data));
     }
@@ -168,5 +168,16 @@ class Helper
         }
 
         return new Buffer($data, 'hex');
+    }
+
+    /**
+     * @param string $str
+     * @return string
+     */
+    public static function str2hex(string $str): string
+    {
+        $str = unpack('H*', $str);
+
+        return array_shift($str);
     }
 }

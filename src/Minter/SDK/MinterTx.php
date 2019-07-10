@@ -148,7 +148,9 @@ class MinterTx
 	    $tx['payload'] = new Buffer(str_split($tx['payload'], 1));
 
         // create keccak hash from transaction
-        $keccak = Helper::createKeccakHash($this->rlp->encode($tx)->toString('hex'));
+        $keccak = Helper::createKeccakHash(
+            $this->rlp->encode($tx)->toString('hex')
+        );
 
         // prepare special [V, R, S] signature bytes and add them to transaction
         $signature = ECDSA::sign($keccak, $privateKey);
@@ -348,16 +350,16 @@ class MinterTx
                     break;
 
                 case 'payload':
-                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    $result[$field] = Helper::hex2str($tx[$key]);
                     break;
 
                 case 'serviceData':
-                    $result[$field] = Helper::pack2hex($tx[$key]);
+                    $result[$field] = Helper::hex2str($tx[$key]);
                     break;
 
                 case 'gasCoin':
                     $result[$field] = MinterConverter::convertCoinName(
-                        Helper::pack2hex($tx[$key])
+                        Helper::hex2str($tx[$key])
                     );
                     break;
 
