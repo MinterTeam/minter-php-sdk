@@ -29,19 +29,20 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
-	- [SendCoin](#example-3)
-	- [SellCoinTx](#example-4)
-	- [SellAllCoin](#example-5)
-	- [BuyCoinTx](#example-6)
-	- [CreateCoin](#example-7)
-	- [DeclareCandidacy](#example-8)
-	- [Delegate](#example-9)
-	- [SetCandidateOn](#example-10)
-	- [SetCandidateOff](#example-11)
-	- [RedeemCheck](#example-12)
-	- [Unbond](#example-13)
-	- [MultiSend](#example-14)
-	- [EditCandidate](#example-15)
+	- [Sign transaction](#sign-transaction)
+		- [SendCoin](#example-3)
+		- [SellCoin](#example-4)
+		- [SellAllCoin](#example-5)
+		- [BuyCoin](#example-6)
+		- [CreateCoin](#example-7)
+		- [DeclareCandidacy](#example-8)
+		- [Delegate](#example-9)
+		- [SetCandidateOn](#example-10)
+		- [SetCandidateOff](#example-11)
+		- [RedeemCheck](#example-12)
+		- [Unbond](#example-13)
+		- [MultiSend](#example-14)
+		- [EditCandidate](#example-15)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -295,7 +296,7 @@ $tx = new MinterTx([
     'gasCoin' => 'MNT',
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MTN',
+        'coin' => 'MNT',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ],
@@ -584,11 +585,11 @@ $tx = new MinterTx([
     'data' => [
         'list' => [
             [
-                'coin' => 'MTN',
+                'coin' => 'MNT',
                 'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
                 'value' => '10'
             ], [
-                'coin' => 'MTN',
+                'coin' => 'MNT',
                 'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee92',
                 'value' => '15'
             ]
