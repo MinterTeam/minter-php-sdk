@@ -250,11 +250,24 @@ class MinterAPI
      * Get transactions by query.
      *
      * @param string $query
+     * @param int|null $page
+     * @param int|null $perPage
      * @return \stdClass
      */
-    public function getTransactions(string $query): \stdClass
+    public function getTransactions(string $query, ?int $page = null, ?int $perPage = null): \stdClass
     {
-        return $this->get('/transactions', ['query' => $query]);
+        $params = ['query' => $query];
+
+        if($page) {
+            $params['page'] = $page;
+        }
+
+        if($perPage) {
+            $params['perPage'] = $perPage;
+        }
+
+
+        return $this->get('/transactions', $params);
     }
 
     /**
