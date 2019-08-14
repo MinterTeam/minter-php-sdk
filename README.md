@@ -211,7 +211,7 @@ estimateTxCommission(string $tx): \stdClass
 Return transactions by query.
 
 ``
-getTransactions(string $query): \stdClass
+getTransactions(string $query, ?int $page = null, ?int $perPage = null): \stdClass
 ``
 
 ### getUnconfirmedTxs
