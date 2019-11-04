@@ -2,6 +2,7 @@
 
 namespace Minter;
 
+use Exception;
 use Minter\Library\Http;
 
 /**
@@ -28,11 +29,11 @@ class MinterAPI
      * Get status of node
      *
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getStatus(): \stdClass
     {
-        return $this->get('/status');
+        return $this->get('status');
     }
 
     /**
@@ -42,7 +43,7 @@ class MinterAPI
      * @param string $publicKey
      * @param null|int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCandidate(string $publicKey, ?int $height = null): \stdClass
     {
@@ -52,7 +53,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/candidate', $params);
+        return $this->get('candidate', $params);
     }
 
     /**
@@ -60,11 +61,11 @@ class MinterAPI
      *
      * @param null|int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getValidators(?int $height = null): \stdClass
     {
-        return $this->get('/validators', ($height ? ['height' => $height] : null));
+        return $this->get('validators', ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -73,7 +74,7 @@ class MinterAPI
      * @param string $address
      * @param null|int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getBalance(string $address, ?int $height = null): \stdClass
     {
@@ -83,7 +84,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/address', $params);
+        return $this->get('address', $params);
     }
 
     /**
@@ -91,6 +92,7 @@ class MinterAPI
      *
      * @param string $address
      * @return int
+     * @throws Exception
      */
     public function getNonce(string $address): int
     {
@@ -102,11 +104,11 @@ class MinterAPI
      *
      * @param string $tx
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function send(string $tx): \stdClass
     {
-        return $this->get('/send_transaction', ['tx' => $tx]);
+        return $this->get('send_transaction', ['tx' => $tx]);
     }
 
     /**
@@ -114,11 +116,11 @@ class MinterAPI
      *
      * @param string $hash
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getTransaction(string $hash): \stdClass
     {
-        return $this->get('/transaction',  ['hash' => $hash]);
+        return $this->get('transaction',  ['hash' => $hash]);
     }
 
     /**
@@ -126,11 +128,11 @@ class MinterAPI
      *
      * @param int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getBlock(int $height): \stdClass
     {
-        return $this->get('/block', ['height' => $height]);
+        return $this->get('block', ['height' => $height]);
     }
 
     /**
@@ -138,18 +140,20 @@ class MinterAPI
      *
      * @param int $height
      * @return \stdClass
+     * @throws Exception
      */
     public function getEvents(int $height): \stdClass
     {
-        return $this->get('/events', ['height' => $height]);
+        return $this->get('events', ['height' => $height]);
     }
 
     /**
      * Returns list of candidates.
      *
-     * @param null|int $height
+     * @param null|int  $height
+     * @param bool|null $includeStakes
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
     {
@@ -163,7 +167,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/candidates', $params);
+        return $this->get('candidates', $params);
     }
 
     /**
@@ -171,8 +175,9 @@ class MinterAPI
      * Note: this method does not return information about base coins (MNT and BIP).
      *
      * @param null|int $height
-     * @param string $symbol
+     * @param string   $symbol
      * @return \stdClass
+     * @throws Exception
      */
     public function getCoinInfo(string $symbol, ?int $height = null): \stdClass
     {
@@ -182,7 +187,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/coin_info', $params);
+        return $this->get('coin_info', $params);
     }
 
     /**
@@ -193,7 +198,7 @@ class MinterAPI
      * @param string $coinToBuy
      * @param null|int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
     {
@@ -207,7 +212,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/estimate_coin_sell', $params);
+        return $this->get('estimate_coin_sell', $params);
     }
 
     /**
@@ -218,7 +223,7 @@ class MinterAPI
      * @param string $coinToBuy
      * @param null|int $height
      * @return \stdClass
-     * @throws \Exception
+     * @throws Exception
      */
     public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null): \stdClass
     {
@@ -232,7 +237,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/estimate_coin_buy', $params);
+        return $this->get('estimate_coin_buy', $params);
     }
 
     /**
@@ -240,19 +245,21 @@ class MinterAPI
      *
      * @param string $tx
      * @return \stdClass
+     * @throws Exception
      */
     public function estimateTxCommission(string $tx): \stdClass
     {
-        return $this->get('/estimate_tx_commission', ['tx' => $tx]);
+        return $this->get('estimate_tx_commission', ['tx' => $tx]);
     }
 
     /**
      * Get transactions by query.
      *
-     * @param string $query
+     * @param string   $query
      * @param int|null $page
      * @param int|null $perPage
      * @return \stdClass
+     * @throws Exception
      */
     public function getTransactions(string $query, ?int $page = null, ?int $perPage = null): \stdClass
     {
@@ -267,7 +274,7 @@ class MinterAPI
         }
 
 
-        return $this->get('/transactions', $params);
+        return $this->get('transactions', $params);
     }
 
     /**
@@ -275,10 +282,11 @@ class MinterAPI
      *
      * @param int|null $limit
      * @return \stdClass
+     * @throws Exception
      */
     public function getUnconfirmedTxs(?int $limit = null): \stdClass
     {
-        return $this->get('/unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
+        return $this->get('unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
     }
 
     /**
@@ -286,28 +294,31 @@ class MinterAPI
      *
      * @param int|null $height
      * @return \stdClass
+     * @throws Exception
      */
     public function getMaxGasPrice(?int $height = null): \stdClass
     {
-        return $this->get('/max_gas', ($height ? ['height' => $height] : null));
+        return $this->get('max_gas', ($height ? ['height' => $height] : null));
     }
 
     /**
      * Returns current min gas price.
      *
      * @return \stdClass
+     * @throws Exception
      */
     public function getMinGasPrice(): \stdClass
     {
-        return $this->get('/min_gas_price');
+        return $this->get('min_gas_price');
     }
 
     /**
      * Returns missed blocks by validator public key.
      *
-     * @param string $pubKey
+     * @param string   $pubKey
      * @param int|null $height
      * @return \stdClass
+     * @throws Exception
      */
     public function getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
     {
@@ -316,6 +327,6 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('/missed_blocks', $params);
+        return $this->get('missed_blocks', $params);
     }
 }
