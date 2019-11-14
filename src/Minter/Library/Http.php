@@ -22,7 +22,7 @@ Trait Http
      *
      * @param string $url
      */
-    protected function setApiUrl(string $url): void
+    public function setApiUrl(string $url): void
     {
         $config = [
             'base_uri' => $url,
