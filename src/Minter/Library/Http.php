@@ -24,13 +24,26 @@ Trait Http
      */
     protected function setApiUrl(string $url): void
     {
-        $this->client = new Client([
+        $config = [
             'base_uri' => $url,
             'connect_timeout' => 15.0,
             'timeout' => 30.0,
-        ]);
+        ];
+        
+        if ($this->client instanceof \GuzzleHttp\Client)
+        {
+            $config = $this->client->getConfig();
+            $config['base_uri'] => $url;
+        }
+        
+        $this->setClient(new \GuzzleHttp\Client($config));
     }
 
+    protected function setClient(\GuzzleHttp\Client $client): void
+    {
+      $this->client = $client;
+    }
+    
     /**
      * http get request
      *
