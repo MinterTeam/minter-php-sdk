@@ -3,6 +3,8 @@
 namespace Minter;
 
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Minter\Library\Http;
 
 /**
@@ -16,18 +18,37 @@ class MinterAPI
      */
     use Http;
 
+    /** @var float */
+    const HTTP_DEFAULT_CONNECT_TIMEOUT = 15.0;
+
+    /** @var float */
+    const HTTP_DEFAULT_TIMEOUT = 30.0;
+
     /**
      * MinterAPI constructor.
-     * @param bool $nodeUrl
+     * @param $node
      */
-    public function __construct($nodeUrl)
+    public function __construct($node)
     {
-        if ($nodeUrl instanceof \GuzzleHttp\Client) {
-          $this->setClient($nodeUrl);
+        if ($node instanceof Client) {
+            $this->setClient($node);
+        } else {
+            $client = $this->createDefaultHttpClient($node);
+            $this->setClient($client);
         }
-        else {
-          $this->setApiUrl($nodeUrl);
-        }
+    }
+
+    /**
+     * @param string $baseUri
+     * @return Client
+     */
+    public function createDefaultHttpClient(string $baseUri): Client
+    {
+        return new Client([
+            'base_uri'        => $baseUri,
+            'connect_timeout' => self::HTTP_DEFAULT_CONNECT_TIMEOUT,
+            'timeout'         => self::HTTP_DEFAULT_TIMEOUT,
+        ]);
     }
 
     /**
@@ -35,6 +56,7 @@ class MinterAPI
      *
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getStatus(): \stdClass
     {
@@ -45,16 +67,17 @@ class MinterAPI
      * This endpoint shows candidate’s info by provided public_key.
      * It will respond with 404 code if candidate is not found.
      *
-     * @param string $publicKey
+     * @param string   $publicKey
      * @param null|int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getCandidate(string $publicKey, ?int $height = null): \stdClass
     {
         $params = ['pub_key' => $publicKey];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -67,6 +90,7 @@ class MinterAPI
      * @param null|int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getValidators(?int $height = null): \stdClass
     {
@@ -76,16 +100,17 @@ class MinterAPI
     /**
      * Returns the balance of given account and the number of outgoing transaction.
      *
-     * @param string $address
+     * @param string   $address
      * @param null|int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getBalance(string $address, ?int $height = null): \stdClass
     {
         $params = ['address' => $address];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -98,6 +123,7 @@ class MinterAPI
      * @param string $address
      * @return int
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getNonce(string $address): int
     {
@@ -110,6 +136,7 @@ class MinterAPI
      * @param string $tx
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function send(string $tx): \stdClass
     {
@@ -122,10 +149,11 @@ class MinterAPI
      * @param string $hash
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getTransaction(string $hash): \stdClass
     {
-        return $this->get('transaction',  ['hash' => $hash]);
+        return $this->get('transaction', ['hash' => $hash]);
     }
 
     /**
@@ -134,6 +162,7 @@ class MinterAPI
      * @param int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getBlock(int $height): \stdClass
     {
@@ -146,6 +175,7 @@ class MinterAPI
      * @param int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getEvents(int $height): \stdClass
     {
@@ -159,16 +189,17 @@ class MinterAPI
      * @param bool|null $includeStakes
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
     {
         $params = [];
 
-        if($includeStakes) {
+        if ($includeStakes) {
             $params['include_stakes'] = 'true';
         }
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -183,12 +214,13 @@ class MinterAPI
      * @param string   $symbol
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getCoinInfo(string $symbol, ?int $height = null): \stdClass
     {
         $params = ['symbol' => $symbol];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -198,22 +230,27 @@ class MinterAPI
     /**
      * Return estimate of sell coin transaction.
      *
-     * @param string $coinToSell
-     * @param string $valueToSell
-     * @param string $coinToBuy
+     * @param string   $coinToSell
+     * @param string   $valueToSell
+     * @param string   $coinToBuy
      * @param null|int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
-    {
+    public function estimateCoinSell(
+        string $coinToSell,
+        string $valueToSell,
+        string $coinToBuy,
+        ?int $height = null
+    ): \stdClass {
         $params = [
-            'coin_to_sell' => $coinToSell,
+            'coin_to_sell'  => $coinToSell,
             'value_to_sell' => $valueToSell,
-            'coin_to_buy' => $coinToBuy
+            'coin_to_buy'   => $coinToBuy
         ];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -223,22 +260,27 @@ class MinterAPI
     /**
      * Return estimate of buy coin transaction.
      *
-     * @param string $coinToSell
-     * @param string $valueToBuy
-     * @param string $coinToBuy
+     * @param string   $coinToSell
+     * @param string   $valueToBuy
+     * @param string   $coinToBuy
      * @param null|int $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null): \stdClass
-    {
+    public function estimateCoinBuy(
+        string $coinToSell,
+        string $valueToBuy,
+        string $coinToBuy,
+        ?int $height = null
+    ): \stdClass {
         $params = [
             'coin_to_sell' => $coinToSell,
             'value_to_buy' => $valueToBuy,
-            'coin_to_buy' => $coinToBuy
+            'coin_to_buy'  => $coinToBuy
         ];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
@@ -251,6 +293,7 @@ class MinterAPI
      * @param string $tx
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function estimateTxCommission(string $tx): \stdClass
     {
@@ -265,16 +308,17 @@ class MinterAPI
      * @param int|null $perPage
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getTransactions(string $query, ?int $page = null, ?int $perPage = null): \stdClass
     {
         $params = ['query' => $query];
 
-        if($page) {
+        if ($page) {
             $params['page'] = $page;
         }
 
-        if($perPage) {
+        if ($perPage) {
             $params['perPage'] = $perPage;
         }
 
@@ -288,6 +332,7 @@ class MinterAPI
      * @param int|null $limit
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getUnconfirmedTxs(?int $limit = null): \stdClass
     {
@@ -300,6 +345,7 @@ class MinterAPI
      * @param int|null $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getMaxGasPrice(?int $height = null): \stdClass
     {
@@ -311,6 +357,7 @@ class MinterAPI
      *
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getMinGasPrice(): \stdClass
     {
@@ -324,11 +371,12 @@ class MinterAPI
      * @param int|null $height
      * @return \stdClass
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
     {
         $params = ['pub_key' => $pubKey];
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 

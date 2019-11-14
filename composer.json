@@ -13,7 +13,8 @@
     "minter/minter-php-bip-44": "1.0.0",
     "bitwasp/bitcoin-lib": "1.0.4",
     "simplito/elliptic-php": "1.0.3",
-    "minter/php-rlp": "^0.2.4"
+    "minter/php-rlp": "^0.2.4",
+    "ext-json": "*"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
