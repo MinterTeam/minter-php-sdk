@@ -1,7 +1,9 @@
 <?php
+
 namespace Minter\Library;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
 /**
@@ -11,51 +13,30 @@ use GuzzleHttp\Exception\RequestException;
 Trait Http
 {
     /**
-     * guzzle client
+     * HTTP API client
      *
-     * @Client
+     * @var Client
      */
     protected $client;
 
     /**
-     * Set base API url.
+     * Set API http client
      *
-     * @param string $url
+     * @param Client $client
      */
-    public function setApiUrl(string $url): void
+    protected function setClient(Client $client): void
     {
-        $config = [
-            'base_uri' => $url,
-            'connect_timeout' => 15.0,
-            'timeout' => 30.0,
-        ];
-        
-        if ($this->client instanceof \GuzzleHttp\Client)
-        {
-            $config = $this->client->getConfig();
-            $config['base_uri'] = $url;
-        }
-        
-        $this->setClient(new \GuzzleHttp\Client($config));
+        $this->client = $client;
     }
 
-   /**
-   * Set client
-   *
-   * @param Client $client
-   */
-    protected function setClient(\GuzzleHttp\Client $client): void
-    {
-      $this->client = $client;
-    }
-    
     /**
      * http get request
      *
-     * @param string $url
+     * @param string     $url
      * @param array|null $parameters
      * @return mixed
      * @throws \Exception
+     * @throws GuzzleException
      */
     protected function get(string $url, array $parameters = null)
     {
@@ -74,9 +55,10 @@ Trait Http
      * http post request
      *
      * @param string $url
-     * @param array $parameters
+     * @param array  $parameters
      * @return mixed
      * @throws \Exception
+     * @throws GuzzleException
      */
     protected function post(string $url, array $parameters = [])
     {
