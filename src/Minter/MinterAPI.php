@@ -22,7 +22,12 @@ class MinterAPI
      */
     public function __construct($nodeUrl)
     {
-        $this->setApiUrl($nodeUrl);
+        if ($nodeUrl instanceof \GuzzleHttp\Client) {
+          $this->setClient($nodeUrl);
+        }
+        else {
+          $this->setApiUrl($nodeUrl);
+        }
     }
 
     /**
