@@ -33,12 +33,17 @@ Trait Http
         if ($this->client instanceof \GuzzleHttp\Client)
         {
             $config = $this->client->getConfig();
-            $config['base_uri'] => $url;
+            $config['base_uri'] = $url;
         }
         
         $this->setClient(new \GuzzleHttp\Client($config));
     }
 
+   /**
+   * Set client
+   *
+   * @param Client $client
+   */
     protected function setClient(\GuzzleHttp\Client $client): void
     {
       $this->client = $client;
