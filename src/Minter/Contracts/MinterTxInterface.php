@@ -26,4 +26,11 @@ interface MinterTxInterface
      * @return array
      */
     public function decode(array $txData): array;
+
+    /**
+     * Get transaction type.
+     *
+     * @return int
+     */
+    public function getType(): int;
 }

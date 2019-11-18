@@ -48,6 +48,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Check](#create-minter-check)
 	- [Minter Wallet](#minter-wallet)
+	- [Minter Link](#minter-link)
 * [Tests](#tests)
 
 ## Installing
@@ -775,6 +776,52 @@ use Minter\SDK\MinterWallet;
 
 $address = MinterWallet::getAddressFromPublicKey($publicKey);
 ```
+
+### Minter Link
+
+###### Example
+
+* Create Minter deep link.
+* You can pass data of any Minter transaction to the constructor.
+* Payload is required.
+
+```php
+use Minter\SDK\MinterDeepLink;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
+
+$txData = new MinterSendCoinTx([
+    'coin'  => 'BIP',
+    'to'    => 'Mx18467bbb64a8edf890201d526c35957d82be3d95',
+    'value' => '1.23456789'
+]);
+
+$link = new MinterDeepLink($txData);
+$link->setPayload('Hello World');
+
+$link->encode(); // returns encoded link as string
+```
+
+* You can define optional fields such as nonce, gas price, gas coin.
+
+```
+use Minter\SDK\MinterDeepLink;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
+
+$txData = new MinterSendCoinTx([
+    'coin'  => 'BIP',
+    'to'    => 'Mx18467bbb64a8edf890201d526c35957d82be3d95',
+    'value' => '1.23456789'
+]);
+
+$link = new MinterDeepLink($txData);
+$link->setPayload('Hello World');
+$link->setNonce($nonce);
+$link->setGasPrice($gasPrice);
+$link->setGasCoin($gasCoin);
+
+$link->encode(); // returns encoded link as string
+```
+
 
 ## Tests
 
