@@ -803,7 +803,7 @@ $link->encode(); // returns encoded link as string
 
 * You can define optional fields such as nonce, gas price, gas coin.
 
-```
+```php
 use Minter\SDK\MinterDeepLink;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
