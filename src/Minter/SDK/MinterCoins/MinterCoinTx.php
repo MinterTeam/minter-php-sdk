@@ -72,6 +72,14 @@ abstract class MinterCoinTx implements MinterTxInterface
     }
 
     /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return static::TYPE;
+    }
+
+    /**
      * Prepare data tx for signing
      *
      * @return array
