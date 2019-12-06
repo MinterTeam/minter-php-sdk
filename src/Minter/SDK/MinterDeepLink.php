@@ -30,6 +30,12 @@ class MinterDeepLink
     /** @var RLP */
     private $rlp;
 
+    /** @var string */
+    private $checkPassword;
+
+    /** @var string */
+    private const LINK_BASE_URL = 'https://bip.to/tx';
+
     /**
      * MinterDeepLink constructor.
      * @param MinterTxInterface $txData
@@ -73,6 +79,14 @@ class MinterDeepLink
     }
 
     /**
+     * @param string $p
+     */
+    public function setCheckPassword(string $p): void
+    {
+        $this->checkPassword = $p;
+    }
+
+    /**
      * @return string
      */
     public function encode(): string
@@ -91,6 +105,13 @@ class MinterDeepLink
             'gasCoin'  => $gasCoin
         ];
 
-        return $this->rlp->encode($deepLink)->toString('hex');
+        $params = ['d' => $this->rlp->encode($deepLink)->toString('hex')];
+        if($this->checkPassword) {
+            $checkPassword = str_split($this->checkPassword, 1);
+            $checkPassword = new Buffer($checkPassword);
+            $params['p']   = $this->rlp->encode($checkPassword)->toString('hex');
+        }
+
+        return self::LINK_BASE_URL . '?' . http_build_query($params);
     }
 }
