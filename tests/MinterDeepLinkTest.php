@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 final class MinterDeepLinkTest extends TestCase
 {
+    const HOST_BASE_URL = 'https://bip.to/tx';
+
     public function testEncodeWithPayload()
     {
         $txData = new MinterSendCoinTx([
@@ -19,7 +21,7 @@ final class MinterDeepLinkTest extends TestCase
         $link->setPayload('Hello World');
 
         $this->assertSame(
-            'f83b01aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008b48656c6c6f20576f726c64808080',
+            self::HOST_BASE_URL . '?d=f83b01aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008b48656c6c6f20576f726c64808080',
             $link->encode());
     }
 
@@ -34,7 +36,7 @@ final class MinterDeepLinkTest extends TestCase
         $link = new MinterDeepLink($txData);
 
         $this->assertSame(
-            'f001aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db40080808080',
+            self::HOST_BASE_URL . '?d=f001aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db40080808080',
             $link->encode());
     }
 
@@ -54,7 +56,7 @@ final class MinterDeepLinkTest extends TestCase
         $link->setGasPrice('1');
 
         $this->assertSame(
-            'f84701aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008d436865636b207061796c6f616401018a4d4e5400000000000000',
+            self::HOST_BASE_URL . '?d=f84701aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008d436865636b207061796c6f616401018a4d4e5400000000000000',
             $link->encode()
             );
     }
