@@ -407,7 +407,8 @@ $tx = new MinterTx([
         'symbol' => 'TEST',
         'initialAmount' => '100',
         'initialReserve' => '10',
-        'crr' => 10
+        'crr' => 10,
+        'maxSupply' => '10000'
     ],
     'payload' => '',
     'serviceData' => '',
@@ -694,7 +695,8 @@ $check = new MinterCheck([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'dueBlock' => 999999,
     'coin' => 'MNT',
-    'value' => '10'
+    'value' => '10',
+    'gasCoin' => 'MNT'
 ], 'your pass phrase');
 
 echo $check->sign('your private key here'); 

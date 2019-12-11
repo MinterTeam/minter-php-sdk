@@ -41,6 +41,7 @@ class MinterCheck
         'dueBlock',
         'coin',
         'value',
+        'gasCoin',
         'lock',
         'v',
         'r',
@@ -101,7 +102,7 @@ class MinterCheck
     public function sign(string $privateKey): string
     {
         // create message hash and passphrase by first 4 fields
-        $msgHash = $this->serialize(array_slice($this->structure, 0, 5));
+        $msgHash = $this->serialize(array_slice($this->structure, 0, 6));
 
         $passphrase = hash('sha256', $this->passphrase);
 
@@ -112,7 +113,7 @@ class MinterCheck
         $this->structure['lock'] = hex2bin($this->formatLockFromSignature($signature));
 
         // create message hash with lock field
-        $msgHashWithLock = $this->serialize(array_slice($this->structure, 0, 6));
+        $msgHashWithLock = $this->serialize(array_slice($this->structure, 0, 7));
 
         // create signature
         $signature = ECDSA::sign($msgHashWithLock, $privateKey);
@@ -160,13 +161,13 @@ class MinterCheck
         $check = Helper::rlpArrayToHexArray($check);
 
         // prepare decoded data
-        $data = [];
         foreach ($check as $key => $value) {
             $field = $this->structure[$key];
 
             switch ($field) {
                 case 'nonce':
                 case 'coin':
+                case 'gasCoin':
                     $data[$field] = Helper::hex2str($value);
                     break;
 
@@ -184,7 +185,7 @@ class MinterCheck
         }
 
         // set owner address
-        list($body, $signature) = array_chunk($data, 6, true);
+        list($body, $signature) = array_chunk($data, 7, true);
         $this->setOwnerAddress($body, $signature);
 
         return $data;
@@ -251,6 +252,8 @@ class MinterCheck
             'coin' => MinterConverter::convertCoinName($check['coin']),
 
             'value' => MinterConverter::convertValue($check['value'], 'pip'),
+
+            'gasCoin' => MinterConverter::convertCoinName($check['gasCoin'])
         ];
     }
 
