@@ -33,13 +33,19 @@ Trait Http
      * http get request
      *
      * @param string     $url
-     * @param array|null $parameters
+     * @param array|string|null $parameters
      * @return mixed
      * @throws \Exception
      * @throws GuzzleException
      */
-    protected function get(string $url, array $parameters = null)
+    protected function get(string $url, $parameters = null)
     {
+        if (!is_null($parameters)) {
+          if (!is_array($parameters) && !is_string($parameters)) {
+            throw new \TypeError("$parameters is not of type string or array");
+          }
+        }
+        
         try {
             $response = $this->client->request('GET', $url, [
                 'query' => $parameters
