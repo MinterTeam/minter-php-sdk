@@ -9,12 +9,21 @@ use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
-    MinterCoinTx, MinterDelegateTx, MinterEditCandidateTx,
-    MinterMultiSendTx, MinterRedeemCheckTx, MinterSellAllCoinTx,
-    MinterSetCandidateOffTx, MinterSetCandidateOnTx, MinterCreateCoinTx,
-    MinterDeclareCandidacyTx, MinterSendCoinTx, MinterUnbondTx,
-    MinterSellCoinTx, MinterBuyCoinTx
-};
+    MinterCoinTx,
+    MinterCreateMultisigTx,
+    MinterDelegateTx,
+    MinterEditCandidateTx,
+    MinterMultiSendTx,
+    MinterRedeemCheckTx,
+    MinterSellAllCoinTx,
+    MinterSetCandidateOffTx,
+    MinterSetCandidateOnTx,
+    MinterCreateCoinTx,
+    MinterDeclareCandidacyTx,
+    MinterSendCoinTx,
+    MinterUnbondTx,
+    MinterSellCoinTx,
+    MinterBuyCoinTx};
 
 /**
  * Class MinterTx
@@ -313,6 +322,10 @@ class MinterTx
 
             case MinterSetCandidateOffTx::TYPE:
                 $this->txDataObject = new MinterSetCandidateOffTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterCreateMultisigTx::TYPE:
+                $this->txDataObject = new MinterCreateMultisigTx($tx['data'], $isHexFormat);
                 break;
 
             case MinterMultiSendTx::TYPE:

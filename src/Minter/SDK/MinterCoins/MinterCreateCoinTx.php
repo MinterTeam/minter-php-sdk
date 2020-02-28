@@ -89,7 +89,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'crr' => hexdec($txData[4]),
 
             // Convert field from BIP to PIP
-            'maxSupply' =>MinterConverter::convertValue(Helper::hexDecode($txData[5]), 'bip')
+            'maxSupply' => MinterConverter::convertValue(Helper::hexDecode($txData[5]), 'bip')
         ];
     }
 }

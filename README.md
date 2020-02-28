@@ -631,6 +631,36 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
+* Sign the <b>CreateMultisig</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'gasPrice' => 1,
+    'gasCoin' => 'MNT',
+    'type' => MinterCreateMultisigTx::TYPE,
+    'data' => [
+        'threshold' => 7,
+        'weights' => [1, 3, 5],
+        'addresses' => [
+            'Mxee81347211c72524338f9680072af90744333143',
+            'Mxee81347211c72524338f9680072af90744333145',
+            'Mxee81347211c72524338f9680072af90744333144'
+        ]
+    ],
+    'payload' => '',
+    'serviceData' => '',
+    'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE // or SIGNATURE_MULTI_TYPE
+]);
+
+$tx->sign('your private key')
+```
+
 ### Get fee of transaction
 
 * Calculate fee of transaction. You can get fee AFTER signing or decoding transaction.
