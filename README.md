@@ -43,6 +43,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [Unbond](#example-13)
 		- [MultiSend](#example-14)
 		- [EditCandidate](#example-15)
+		- [CreateMultisig](#example-16)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
 	- [Decode Transaction](#decode-transaction)
