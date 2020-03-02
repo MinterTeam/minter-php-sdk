@@ -6,7 +6,7 @@ use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class MinterCreateMultisigTxTest
+ * Class MinterCreateMultisigTx
  */
 final class MinterCreateMultisigTxTest extends TestCase
 {

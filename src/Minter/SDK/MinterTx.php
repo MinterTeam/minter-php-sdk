@@ -88,6 +88,15 @@ class MinterTx
     /** Testnet chain id */
     const TESTNET_CHAIN_ID = 2;
 
+    /** @var int */
+    const DEFAULT_GAS_PRICE = 1;
+
+    /** @var array */
+    const DEFAULT_GAS_COINS = [
+        self::MAINNET_CHAIN_ID => 'BIP',
+        self::TESTNET_CHAIN_ID => 'MNT'
+    ];
+
     /**
      * MinterTx constructor.
      * @param $tx
@@ -148,13 +157,10 @@ class MinterTx
      */
     public function sign(string $privateKey): string
     {
-        if(!is_array($this->tx)) {
-            throw new \Exception('Undefined transaction');
-        }
-
         // encode data array to RPL
+        $this->tx['signatureType'] = self::SIGNATURE_SINGLE_TYPE;
         $tx = $this->txDataRlpEncode($this->tx);
-	    $tx['payload'] = new Buffer(str_split($tx['payload'], 1));
+	    $tx['payload'] = Helper::str2buffer($tx['payload']);
 
         // create keccak hash from transaction
         $keccak = Helper::createKeccakHash(
@@ -166,6 +172,41 @@ class MinterTx
         $tx['signatureData'] = $this->rlp->encode(
             Helper::hex2buffer($signature)
         );
+
+        // pack transaction to hex string
+        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
+
+        return MinterPrefix::TRANSACTION . $this->txSigned;
+    }
+
+    /**
+     * Sign with multi-signature
+     *
+     * @param string $multisigAddress
+     * @param array  $privateKeys
+     * @return string
+     * @throws Exception
+     */
+    public function signMultisig(string $multisigAddress, array $privateKeys): string
+    {
+        // encode data array to RPL
+        $this->tx['signatureType'] = self::SIGNATURE_MULTI_TYPE;
+        $tx = $this->txDataRlpEncode($this->tx);
+        $tx['payload'] = Helper::str2buffer($tx['payload']);
+
+        // create keccak hash from transaction
+        $keccak = Helper::createKeccakHash(
+            $this->rlp->encode($tx)->toString('hex')
+        );
+
+        $signatures = [];
+        foreach ($privateKeys as $privateKey) {
+            $signature = ECDSA::sign($keccak, $privateKey);
+            $signatures[] = Helper::hex2buffer($signature);
+        }
+
+        $multisigAddress = hex2bin(Helper::removeWalletPrefix($multisigAddress));
+        $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
 
         // pack transaction to hex string
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
@@ -203,6 +244,7 @@ class MinterTx
      * Get hash of transaction
      *
      * @return string
+     * @throws Exception
      */
     public function getHash(): string
     {
@@ -255,29 +297,38 @@ class MinterTx
     {
         // pack RLP to hex string
         $tx = $this->rlpToHex($tx);
+        $tx = array_combine($this->structure, $tx);
 
         // pack data of transaction to hex string
-        $tx[5] = $this->rlpToHex($tx[5]);
-        $tx[9] = $this->rlpToHex($tx[9]);
+        $tx['data'] = $this->rlpToHex($tx['data']);
+        $tx['signatureData'] = $this->rlpToHex($tx['signatureData']);
 
         // encode transaction data
-        return $this->encode($this->prepareResult($tx), true);
+        $decodedTx = $this->prepareResult($tx);
+        return $this->encode($decodedTx, true);
     }
 
     /**
      * Encode transaction data
      *
      * @param array $tx
-     * @param bool $isHexFormat
+     * @param bool  $isHexFormat
      * @return array
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     protected function encode(array $tx, bool $isHexFormat = false): array
     {
-        // validate transaction structure
-        $this->validateTx($tx);
+        // fill with default values if not present
+        $tx['payload']     = $tx['payload']     ?? '';
+        $tx['serviceData'] = $tx['serviceData'] ?? '';
+        $tx['gasPrice']    = $tx['gasPrice']    ?? self::DEFAULT_GAS_PRICE;
+        $tx['gasCoin']     = $tx['gasCoin']     ?? self::DEFAULT_GAS_COINS[$tx['chainId']];
+
         // make right order in transaction params
-        $tx = array_replace(array_intersect_key(array_flip($this->structure), $tx), $tx);
+        $txFields = array_flip($this->structure);
+        $txFields = array_intersect_key($txFields, $tx);
+        $tx = array_replace($txFields, $tx);
 
         switch ($tx['type']) {
             case MinterSendCoinTx::TYPE:
@@ -355,44 +406,39 @@ class MinterTx
      */
     protected function prepareResult(array $tx): array
     {
-        $result = [];
-        foreach($this->structure as $key => $field) {
-            switch ($field) {
-                case 'data':
-                    $result[$field] = $tx[$key];
-                    break;
+        $tx = [
+            'nonce' => hexdec($tx['nonce']),
+            'chainId' => hexdec($tx['chainId']),
+            'gasPrice' => hexdec($tx['gasPrice']),
+            'gasCoin' => MinterConverter::convertCoinName(Helper::hex2str($tx['gasCoin'])),
+            'type' => hexdec($tx['type']),
+            'data' => $tx['data'],
+            'payload' => Helper::hex2str($tx['payload']),
+            'serviceData' => Helper::hex2str($tx['serviceData']),
+            'signatureType' => hexdec($tx['signatureType']),
+            'signatureData' => $tx['signatureData']
+        ];
 
-                case 'payload':
-                    $result[$field] = Helper::hex2str($tx[$key]);
-                    break;
-
-                case 'serviceData':
-                    $result[$field] = Helper::hex2str($tx[$key]);
-                    break;
-
-                case 'gasCoin':
-                    $result[$field] = MinterConverter::convertCoinName(
-                        Helper::hex2str($tx[$key])
-                    );
-                    break;
-
-                case 'signatureData':
-                    $result[$field] = [
-                        'v' => hexdec($tx[$key][0]),
-                        'r' => $tx[$key][1],
-                        's' => $tx[$key][2]
-                    ];
-                    break;
-
-                default:
-                    $result[$field] = hexdec($tx[$key]);
-                    break;
-            }
+        if($tx['signatureType'] === self::SIGNATURE_SINGLE_TYPE) {
+            list($v, $r, $s) = $tx['signatureData'];
+            $tx['signatureData'] = ['v' => hexdec($v), 'r' => $r, 's' => $s];
+            $tx['from'] = $this->getSenderAddress($tx);
         }
 
-        $result['from'] = $this->getSenderAddress($result);
+        if($tx['signatureType'] === self::SIGNATURE_MULTI_TYPE) {
+            list($multisigAddress, $signatures) = $tx['signatureData'];
+            $tx['signatureData'] = [$multisigAddress];
 
-        return $result;
+            $signatures = array_map(function($signature) {
+                list($v, $r, $s) = $signature;
+                return ['v' => hexdec($v), 'r' => $r, 's' => $s];
+            }, $signatures);
+
+            $tx['signatureData'][] = $signatures;
+            $tx['from'] = Helper::addWalletPrefix($multisigAddress);
+        }
+
+        return $tx;
     }
 
     /**
