@@ -32,7 +32,8 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
         'symbol' => '',
         'initialAmount' => '',
         'initialReserve' => '',
-        'crr' => ''
+        'crr' => '',
+        'maxSupply' => ''
     ];
 
     /**
@@ -56,7 +57,10 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'initialReserve' => MinterConverter::convertValue($this->data['initialReserve'], 'pip'),
 
             // Define crr field
-            'crr' => $this->data['crr'] === 0 ? '' : $this->data['crr']
+            'crr' => $this->data['crr'] === 0 ? '' : $this->data['crr'],
+
+            // Convert field from BIP to PIP
+            'maxSupply' => MinterConverter::convertValue($this->data['maxSupply'], 'pip')
         ];
     }
 
@@ -82,7 +86,10 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'initialReserve' => MinterConverter::convertValue(Helper::hexDecode($txData[3]), 'bip'),
 
             // Convert crr field from hex string to number
-            'crr' => hexdec($txData[4])
+            'crr' => hexdec($txData[4]),
+
+            // Convert field from BIP to PIP
+            'maxSupply' => MinterConverter::convertValue(Helper::hexDecode($txData[5]), 'bip')
         ];
     }
 }

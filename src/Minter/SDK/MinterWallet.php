@@ -111,6 +111,18 @@ class MinterWallet
     }
 
     /**
+     * Get private key from mnemonic.
+     *
+     * @param string $mnemonic
+     * @return string
+     */
+    public static function mnemonicToPrivateKey(string $mnemonic): string
+    {
+        $seed = self::mnemonicToSeed($mnemonic);
+        return self::seedToPrivateKey($seed);
+    }
+
+    /**
      * Validate that address is valid Minter address
      *
      * @param string $address

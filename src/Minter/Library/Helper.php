@@ -180,4 +180,14 @@ class Helper
 
         return array_shift($str);
     }
+
+    /**
+     * @param string $str
+     * @return Buffer
+     */
+    public static function str2buffer(string $str): Buffer
+    {
+        $splitted = str_split($str, 1);
+        return new Buffer($splitted);
+    }
 }

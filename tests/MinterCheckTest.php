@@ -28,7 +28,7 @@ final class MinterCheckTest extends TestCase
     /**
      * Predefined valid check string
      */
-    CONST VALID_CHECK = 'Mcf8a38334383002830f423f8a4d4e5400000000000000888ac7230489e80000b841d184caa333fe636288fc68d99dea2c8af5f7db4569a0bb91e03214e7e238f89d2b21f4d2b730ef590fd8de72bd43eb5c6265664df5aa3610ef6c71538d9295ee001ba08bd966fc5a093024a243e62cdc8131969152d21ee9220bc0d95044f54e3dd485a033bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195';
+    CONST VALID_CHECK = 'Mcf8ae8334383002830f423f8a4d4e5400000000000000888ac7230489e800008a4d4e5400000000000000b841497c5f3e6fc182fd1a791522a9ef7576710bdfbc86fdbf165476ef220e89f9ff1380f93f2d9a2f92fdab0edc1e2605cc2c69b707cd404b2cb1522b7aba4defd5001ba083c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594a047b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df';
 
     /**
      * Predefined valid proof
@@ -45,7 +45,8 @@ final class MinterCheckTest extends TestCase
             'chainId' => MinterTx::TESTNET_CHAIN_ID,
             'dueBlock' => 999999,
             'coin' => 'MNT',
-            'value' => 10
+            'value' => 10,
+            'gasCoin' => 'MNT'
         ], self::PASSPHRASE);
 
         $signature = $check->sign(self::PRIVATE_KEY);
@@ -79,10 +80,11 @@ final class MinterCheckTest extends TestCase
             'dueBlock' => 999999,
             'coin' => 'MNT',
             'value' => '10',
-            'lock' => 'd184caa333fe636288fc68d99dea2c8af5f7db4569a0bb91e03214e7e238f89d2b21f4d2b730ef590fd8de72bd43eb5c6265664df5aa3610ef6c71538d9295ee00',
+            'gasCoin' => 'MNT',
+            'lock' => '497c5f3e6fc182fd1a791522a9ef7576710bdfbc86fdbf165476ef220e89f9ff1380f93f2d9a2f92fdab0edc1e2605cc2c69b707cd404b2cb1522b7aba4defd500',
             'v' => 27,
-            'r' => '8bd966fc5a093024a243e62cdc8131969152d21ee9220bc0d95044f54e3dd485',
-            's' => '33bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195'
+            'r' => '83c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594',
+            's' => '47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df'
         ], $check->getBody());
 
         $this->assertSame('Mxce931863b9c94a526d94acd8090c1c5955a6eb4b', $check->getOwnerAddress());
