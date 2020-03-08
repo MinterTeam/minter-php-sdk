@@ -4,7 +4,6 @@ namespace Minter\SDK;
 
 use InvalidArgumentException;
 use Exception;
-use Web3p\RLP\Buffer;
 use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
@@ -28,6 +27,17 @@ use Minter\SDK\MinterCoins\{
 /**
  * Class MinterTx
  * @package Minter\SDK
+ *
+ * @property int nonce
+ * @property int chainId
+ * @property int gasPrice
+ * @property int gasCoin
+ * @property int type
+ * @property array data
+ * @property string payload
+ * @property string serviceData
+ * @property int signatureType
+ * @property array signatureData
  */
 class MinterTx
 {
@@ -117,33 +127,12 @@ class MinterTx
     }
 
     /**
-     * Get
-     *
      * @param string $name
      * @return mixed
      */
     public function __get($name)
     {
-        $method = 'get' . ucfirst($name);
-
-        if (method_exists($this, $method)) {
-            return call_user_func_array([$this, $method], []);
-        }
-
         return $this->tx[$name];
-    }
-
-    /**
-     * Get sender Minter address
-     *
-     * @param array $tx
-     * @return string
-     */
-    public function getSenderAddress(array $tx): string
-    {
-        return MinterWallet::getAddressFromPublicKey(
-            $this->recoverPublicKey($tx)
-        );
     }
 
     /**
@@ -224,7 +213,7 @@ class MinterTx
      * @param array $tx
      * @return string
      */
-    protected function createTxHash(array $tx): string
+    private function createTxHash(array $tx): string
     {
         return Helper::createKeccakHash(
             $this->rlp->encode($tx)->toString('hex')
@@ -232,6 +221,8 @@ class MinterTx
     }
 
     /**
+     * Create transaction signature by private key
+     *
      * @param string $privateKey
      * @return string
      */
@@ -249,26 +240,32 @@ class MinterTx
     }
 
     /**
+     * Get sender Minter address
+     *
+     * @param array $tx
+     * @return string
+     */
+    public function getSenderAddress(array $tx): string
+    {
+        $publicKey = $this->recoverPublicKey($tx);
+        return MinterWallet::getAddressFromPublicKey($publicKey);
+    }
+
+    /**
      * Recover public key
      *
      * @param array $tx
      * @return string
      */
-    public function recoverPublicKey(array $tx): string
+    private function recoverPublicKey(array $tx): string
     {
-        // prepare short transaction
-        $shortTx = array_diff_key($tx, ['signatureData' => '']);
-        $shortTx = Helper::hex2binRecursive($shortTx);
-        $shortTx = $this->encodeTxToRlp($shortTx);
-
-        // create kessak hash from transaction
-        $msg = Helper::createKeccakHash(
-            $this->rlp->encode($shortTx)->toString('hex')
-        );
+        $signature = array_pop($tx); // remove signature data from tx
+        $tx = Helper::hex2binRecursive($tx);
+        $tx = $this->encodeTxToRlp($tx);
+        $hash = $this->createTxHash($tx);
 
         // recover public key
-        $signature = $tx['signatureData'];
-        $publicKey = ECDSA::recover($msg, $signature['r'], $signature['s'], $signature['v']);
+        $publicKey = ECDSA::recover($hash, $signature['r'], $signature['s'], $signature['v']);
 
         return MinterPrefix::PUBLIC_KEY . $publicKey;
     }
@@ -284,10 +281,8 @@ class MinterTx
             throw new \Exception('You need to sign transaction before');
         }
 
-        // create SHA256 of tx
         $tx = hash('sha256', hex2bin($this->txSigned));
 
-        // return first 40 symbols
         return MinterPrefix::TRANSACTION_HASH . substr($tx, 0, 40);
     }
 
@@ -323,7 +318,7 @@ class MinterTx
      * @param string $tx
      * @return array
      */
-    protected function decode(string $tx): array
+    private function decode(string $tx): array
     {
         // pack RLP to hex string
         $tx = $this->rlpToHex($tx);
@@ -346,7 +341,7 @@ class MinterTx
      * @return array
      * @throws InvalidArgumentException
      */
-    protected function encode(array $tx, bool $isHexFormat = false): array
+    private function encode(array $tx, bool $isHexFormat = false): array
     {
         // fill with default values if not present
         $tx['payload']     = $tx['payload']     ?? '';
@@ -475,19 +470,12 @@ class MinterTx
      * @param string $data
      * @return array
      */
-    protected function rlpToHex(string $data): array
+    private function rlpToHex(string $data): array
     {
         $data = $this->rlp->decode('0x' . $data);
+        $data = Helper::rlpArrayToHexArray($data);
 
-        foreach ($data as $key => $value) {
-            if(is_array($value)) {
-                $data[$key] = Helper::rlpArrayToHexArray($value);
-            } else {
-                $data[$key] = $value->toString('hex');
-            }
-        }
-
-        return (array) $data;
+        return $data;
     }
 
     /**
@@ -496,30 +484,12 @@ class MinterTx
      * @param array $tx
      * @return array
      */
-    protected function encodeTxToRlp(array $tx): array
+    private function encodeTxToRlp(array $tx): array
     {
         $tx['payload'] = Helper::str2buffer($tx['payload']);
         $tx['gasCoin'] = MinterConverter::convertCoinName($tx['gasCoin']);
         $tx['data'] = $this->rlp->encode($tx['data']);
 
         return $tx;
-    }
-
-    /**
-     * Validate transaction structure
-     *
-     * @param array $tx
-     */
-    protected function validateTx(array $tx): void
-    {
-        // get keys of tx and prepare structure keys
-        $length = count($this->structure) - 1;
-        $tx = array_slice(array_keys($tx), 0, $length);
-        $structure = array_slice($this->structure, 0, $length);
-
-        // compare
-        if(!empty(array_diff_key($tx, $structure))) {
-            throw new InvalidArgumentException('Invalid transaction structure params');
-        }
     }
 }
