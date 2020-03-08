@@ -100,7 +100,6 @@ class MinterTx
     /**
      * MinterTx constructor.
      * @param $tx
-     * @throws \Exception
      */
     public function __construct($tx)
     {
@@ -139,7 +138,6 @@ class MinterTx
      *
      * @param array $tx
      * @return string
-     * @throws \Exception
      */
     public function getSenderAddress(array $tx): string
     {
@@ -153,27 +151,18 @@ class MinterTx
      *
      * @param string $privateKey
      * @return string
-     * @throws \Exception
      */
     public function sign(string $privateKey): string
     {
-        // encode data array to RPL
         $this->tx['signatureType'] = self::SIGNATURE_SINGLE_TYPE;
-        $tx = $this->txDataRlpEncode($this->tx);
-	    $tx['payload'] = Helper::str2buffer($tx['payload']);
 
-        // create keccak hash from transaction
-        $keccak = Helper::createKeccakHash(
-            $this->rlp->encode($tx)->toString('hex')
-        );
+        $tx = $this->encodeTxToRlp($this->tx);
+	    $hash = $this->createTxHash($tx);
 
-        // prepare special [V, R, S] signature bytes and add them to transaction
-        $signature = ECDSA::sign($keccak, $privateKey);
-        $tx['signatureData'] = $this->rlp->encode(
-            Helper::hex2buffer($signature)
-        );
+        $signature = ECDSA::sign($hash, $privateKey);
+        $signature = Helper::hex2buffer($signature);
 
-        // pack transaction to hex string
+        $tx['signatureData'] = $this->rlp->encode($signature);
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
@@ -185,33 +174,78 @@ class MinterTx
      * @param string $multisigAddress
      * @param array  $privateKeys
      * @return string
-     * @throws Exception
      */
     public function signMultisig(string $multisigAddress, array $privateKeys): string
     {
-        // encode data array to RPL
         $this->tx['signatureType'] = self::SIGNATURE_MULTI_TYPE;
-        $tx = $this->txDataRlpEncode($this->tx);
-        $tx['payload'] = Helper::str2buffer($tx['payload']);
 
-        // create keccak hash from transaction
-        $keccak = Helper::createKeccakHash(
-            $this->rlp->encode($tx)->toString('hex')
-        );
+        $tx = $this->encodeTxToRlp($this->tx);
+        $hash = $this->createTxHash($tx);
 
         $signatures = [];
         foreach ($privateKeys as $privateKey) {
-            $signature = ECDSA::sign($keccak, $privateKey);
+            $signature = ECDSA::sign($hash, $privateKey);
             $signatures[] = Helper::hex2buffer($signature);
         }
 
-        $multisigAddress = hex2bin(Helper::removeWalletPrefix($multisigAddress));
-        $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
+        $multisigAddress = Helper::removeWalletPrefix($multisigAddress);
+        $multisigAddress = hex2bin($multisigAddress);
 
-        // pack transaction to hex string
+        $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
         $this->txSigned = $this->rlp->encode($tx)->toString('hex');
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
+    }
+
+    /**
+     * @param string $multisigAddress
+     * @param array  $signatures
+     * @return string
+     */
+    public function signMultisigBySigns(string $multisigAddress, array $signatures): string
+    {
+        $this->tx['signatureType'] = self::SIGNATURE_MULTI_TYPE;
+        $tx = $this->encodeTxToRlp($this->tx);
+
+        foreach ($signatures as $key => $signature) {
+            $signatures[$key] = $this->rlp->decode('0x' . $signature);
+        }
+
+        $multisigAddress = Helper::removeWalletPrefix($multisigAddress);
+        $multisigAddress = hex2bin($multisigAddress);
+
+        $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
+        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
+
+        return MinterPrefix::TRANSACTION . $this->txSigned;
+    }
+
+    /**
+     * @param array $tx
+     * @return string
+     */
+    protected function createTxHash(array $tx): string
+    {
+        return Helper::createKeccakHash(
+            $this->rlp->encode($tx)->toString('hex')
+        );
+    }
+
+    /**
+     * @param string $privateKey
+     * @return string
+     */
+    public function createSignature(string $privateKey): string
+    {
+        $tx = $this->encodeTxToRlp($this->tx);
+        $tx['signatureType'] = $this->tx['signatureType'] ?? self::SIGNATURE_MULTI_TYPE;
+
+        $hash = $this->createTxHash($tx);
+        $signature = ECDSA::sign($hash, $privateKey);
+        $signature = Helper::hex2buffer($signature);
+        $signature = $this->rlp->encode($signature)->toString('hex');
+
+        return $signature;
     }
 
     /**
@@ -219,14 +253,13 @@ class MinterTx
      *
      * @param array $tx
      * @return string
-     * @throws \Exception
      */
     public function recoverPublicKey(array $tx): string
     {
         // prepare short transaction
         $shortTx = array_diff_key($tx, ['signatureData' => '']);
         $shortTx = Helper::hex2binRecursive($shortTx);
-        $shortTx = $this->txDataRlpEncode($shortTx);
+        $shortTx = $this->encodeTxToRlp($shortTx);
 
         // create kessak hash from transaction
         $msg = Helper::createKeccakHash(
@@ -244,7 +277,6 @@ class MinterTx
      * Get hash of transaction
      *
      * @return string
-     * @throws Exception
      */
     public function getHash(): string
     {
@@ -263,7 +295,6 @@ class MinterTx
      * Get fee of transaction in PIP
      *
      * @return string
-     * @throws \Exception
      */
     public function getFee(): string
     {
@@ -291,7 +322,6 @@ class MinterTx
      *
      * @param string $tx
      * @return array
-     * @throws \Exception
      */
     protected function decode(string $tx): array
     {
@@ -315,7 +345,6 @@ class MinterTx
      * @param bool  $isHexFormat
      * @return array
      * @throws InvalidArgumentException
-     * @throws Exception
      */
     protected function encode(array $tx, bool $isHexFormat = false): array
     {
@@ -402,7 +431,6 @@ class MinterTx
      *
      * @param array $tx
      * @return array
-     * @throws \Exception
      */
     protected function prepareResult(array $tx): array
     {
@@ -468,8 +496,9 @@ class MinterTx
      * @param array $tx
      * @return array
      */
-    protected function txDataRlpEncode(array $tx): array
+    protected function encodeTxToRlp(array $tx): array
     {
+        $tx['payload'] = Helper::str2buffer($tx['payload']);
         $tx['gasCoin'] = MinterConverter::convertCoinName($tx['gasCoin']);
         $tx['data'] = $this->rlp->encode($tx['data']);
 

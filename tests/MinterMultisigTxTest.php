@@ -53,8 +53,8 @@ final class MinterMultisigTxTest extends TestCase
     public function testSign()
     {
         $tx = new MinterTx(self::TX);
-        $signature = $tx->signMultisig(self::SENDER_ADDRESS, self::PRIVATE_KEYS);
-        $this->assertEquals(self::VALID_TX, $signature);
+        $signedTx = $tx->signMultisig(self::SENDER_ADDRESS, self::PRIVATE_KEYS);
+        $this->assertEquals(self::VALID_TX, $signedTx);
     }
 
     /**
@@ -65,5 +65,21 @@ final class MinterMultisigTxTest extends TestCase
         $tx = new MinterTx(self::VALID_TX);
         $this->assertEquals(self::TX['data'], $tx->data);
         $this->assertEquals(self::SENDER_ADDRESS, $tx->from);
+    }
+
+    /**
+     * Test sign multisig with ready signatures.
+     */
+    public function testSignBySignatures()
+    {
+        $tx = new MinterTx(self::TX);
+
+        $signatures = [];
+        foreach (self::PRIVATE_KEYS as $privateKey) {
+            $signatures[] = $tx->createSignature($privateKey);
+        }
+
+        $signedTx = $tx->signMultisigBySigns(self::SENDER_ADDRESS, $signatures);
+        $this->assertEquals(self::VALID_TX, $signedTx);
     }
 }

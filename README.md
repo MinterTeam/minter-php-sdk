@@ -306,7 +306,7 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
-At all type of transactions you can also specify: 
+At all type of transactions you can also pass: 
 <b>gasPrice, gasCoin, payload, serviceData</b>
 
 ```php
@@ -625,7 +625,7 @@ Returns a signed tx.
 ###### Example
 
 * To sign transaction with multisignatures, you need to call <b>signMultisig</b> method 
-and specify <b>multisig Minter address</b> and his <b>private keys</b> (in any order).
+and pass <b>multisig Minter address</b> and his <b>private keys</b> (in any order).
 
 ```php
 use Minter\SDK\MinterTx;
@@ -646,6 +646,58 @@ $signedTx = $tx->signMultisig('Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2', [
     'b354c3d1d456d5a1ddd65ca05fd710117701ec69d82dac1858986049a0385af9',
     '38b7dfb77426247aed6081f769ed8f62aaec2ee2b38336110ac4f7484478dccb',
     '94c0915734f92dd66acfdc48f82b1d0b208efd544fe763386160ec30c968b4af'
+])
+```
+
+###### Example
+
+* To get the <b>signature</b> of transaction (not signed transaction)
+you need to call <b>createSignature</b>
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterSendCoinTx::TYPE,
+    'data' => [
+        'coin' => 'MNT',
+        'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
+        'value' => '10'
+    ]
+]);
+
+$txSignature = $tx->createSignature($privateKey);
+```
+
+###### Example
+
+* To sign transaction with ready signatures, you need to call <b>signMultisigBySigns</b> method 
+and pass <b>multisig Minter address</b> and your <b>signatures</b> (in any order).
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterSendCoinTx::TYPE,
+    'data' => [
+        'coin' => 'MNT',
+        'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
+        'value' => '10'
+    ]
+]);
+
+$signature1 = $tx->createSignature($privateKey1);
+$signature2 = $tx->createSignature($privateKey2);
+$signature3 = $tx->createSignature($privateKey3);
+
+$signedTx = $tx->signMultisigBySigns('Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2', [
+     $signature1, $signature2, $signature3
 ])
 ```
 
