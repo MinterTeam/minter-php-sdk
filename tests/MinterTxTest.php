@@ -96,19 +96,6 @@ final class MinterTxTest extends TestCase
     }
 
     /**
-     * Test recovering public key.
-     */
-    public function testRecoverPublicKey()
-    {
-        $tx = new MinterTx(self::VALID_TX);
-
-        $this->assertEquals(
-            MinterWallet::privateToPublic(self::PRIVATE_KEY),
-            $tx->recoverPublicKey(self::INTERMEDIATE_TX)
-        );
-    }
-
-    /**
      * Test get hash by transaction.
      */
     public function testGetHash()
