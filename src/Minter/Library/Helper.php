@@ -127,7 +127,6 @@ class Helper
      *
      * @param array $tx
      * @return string
-     * @throws \Exception
      */
     public static function createKeccakHash(string $dataString): string
     {
