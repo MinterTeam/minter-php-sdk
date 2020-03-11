@@ -50,7 +50,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
             ),
 
             // Convert from BIP to PIP
-            'value' => MinterConverter::convertValue($this->data['value'], 'pip')
+            'value' => MinterConverter::convertToPip($this->data['value'])
         ];
     }
 
@@ -70,7 +70,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
             'to' => Helper::addWalletPrefix($txData[1]),
 
             // Convert value from PIP to BIP
-            'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
+            'value' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
         ];
     }
 }

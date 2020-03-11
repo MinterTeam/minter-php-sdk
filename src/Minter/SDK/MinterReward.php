@@ -24,6 +24,11 @@ class MinterReward
     CONST LAST_REWARD = 68;
 
     /**
+     * Start height of blockchain.
+     */
+    const START_HEIGHT = 5000001;
+
+    /**
      * Get reward by the block number in PIP
      *
      * @param int $blockNumber
@@ -36,17 +41,18 @@ class MinterReward
             throw new \InvalidArgumentException('Block number should be greater than 0');
         }
 
+        $blockNumber += self::START_HEIGHT;
+
         if($blockNumber > self::TOTAL_BLOCKS_COUNT) {
-            return MinterConverter::convertValue('0', 'pip');
+            return 0;
         }
 
         if($blockNumber === self::TOTAL_BLOCKS_COUNT) {
-            return MinterConverter::convertValue(self::LAST_REWARD, 'pip');
+            return self::LAST_REWARD;
         }
 
         $reward = self::formula($blockNumber);
-
-        return MinterConverter::convertValue($reward, 'pip');
+        return $reward;
     }
 
     /**

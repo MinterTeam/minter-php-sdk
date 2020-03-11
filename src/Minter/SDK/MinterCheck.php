@@ -172,7 +172,7 @@ class MinterCheck
                     break;
 
                 case 'value':
-                    $data[$field] = MinterConverter::convertValue(Helper::hexDecode($value), 'bip');
+                    $data[$field] = MinterConverter::convertToBase(Helper::hexDecode($value));
                     break;
 
                 default:
@@ -251,7 +251,7 @@ class MinterCheck
 
             'coin' => MinterConverter::convertCoinName($check['coin']),
 
-            'value' => MinterConverter::convertValue($check['value'], 'pip'),
+            'value' => MinterConverter::convertToPip($check['value']),
 
             'gasCoin' => MinterConverter::convertCoinName($check['gasCoin'])
         ];

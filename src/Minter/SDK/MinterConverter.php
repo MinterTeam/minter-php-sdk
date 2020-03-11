@@ -17,6 +17,25 @@ class MinterConverter
     const DEFAULT = '1000000000000000000';
 
     /**
+     * @param string $num
+     * @return string
+     */
+    public static function convertToPip(string $num): string
+    {
+        return bcmul(self::DEFAULT, $num, 0);
+    }
+
+    /**
+     * @param string $num
+     * @return string
+     */
+    public static function convertToBase(string $num): string
+    {
+        $num = bcdiv($num, self::DEFAULT, 25);
+        return Helper::niceNumber($num);
+    }
+
+    /**
      * Convert value
      *
      * @param string $num

@@ -146,7 +146,7 @@ class MinterTx
         $this->tx['signatureType'] = self::SIGNATURE_SINGLE_TYPE;
 
         $tx = $this->encodeTxToRlp($this->tx);
-	    $hash = $this->createTxHash($tx);
+        $hash = $this->createTxHash($tx);
 
         $signature = ECDSA::sign($hash, $privateKey);
         $signature = Helper::hex2buffer($signature);

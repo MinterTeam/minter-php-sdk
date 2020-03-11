@@ -26,7 +26,7 @@ final class MinterConverterTest extends TestCase
     public function testConvertValueToPIP()
     {
         foreach (self::VALUES as $data) {
-            $this->assertEquals($data[1], MinterConverter::convertValue($data[0], 'pip'));
+            $this->assertEquals($data[1], MinterConverter::convertToPip($data[0]));
         }
     }
 
@@ -36,7 +36,7 @@ final class MinterConverterTest extends TestCase
     public function testConvertValueToBIP()
     {
         foreach (self::VALUES as $data) {
-            $this->assertEquals($data[0], MinterConverter::convertValue($data[1], 'bip'));
+            $this->assertEquals($data[0], MinterConverter::convertToBase($data[1]));
         }
     }
 

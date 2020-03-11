@@ -51,16 +51,16 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'symbol' => MinterConverter::convertCoinName($this->data['symbol']),
 
             // Convert field from BIP to PIP
-            'initialAmount' => MinterConverter::convertValue($this->data['initialAmount'], 'pip'),
+            'initialAmount' => MinterConverter::convertToPip($this->data['initialAmount']),
 
             // Convert field from BIP to PIP
-            'initialReserve' => MinterConverter::convertValue($this->data['initialReserve'], 'pip'),
+            'initialReserve' => MinterConverter::convertToPip($this->data['initialReserve']),
 
             // Define crr field
             'crr' => $this->data['crr'] === 0 ? '' : $this->data['crr'],
 
             // Convert field from BIP to PIP
-            'maxSupply' => MinterConverter::convertValue($this->data['maxSupply'], 'pip')
+            'maxSupply' => MinterConverter::convertToPip($this->data['maxSupply'])
         ];
     }
 
@@ -80,16 +80,16 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
             'symbol' => Helper::hex2str($txData[1]),
 
             // Convert field from PIP to BIP
-            'initialAmount' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip'),
+            'initialAmount' => MinterConverter::convertToBase(Helper::hexDecode($txData[2])),
 
             // Convert field from PIP to BIP
-            'initialReserve' => MinterConverter::convertValue(Helper::hexDecode($txData[3]), 'bip'),
+            'initialReserve' => MinterConverter::convertToBase(Helper::hexDecode($txData[3])),
 
             // Convert crr field from hex string to number
             'crr' => hexdec($txData[4]),
 
             // Convert field from BIP to PIP
-            'maxSupply' => MinterConverter::convertValue(Helper::hexDecode($txData[5]), 'bip')
+            'maxSupply' => MinterConverter::convertToBase(Helper::hexDecode($txData[5]))
         ];
     }
 }
