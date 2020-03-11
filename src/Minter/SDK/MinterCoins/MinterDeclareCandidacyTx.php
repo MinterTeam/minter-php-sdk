@@ -61,7 +61,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             'coin' => MinterConverter::convertCoinName($this->data['coin']),
 
             // Convert stake field from BIP to PIP
-            'stake' => MinterConverter::convertValue($this->data['stake'], 'pip')
+            'stake' => MinterConverter::convertToPip($this->data['stake'])
         ];
     }
 
@@ -87,7 +87,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             'coin' => Helper::hex2str($txData[3]),
 
             // Convert stake from PIP to BIP
-            'stake' => MinterConverter::convertValue(Helper::hexDecode($txData[4]), 'bip')
+            'stake' => MinterConverter::convertToBase(Helper::hexDecode($txData[4]))
         ];
     }
 }

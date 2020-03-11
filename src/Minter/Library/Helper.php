@@ -145,7 +145,7 @@ class Helper
     {
         return array_map(function($item) {
             if(!is_array($item)) {
-                return $item->toString('hex');
+                return (string) $item;
             }
 
             return self::rlpArrayToHexArray($item);
@@ -188,5 +188,14 @@ class Helper
     {
         $splitted = str_split($str, 1);
         return new Buffer($splitted);
+    }
+
+    /**
+     * @param $data
+     * @return string
+     */
+    public static function base64urlEncode($data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 }

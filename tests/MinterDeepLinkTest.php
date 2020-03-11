@@ -12,16 +12,16 @@ final class MinterDeepLinkTest extends TestCase
     public function testEncodeWithPayload()
     {
         $txData = new MinterSendCoinTx([
-            'coin'  => 'BIP',
-            'to'    => 'Mx18467bbb64a8edf890201d526c35957d82be3d95',
-            'value' => '1.23456789'
-        ]);
+           'coin' => 'MNT',
+           'to' => 'Mx7633980c000139dd3bd24a3f54e06474fa941e16',
+           'value' => 10
+       ]);
 
         $link = new MinterDeepLink($txData);
-        $link->setPayload('Hello World');
+        $link->setPayload('custom message')->setGasCoin('ASD');
 
         $this->assertSame(
-            self::HOST_BASE_URL . '?d=f83b01aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008b48656c6c6f20576f726c64808080',
+            self::HOST_BASE_URL . '/-EgBqumKTU5UAAAAAAAAAJR2M5gMAAE53TvSSj9U4GR0-pQeFoiKxyMEiegAAI5jdXN0b20gbWVzc2FnZYCAikFTRAAAAAAAAAA',
             $link->encode());
     }
 
@@ -36,7 +36,7 @@ final class MinterDeepLinkTest extends TestCase
         $link = new MinterDeepLink($txData);
 
         $this->assertSame(
-            self::HOST_BASE_URL . '?d=f001aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db40080808080',
+            self::HOST_BASE_URL . '/8AGq6YpCSVAAAAAAAAAAlBhGe7tkqO34kCAdUmw1lX2Cvj2ViBEiEPR2jbQAgICAgA',
             $link->encode());
     }
 
@@ -56,7 +56,7 @@ final class MinterDeepLinkTest extends TestCase
         $link->setGasPrice('1');
 
         $this->assertSame(
-            self::HOST_BASE_URL . '?d=f84701aae98a424950000000000000009418467bbb64a8edf890201d526c35957d82be3d9588112210f4768db4008d436865636b207061796c6f616401018a4d4e5400000000000000',
+            self::HOST_BASE_URL . '/-EcBqumKQklQAAAAAAAAAJQYRnu7ZKjt-JAgHVJsNZV9gr49lYgRIhD0do20AI1DaGVjayBwYXlsb2FkAQGKTU5UAAAAAAAAAA',
             $link->encode()
             );
     }

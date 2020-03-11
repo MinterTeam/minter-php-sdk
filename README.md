@@ -863,7 +863,6 @@ $address = MinterWallet::getAddressFromPublicKey($publicKey);
 
 * Create Minter deep link.
 * You can pass data of any Minter transaction to the constructor.
-* Payload is required.
 
 ```php
 use Minter\SDK\MinterDeepLink;
@@ -876,12 +875,11 @@ $txData = new MinterSendCoinTx([
 ]);
 
 $link = new MinterDeepLink($txData);
-$link->setPayload('Hello World');
 
 $link->encode(); // returns encoded link as string
 ```
 
-* You can define optional fields such as nonce, gas price, gas coin.
+* You can define optional fields such as host, payload, nonce, gas price, gas coin, check password.
 
 ```php
 use Minter\SDK\MinterDeepLink;
@@ -894,10 +892,12 @@ $txData = new MinterSendCoinTx([
 ]);
 
 $link = new MinterDeepLink($txData);
-$link->setPayload('Hello World');
-$link->setNonce($nonce);
-$link->setGasPrice($gasPrice);
-$link->setGasCoin($gasCoin);
+$link->setPayload('Hello World')
+    ->setNonce($nonce);
+    ->setGasPrice($gasPrice);
+    ->setGasCoin($gasCoin);
+    ->setHost('https://testnet.bip.to/tx');
+    ->setPassword('some check password');
 
 $link->encode(); // returns encoded link as string
 ```

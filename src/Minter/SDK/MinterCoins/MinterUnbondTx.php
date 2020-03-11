@@ -51,7 +51,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
             'coin' => MinterConverter::convertCoinName($this->data['coin']),
 
             // Convert from BIP to PIP
-            'value' => MinterConverter::convertValue($this->data['value'], 'pip')
+            'value' => MinterConverter::convertToPip($this->data['value'])
         ];
     }
 
@@ -71,7 +71,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
             'coin' => Helper::hex2str($txData[1]),
 
             // Convert value from PIP to BIP
-            'value' => MinterConverter::convertValue(Helper::hexDecode($txData[2]), 'bip')
+            'value' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
         ];
     }
 }

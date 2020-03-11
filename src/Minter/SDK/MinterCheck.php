@@ -120,7 +120,7 @@ class MinterCheck
         $this->structure = array_merge($this->structure, Helper::hex2buffer($signature));
 
         // rlp encode data and add Minter wallet prefix
-        return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
+        return MinterPrefix::CHECK . $this->rlp->encode($this->structure);
     }
 
     /**
@@ -172,7 +172,7 @@ class MinterCheck
                     break;
 
                 case 'value':
-                    $data[$field] = MinterConverter::convertValue(Helper::hexDecode($value), 'bip');
+                    $data[$field] = MinterConverter::convertToBase(Helper::hexDecode($value));
                     break;
 
                 default:
@@ -251,7 +251,7 @@ class MinterCheck
 
             'coin' => MinterConverter::convertCoinName($check['coin']),
 
-            'value' => MinterConverter::convertValue($check['value'], 'pip'),
+            'value' => MinterConverter::convertToPip($check['value']),
 
             'gasCoin' => MinterConverter::convertCoinName($check['gasCoin'])
         ];
@@ -265,7 +265,7 @@ class MinterCheck
     protected function serialize($data): string
     {
         // create msg hash with lock field
-        $msgHash = $this->rlp->encode($data)->toString('hex');
+        $msgHash = $this->rlp->encode($data);
 
         return Helper::createKeccakHash($msgHash);
     }
