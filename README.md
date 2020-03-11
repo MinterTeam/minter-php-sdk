@@ -875,7 +875,6 @@ $txData = new MinterSendCoinTx([
 ]);
 
 $link = new MinterDeepLink($txData);
-
 $link->encode(); // returns encoded link as string
 ```
 
@@ -893,10 +892,10 @@ $txData = new MinterSendCoinTx([
 
 $link = new MinterDeepLink($txData);
 $link->setPayload('Hello World')
-    ->setNonce($nonce);
-    ->setGasPrice($gasPrice);
-    ->setGasCoin($gasCoin);
-    ->setHost('https://testnet.bip.to/tx');
+    ->setNonce($nonce)
+    ->setGasPrice($gasPrice)
+    ->setGasCoin($gasCoin)
+    ->setHost('https://testnet.bip.to/tx')
     ->setPassword('some check password');
 
 $link->encode(); // returns encoded link as string
