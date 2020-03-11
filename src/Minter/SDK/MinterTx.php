@@ -152,7 +152,7 @@ class MinterTx
         $signature = Helper::hex2buffer($signature);
 
         $tx['signatureData'] = $this->rlp->encode($signature);
-        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
+        $this->txSigned = $this->rlp->encode($tx);
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
     }
@@ -181,7 +181,7 @@ class MinterTx
         $multisigAddress = hex2bin($multisigAddress);
 
         $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
-        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
+        $this->txSigned = $this->rlp->encode($tx);
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
     }
@@ -204,7 +204,7 @@ class MinterTx
         $multisigAddress = hex2bin($multisigAddress);
 
         $tx['signatureData'] = $this->rlp->encode([$multisigAddress, $signatures]);
-        $this->txSigned = $this->rlp->encode($tx)->toString('hex');
+        $this->txSigned = $this->rlp->encode($tx);
 
         return MinterPrefix::TRANSACTION . $this->txSigned;
     }
@@ -216,7 +216,7 @@ class MinterTx
     private function createTxHash(array $tx): string
     {
         return Helper::createKeccakHash(
-            $this->rlp->encode($tx)->toString('hex')
+            $this->rlp->encode($tx)
         );
     }
 
@@ -234,7 +234,7 @@ class MinterTx
         $hash = $this->createTxHash($tx);
         $signature = ECDSA::sign($hash, $privateKey);
         $signature = Helper::hex2buffer($signature);
-        $signature = $this->rlp->encode($signature)->toString('hex');
+        $signature = $this->rlp->encode($signature);
 
         return $signature;
     }

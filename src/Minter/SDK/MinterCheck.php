@@ -120,7 +120,7 @@ class MinterCheck
         $this->structure = array_merge($this->structure, Helper::hex2buffer($signature));
 
         // rlp encode data and add Minter wallet prefix
-        return MinterPrefix::CHECK . $this->rlp->encode($this->structure)->toString('hex');
+        return MinterPrefix::CHECK . $this->rlp->encode($this->structure);
     }
 
     /**
@@ -265,7 +265,7 @@ class MinterCheck
     protected function serialize($data): string
     {
         // create msg hash with lock field
-        $msgHash = $this->rlp->encode($data)->toString('hex');
+        $msgHash = $this->rlp->encode($data);
 
         return Helper::createKeccakHash($msgHash);
     }
