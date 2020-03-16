@@ -38,6 +38,7 @@ use Minter\SDK\MinterCoins\{
  * @property string serviceData
  * @property int signatureType
  * @property array signatureData
+ * @property string from
  */
 class MinterTx
 {

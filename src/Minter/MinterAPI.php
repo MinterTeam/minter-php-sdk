@@ -88,13 +88,24 @@ class MinterAPI
      * Returns list of active validators
      *
      * @param null|int $height
+     * @param int|null $page
+     * @param int|null $perPage
      * @return \stdClass
-     * @throws Exception
      * @throws GuzzleException
      */
-    public function getValidators(?int $height = null): \stdClass
+    public function getValidators(?int $height = null, ?int $page = 1, ?int $perPage = null): \stdClass
     {
-        return $this->get('validators', ($height ? ['height' => $height] : null));
+        $params = ['page' => $page];
+
+        if($height) {
+            $params['height'] = $height;
+        }
+
+        if($perPage) {
+            $params['perPage'] = $perPage;
+        }
+
+        return $this->get('validators', $params);
     }
 
     /**
@@ -115,6 +126,25 @@ class MinterAPI
         }
 
         return $this->get('address', $params);
+    }
+
+    /**
+     * Returns addresses balances.
+     *
+     * @param array    $addresses
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getAddresses(array $addresses, ?int $height = null): \stdClass
+    {
+        $params = ['addresses' => json_encode($addresses)];
+
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('addresses', $params);
     }
 
     /**
@@ -258,6 +288,35 @@ class MinterAPI
     }
 
     /**
+     * Return estimate of sell all coin transaction.
+     *
+     * @param string   $coinToSell
+     * @param string   $valueToSell
+     * @param string   $coinToBuy
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function estimateCoinSellAll(
+        string $coinToSell,
+        string $valueToSell,
+        string $coinToBuy,
+        ?int   $height = null
+    ): \stdClass {
+        $params = [
+            'coin_to_sell'  => $coinToSell,
+            'value_to_sell' => $valueToSell,
+            'coin_to_buy'   => $coinToBuy
+        ];
+
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('estimate_coin_sell_all', $params);
+    }
+
+    /**
      * Return estimate of buy coin transaction.
      *
      * @param string   $coinToSell
@@ -290,14 +349,20 @@ class MinterAPI
     /**
      * Return estimate of transaction.
      *
-     * @param string $tx
+     * @param string   $tx
+     * @param int|null $height
      * @return \stdClass
-     * @throws Exception
      * @throws GuzzleException
      */
-    public function estimateTxCommission(string $tx): \stdClass
+    public function estimateTxCommission(string $tx, ?int $height = null): \stdClass
     {
-        return $this->get('estimate_tx_commission', ['tx' => $tx]);
+        $params = ['tx' => $tx];
+
+        if($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('estimate_tx_commission', $params);
     }
 
     /**
@@ -381,5 +446,27 @@ class MinterAPI
         }
 
         return $this->get('missed_blocks', $params);
+    }
+
+    /**
+     * Return network genesis.
+     *
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getGenesis(): \stdClass
+    {
+        return $this->get('genesis');
+    }
+
+    /**
+     * Return node network information.
+     *
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getNetworkInfo(): \stdClass
+    {
+        return $this->get('net_info');
     }
 }

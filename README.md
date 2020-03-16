@@ -10,10 +10,12 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getBalance](#getbalance)
 	    - [getNonce](#getnonce)
 	    - [send](#send)
+	    - [getAddresses](#getaddresses)
 	    - [getStatus](#getstatus)
 	    - [getValidators](#getvalidators)
 	    - [estimateCoinBuy](#estimatecoinbuy)
 	    - [estimateCoinSell](#estimatecoinsell)
+	    - [estimateCoinSellAll](#estimatecoinsellall)
 	    - [getCoinInfo](#getcoininfo)
 	    - [getBlock](#getblock)
 	    - [getEvents](#getevents)
@@ -118,6 +120,14 @@ send(string $tx): \stdClass
 $api->send('f873010101aae98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58cded61ee99880de0b6b3a764000080801ca0ae0ee912484b9bf3bee785f4cbac118793799450e0de754667e2c18faa510301a04f1e4ed5fad4b489a1065dc1f5255b356ab9a2ce4b24dde35bcb9dc43aba019c')
 ```
 
+### getAddresses
+
+Returns addresses balances.
+
+``
+getAddresses(array $addresses, ?int $height = null): \stdClass
+``
+
 ### getStatus
 
 Returns node status info.
@@ -131,7 +141,7 @@ getStatus(): \stdClass
 Returns list of active validators.
 
 ``
-getValidators(?int $height = null): \stdClass
+getValidators(?int $height = null, ?int $page = 1, ?int $perPage = null): \stdClass
 ``
 
 ### estimateCoinBuy
@@ -148,6 +158,14 @@ Return estimate of sell coin transaction.
 
 ``
 estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
+``
+
+### estimateCoinSellAll
+
+Return estimate of sell coin all transaction.
+
+``
+estimateCoinSellAll(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
 ``
 
 ### getCoinInfo
@@ -206,7 +224,7 @@ getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
 Return estimate of transaction.
 
 ``
-estimateTxCommission(string $tx): \stdClass
+estimateTxCommission(string $tx, ?int $height = null): \stdClass
 ``
 
 ### getTransactions
@@ -247,6 +265,22 @@ Returns missed blocks by validator public key.
 
 ``
 getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
+``
+
+### getGenesis
+
+Return network genesis.
+
+``
+getGenesis(): \stdClass
+``
+
+### getNetworkInfo
+
+Return node network information.
+
+``
+getNetworkInfo(): \stdClass
 ``
 
 ### Error handling
