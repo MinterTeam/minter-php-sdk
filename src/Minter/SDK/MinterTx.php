@@ -38,6 +38,7 @@ use Minter\SDK\MinterCoins\{
  * @property string serviceData
  * @property int signatureType
  * @property array signatureData
+ * @property string from
  */
 class MinterTx
 {
@@ -341,7 +342,7 @@ class MinterTx
      * @return array
      * @throws InvalidArgumentException
      */
-    private function encode(array $tx, bool $isHexFormat = false): array
+    private function    encode(array $tx, bool $isHexFormat = false): array
     {
         // fill with default values if not present
         $tx['payload']     = $tx['payload']     ?? '';
