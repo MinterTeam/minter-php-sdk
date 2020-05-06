@@ -110,7 +110,7 @@ $api->getNonce('Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99')
 
 Returns the result of sending <b>signed</b> tx.
 
-:warning: <b>To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 1.</b>
+:warning: <b>To ensure that transaction was successfully committed to the blockchain, you need to find the transaction by the hash and ensure that the status code equals to 0.</b>
 
 ``
 send(string $tx): \stdClass
