@@ -469,4 +469,20 @@ class MinterAPI
     {
         return $this->get('net_info');
     }
+
+    /**
+     * @param int      $id
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getCoinInfoByID(int $id, ?int $height = null):\ stdClass
+    {
+        $params = ['id' => $id];
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('coin_id', $params);
+    }
 }

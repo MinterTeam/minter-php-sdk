@@ -5,6 +5,7 @@ namespace Minter\Library;
 use kornrunner\Keccak;
 use Minter\SDK\MinterPrefix;
 use Web3p\RLP\Buffer;
+use Web3p\RLP\RLP;
 
 /**
  * Class Helper
@@ -58,7 +59,7 @@ class Helper
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 $data[$key] = self::hex2binRecursive($value);
-            } elseif (is_string($value) && ctype_xdigit($value)) {
+            } else if (is_string($value) && ctype_xdigit($value)) {
                 $data[$key] = hex2bin($value);
             }
         }
@@ -138,18 +139,17 @@ class Helper
     /**
      * Convert RLP array to hex array
      *
-     * @param array $rlp
+     * @param string $data
      * @return array
      */
-    public static function rlpArrayToHexArray(array $rlp): array
+    public static function hex2rlp(string $data): array
     {
-        return array_map(function($item) {
-            if(!is_array($item)) {
-                return (string) $item;
-            }
+        $rlp     = new RLP();
+        $decoded = $rlp->decode('0x' . $data);
 
-            return self::rlpArrayToHexArray($item);
-        }, $rlp);
+        return array_map(function ($v) use ($rlp) {
+            return $rlp->decode('0x' . $v);
+        }, $decoded);
     }
 
     /**
@@ -160,8 +160,8 @@ class Helper
      */
     public static function hex2buffer($data)
     {
-        if(is_array($data)) {
-            return array_map(function($item) {
+        if (is_array($data)) {
+            return array_map(function ($item) {
                 return self::hex2buffer($item);
             }, $data);
         }

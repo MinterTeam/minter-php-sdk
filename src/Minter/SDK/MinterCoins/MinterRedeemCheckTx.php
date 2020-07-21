@@ -12,58 +12,38 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 9;
+    public $check;
+    public $proof;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 9;
     const COMMISSION = 30;
 
     /**
-     * Minter Redeem check tx data
-     *
-     * @var array
+     * MinterRedeemCheckTx constructor.
+     * @param $check
+     * @param $proof
      */
-    public $data = [
-        'check' => '',
-        'proof' => ''
-    ];
+    public function __construct($check, $proof)
+    {
+        $this->check = $check;
+        $this->proof = $proof;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Remove Minter wallet prefix and convert hex string to binary
-            'check' => hex2bin(
-                Helper::removePrefix($this->data['check'], MinterPrefix::CHECK)
-            ),
-
-            // Convert hex string to binary
-            'proof' => hex2bin($this->data['proof'])
+            Helper::removePrefix($this->check, MinterPrefix::CHECK),
+            hex2bin($this->proof)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Add Minter wallet prefix to hex string
-            'check' => MinterPrefix::CHECK . $txData[0],
-
-            // Define proof field
-            'proof' => $txData[1],
-        ];
+        $this->check = MinterPrefix::CHECK . $this->check;
     }
 }

@@ -12,51 +12,36 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterSetCandidateOffTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 11;
+    public $publicKey;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 11;
     const COMMISSION = 100;
 
     /**
-     * Set candidate off tx data
-     *
-     * @var array
+     * MinterSetCandidateOffTx constructor.
+     * @param $publicKey
      */
-    public $data = [
-        'pubkey' => ''
-    ];
+    public function __construct($publicKey)
+    {
+        $this->publicKey = $publicKey;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Remove Minter wallet prefix and convert hex string to binary
-            'pubkey' => hex2bin(
-                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
+            hex2bin(
+                Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)
             ),
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Add Minter wallet prefix to string
-            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
-        ];
+        $this->publicKey = MinterPrefix::PUBLIC_KEY . $this->publicKey;
     }
 }

@@ -123,14 +123,14 @@ class MinterDeepLink
      */
     public function encode(): string
     {
-        $payload        = Helper::str2buffer($this->payload ?? '');
-        $gasCoin        = $this->gasCoin ? MinterConverter::convertCoinName($this->gasCoin) : '';
-        $rlpEncodedData = $this->rlp->encode($this->data->data);
-        $txType         = $this->data->getType();
+        $payload = Helper::str2buffer($this->payload ?? '');
+        $gasCoin = $this->gasCoin ? MinterConverter::convertCoinName($this->gasCoin) : '';
+        $data    = $this->data->encode();
+        $txType  = $this->data->getType();
 
         $deepLink = [
             'type'     => $txType,
-            'data'     => $rlpEncodedData,
+            'data'     => $data,
             'payload'  => $payload,
             'nonce'    => $this->nonce,
             'gasPrice' => $this->gasPrice,

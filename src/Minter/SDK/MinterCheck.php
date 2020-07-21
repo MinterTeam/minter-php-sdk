@@ -4,7 +4,6 @@ namespace Minter\SDK;
 
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
-use Web3p\RLP\Buffer;
 use Web3p\RLP\RLP;
 
 /**

@@ -11,80 +11,69 @@ use Minter\Library\Helper;
  */
 class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 12;
+    public $threshold;
+    public $weights;
+    public $addresses;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 12;
     const COMMISSION = 100;
 
     /**
-     * Declare candidacy tx data
-     *
-     * @var array
+     * MinterCreateMultisigTx constructor.
+     * @param $threshold
+     * @param $weights
+     * @param $addresses
      */
-    public $data = [
-        'threshold' => '',
-        'weights'   => [],
-        'addresses' => []
-    ];
+    public function __construct($threshold, $weights, $addresses)
+    {
+        $this->threshold = $threshold;
+        $this->weights   = $weights;
+        $this->addresses = $addresses;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         $addresses = [];
-        foreach ($this->data['addresses'] as $address) {
+        foreach ($this->addresses as $address) {
             $address     = Helper::removeWalletPrefix($address);
             $addresses[] = hex2bin($address);
         }
 
         $weights = [];
-        foreach ($this->data['weights'] as $weight) {
+        foreach ($this->weights as $weight) {
             $weights[] = $weight === 0 ? '' : $weight;
         }
 
-        $threshold = $this->data['threshold'] === 0 ? '' : $this->data['threshold'];
+        $threshold = $this->threshold === 0 ? '' : $this->threshold;
 
         return [
-            'threshold' => $threshold,
-            'weights'   => $weights,
-            'addresses' => $addresses,
+            $threshold,
+            $weights,
+            $addresses,
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        list($txThreshold, $txWeights, $txAddresses) = $txData;
-
-        $threshold = (int) Helper::hexDecode($txThreshold);
+        $threshold = (int)Helper::hexDecode($this->threshold);
 
         $weights = [];
-        foreach ($txWeights as $weight) {
-            $weights[] = (int) Helper::hexDecode($weight);
+        foreach ($this->weights as $weight) {
+            $weights[] = (int)Helper::hexDecode($weight);
         }
 
         $addresses = [];
-        foreach ($txAddresses as $address) {
+        foreach ($this->addresses as $address) {
             $addresses[] = Helper::addWalletPrefix($address);
         }
 
-        return [
-            'threshold' => $threshold,
-            'weights'   => $weights,
-            'addresses' => $addresses
-        ];
+        $this->threshold = $threshold;
+        $this->weights   = $weights;
+        $this->addresses = $addresses;
     }
 }

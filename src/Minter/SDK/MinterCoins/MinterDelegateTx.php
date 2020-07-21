@@ -13,65 +13,44 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 7;
+    public $publicKey;
+    public $coin;
+    public $stake;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 7;
     const COMMISSION = 200;
 
     /**
-     * Delegate tx data
-     *
-     * @var array
+     * MinterDelegateTx constructor.
+     * @param $publicKey
+     * @param $coin
+     * @param $stake
      */
-    public $data = [
-        'pubkey' => '',
-        'coin' => '',
-        'stake' => ''
-    ];
+    public function __construct($publicKey, $coin, $stake)
+    {
+        $this->publicKey = $publicKey;
+        $this->coin      = $coin;
+        $this->stake     = $stake;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Remove Minter wallet prefix and convert hex string to binary
-            'pubkey' => hex2bin(
-                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
-            ),
-
-            // Convert coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
-
-            // Convert stake field from BIP to PIP
-            'stake' => MinterConverter::convertToPip($this->data['stake'])
+            hex2bin(Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)),
+            $this->coin,
+            MinterConverter::convertToPip($this->stake)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Add Minter wallet prefix to string
-            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
-
-            // Pack coin name
-            'coin' => Helper::hex2str($txData[1]),
-
-            // Convert stake from PIP to BIP
-            'stake' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
-        ];
+        $this->publicKey = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->coin      = hexdec($this->coin);
+        $this->stake     = MinterConverter::convertToBase(Helper::hexDecode($this->stake));
     }
 }

@@ -26,8 +26,8 @@ class ECDSA
     {
         // create elliptic curve and get public key
         $ellipticCurve = new EC('secp256k1');
-        $keyPair = new KeyPair($ellipticCurve, [
-            'priv' => $privateKey,
+        $keyPair       = new KeyPair($ellipticCurve, [
+            'priv'    => $privateKey,
             'privEnc' => 'hex'
         ]);
 
@@ -47,11 +47,11 @@ class ECDSA
     {
         // create elliptic curve and sign
         $ellipticCurve = new EC('secp256k1');
-        $signature = $ellipticCurve->sign($message, $privateKey, 'hex', ['canonical' => true]);
+        $signature     = $ellipticCurve->sign($message, $privateKey, 'hex', ['canonical' => true]);
 
         // convert to hex
-        $r = $signature->r->toString('hex');
-        $s = $signature->s->toString('hex');
+        $r        = $signature->r->toString('hex');
+        $s        = $signature->s->toString('hex');
         $recovery = $signature->recoveryParam;
 
         return self::encodeSign($r, $s, $recovery);
@@ -61,31 +61,30 @@ class ECDSA
     /**
      * Recover public key using pure PHP library
      *
-     * @param string $msg
-     * @param string $r
-     * @param string $s
-     * @param int $recovery
+     * @param string       $msg
+     * @param EC\Signature $signature
      * @return string
+     * @throws \Exception
      */
-    public static function recover(string $msg, string $r, string $s, int $recovery): string
+    public static function recover(string $msg, EC\Signature $signature): string
     {
         // define the recovery param
-        $recovery = $recovery === self::V_BITS ? 0 : 1;
+        $recovery = $signature->recoveryParam === self::V_BITS ? 0 : 1;
 
         // define the signature
         $signature = [
-            'r' => $r,
-            's' => $s,
+            'r'             => $signature->r->toString('hex'),
+            's'             => $signature->s->toString('hex'),
             'recoveryParam' => $recovery
         ];
 
         // create elliptic curve
         $ellipticCurve = new EC('secp256k1');
-        $point = $ellipticCurve->recoverPubKey($msg, $signature, $recovery, 'hex');
+        $point         = $ellipticCurve->recoverPubKey($msg, $signature, $recovery, 'hex');
 
         // create key pair from point
         $key = new KeyPair($ellipticCurve, [
-            'pub' => $point,
+            'pub'    => $point,
             'pubEnc' => 'hex'
         ]);
 
@@ -97,7 +96,7 @@ class ECDSA
      *
      * @param string $r
      * @param string $s
-     * @param int $recovery
+     * @param int    $recovery
      * @return array
      */
     protected static function encodeSign(string $r, string $s, int $recovery): array

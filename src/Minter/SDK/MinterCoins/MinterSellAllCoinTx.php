@@ -12,63 +12,44 @@ use Minter\SDK\MinterConverter;
  */
 class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 3;
+    public $coinToBuy;
+    public $coinToSell;
+    public $minimumValueToBuy;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 3;
     const COMMISSION = 100;
 
     /**
-     * Send coin tx data
-     *
-     * @var array
+     * MinterSellAllCoinTx constructor.
+     * @param $coinToSell
+     * @param $coinToBuy
+     * @param $minimumValueToBuy
      */
-    public $data = [
-        'coinToSell' => '',
-        'coinToBuy' => '',
-        'minimumValueToBuy' => ''
-    ];
+    public function __construct($coinToSell, $coinToBuy, $minimumValueToBuy)
+    {
+        $this->coinToBuy         = $coinToBuy;
+        $this->coinToSell        = $coinToSell;
+        $this->minimumValueToBuy = $minimumValueToBuy;
+    }
 
     /**
      * Prepare tx data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Add nulls before symbol
-            'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
-
-            // Add nulls before symbol
-            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy']),
-
-            // Convert field from BIP to PIP
-            'minimumValueToBuy' => MinterConverter::convertToPip($this->data['minimumValueToBuy'])
+            $this->coinToSell,
+            $this->coinToBuy,
+            MinterConverter::convertToPip($this->minimumValueToBuy)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Pack symbol
-            'coinToSell' => Helper::hex2str($txData[0]),
-
-            // Pack symbol
-            'coinToBuy' => Helper::hex2str($txData[1]),
-
-            // Convert field from PIP to BIP
-            'minimumValueToBuy' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
-        ];
+        $this->coinToSell        = hexdec($this->coinToSell);
+        $this->coinToBuy         = hexdec($this->coinToBuy);
+        $this->minimumValueToBuy = MinterConverter::convertToBase(Helper::hexDecode($this->minimumValueToBuy));
     }
 }
