@@ -601,15 +601,6 @@ $tx = new MinterTx(...);
 $tx->getFee();
 ```
 
-* Get hash of decoded transaction
-```php
-use Minter\SDK\MinterTx;
-
-$tx = new MinterTx('Mx....');
-
-$hash = $tx->getHash();
-```
-
 ### Decode transaction
 
 Returns an array with transaction data.
@@ -623,10 +614,13 @@ use Minter\SDK\MinterTx;
 
 $tx = MinterTx::decode('transaction raw starting from 0x...');
 
+// $tx->getSenderAddress()
 // $tx->getData()
+// $tx->getNonce()
+// $tx->getChainID()
 // $tx->getGasPrice()
-// $tx->getPayload
-// ...
+// $tx->getPayload()
+// $tx->getSignatureData()
 
 ```
 
