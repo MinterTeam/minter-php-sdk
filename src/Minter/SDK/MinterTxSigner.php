@@ -43,7 +43,7 @@ class MinterTxSigner
      * @param string $privateKey
      * @return Buffer
      */
-    public function __createSignature(string $privateKey)
+    public function createEncodedSignature(string $privateKey)
     {
         $tx        = $this->encodeRLP();
         $hash      = Helper::createKeccakHash($tx);

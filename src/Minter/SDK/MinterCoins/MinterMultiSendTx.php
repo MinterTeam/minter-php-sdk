@@ -31,11 +31,14 @@ class MinterMultiSendTx extends MinterCoinTx implements MinterTxInterface
      */
     public function encodeData(): array
     {
+        $list = ['list' => []];
+
         foreach ($this->list as $key => $data) {
-            $this->list[$key] = new MinterSendCoinTx(...$data);
+            /** @var $data MinterSendCoinTx */
+           $list['list'][$key] = $data->encodeData();
         }
 
-        return $this->list;
+        return $list;
     }
 
     public function decodeData()

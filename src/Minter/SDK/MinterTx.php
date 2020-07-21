@@ -100,7 +100,7 @@ class MinterTx extends MinterTxSigner
             $this->setSignatureType(self::SIGNATURE_SINGLE_TYPE);
         }
 
-        return $this->__createSignature($privateKey);
+        return $this->createEncodedSignature($privateKey);
     }
 
     /**
@@ -113,6 +113,10 @@ class MinterTx extends MinterTxSigner
         // get transaction data fee
         $gas = $this->getData()->getFee();
 
+        if ($this->getGasCoin() !== self::BASE_COIN_ID) {
+            throw new InvalidArgumentException('Cannot calculate transaction commission with the custom gas coin');
+        }
+
         // multiplied gas price
         $gasPrice = bcmul($gas, self::FEE_DEFAULT_MULTIPLIER, 0);
 
@@ -122,7 +126,8 @@ class MinterTx extends MinterTxSigner
             strlen($this->serviceData) * bcmul(self::PAYLOAD_COMMISSION, self::FEE_DEFAULT_MULTIPLIER, 0)
         );
 
-        return bcadd($gasPrice, $commission, 0);
+        $fee = bcadd($gasPrice, $commission, 0);
+        return MinterConverter::convertToBase($fee);
     }
 
     /**
