@@ -4,8 +4,23 @@ namespace Minter\SDK;
 
 use InvalidArgumentException;
 use Minter\Contracts\MinterTxInterface;
-use Web3p\RLP\RLP;
-use Minter\Library\ECDSA;
+use Minter\SDK\MinterCoins\MinterBuyCoinTx;
+use Minter\SDK\MinterCoins\MinterChangeOwnerTx;
+use Minter\SDK\MinterCoins\MinterCreateCoinTx;
+use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
+use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
+use Minter\SDK\MinterCoins\MinterDelegateTx;
+use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+use Minter\SDK\MinterCoins\MinterMultiSendTx;
+use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
+use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
+use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
+use Minter\SDK\MinterCoins\MinterSellCoinTx;
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
+use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
+use Minter\SDK\MinterCoins\MinterUnbondTx;
+use Web3p\RLP\RLP;;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\MinterCoinTx;
 
@@ -316,9 +331,9 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return mixed
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterChangeOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx
      */
-    public function getData()
+    public function getData(): MinterTxInterface
     {
         return $this->data;
     }

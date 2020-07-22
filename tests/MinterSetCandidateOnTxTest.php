@@ -13,28 +13,32 @@ final class MinterSetCandidateOnTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '05ddcd4e6f7d248ed1388f0091fe345bf9bf4fc2390384e26005e7675c98b3c1';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
-     * Predefined data
+     * Predefined minter address
      */
-    const DATA = [
-        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43'
-    ];
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
 
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf87c0102018a4d4e54000000000000000aa2e1a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43808001b845f8431ba0095aed433171fe5ac385ccd299507bdcad3dd2269794fd0d14d4f58327ddc87ea046ec7e4f8f9b477a1255485f36e0567e62283723ecc5a0bd1e5d201e53e85245';
+    const VALID_SIGNATURE = '0xf8720d0101800aa2e1a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0808001b845f8431ca081ebbc4770e7d9d6236614794d5749ab5a925c5f733bae5a34fa525f840157fba043970f8e6bcaf6a7ba2d6895b0c9e99da404ebfa77899d28e05e6ca91f0a092f';
 
     /**
      * Test to decode data for MinterSetCandidateOnTx
      */
     public function testDecode(): void
     {
-        $tx = new MinterTx(self::VALID_SIGNATURE);
+        $tx = MinterTx::decode(self::VALID_SIGNATURE);
+        $validTx = $this->makeTransaction();
 
-        $this->assertSame($tx->data, self::DATA);
+        $this->assertSame($validTx->getNonce(), $tx->getNonce());
+        $this->assertSame($validTx->getGasCoin(), $tx->getGasCoin());
+        $this->assertSame($validTx->getGasPrice(), $tx->getGasPrice());
+        $this->assertSame($validTx->getChainID(), $tx->getChainID());
+        $this->assertSame($validTx->getData()->publicKey, $tx->getData()->publicKey);
+        $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
     }
 
     /**
@@ -42,20 +46,15 @@ final class MinterSetCandidateOnTxTest extends TestCase
      */
     public function testSign(): void
     {
-        $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterSetCandidateOnTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
-
-        $signature = $tx->sign(self::PRIVATE_KEY);
-
+        $signature = $this->makeTransaction()->sign(self::PRIVATE_KEY);
         $this->assertSame($signature, self::VALID_SIGNATURE);
+    }
+
+    /**
+     * @return MinterTx
+     */
+    private function makeTransaction(): MinterTx
+    {
+        return new MinterTx(13, new MinterSetCandidateOnTx('Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0'));
     }
 }

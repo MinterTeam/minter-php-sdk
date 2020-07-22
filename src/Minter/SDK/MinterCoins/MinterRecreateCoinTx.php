@@ -12,28 +12,25 @@ use Minter\SDK\MinterConverter;
  */
 class MinterRecreateCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    private $name;
-    private $symbol;
-    private $amount;
-    private $reserve;
-    private $crr;
-    private $maxSupply;
+    public $symbol;
+    public $amount;
+    public $reserve;
+    public $crr;
+    public $maxSupply;
 
     const TYPE       = 16;
     const COMMISSION = 10000000;
 
     /**
      * MinterRecreateCoinTx constructor.
-     * @param $name
      * @param $symbol
      * @param $amount
      * @param $reserve
      * @param $crr
      * @param $maxSupply
      */
-    public function __construct($name, $symbol, $amount, $reserve, $crr, $maxSupply)
+    public function __construct($symbol, $amount, $reserve, $crr, $maxSupply)
     {
-        $this->name      = $name;
         $this->symbol    = $symbol;
         $this->amount    = $amount;
         $this->reserve   = $reserve;
@@ -49,7 +46,6 @@ class MinterRecreateCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            $this->name,
             MinterConverter::convertCoinName($this->symbol),
             MinterConverter::convertToPip($this->amount),
             MinterConverter::convertToPip($this->reserve),
@@ -60,7 +56,6 @@ class MinterRecreateCoinTx extends MinterCoinTx implements MinterTxInterface
 
     public function decodeData()
     {
-        $this->name      = Helper::hex2str($this->name);
         $this->symbol    = Helper::hex2str($this->symbol);
         $this->amount    = MinterConverter::convertToBase(Helper::hexDecode($this->amount));
         $this->reserve   = MinterConverter::convertToBase(Helper::hexDecode($this->reserve));

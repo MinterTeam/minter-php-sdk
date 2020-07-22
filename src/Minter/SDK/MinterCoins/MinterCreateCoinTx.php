@@ -12,12 +12,12 @@ use Minter\SDK\MinterConverter;
  */
 class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    private $name;
-    private $symbol;
-    private $amount;
-    private $reserve;
-    private $crr;
-    private $maxSupply;
+    public $name;
+    public $symbol;
+    public $amount;
+    public $reserve;
+    public $crr;
+    public $maxSupply;
 
     const TYPE       = 5;
     const COMMISSION = 1000;

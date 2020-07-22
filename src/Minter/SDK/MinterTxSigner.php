@@ -79,7 +79,7 @@ class MinterTxSigner
         foreach ($privateKeys as $privateKey) {
             $signatures[] = $this->createSignatureByHash($hash, $privateKey);
         }
-
+        
         return $this->signMultisig($multisigAddress, $signatures);
     }
 

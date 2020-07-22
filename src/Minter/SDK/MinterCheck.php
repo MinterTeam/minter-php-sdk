@@ -2,6 +2,7 @@
 
 namespace Minter\SDK;
 
+use Elliptic\EC\Signature;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Web3p\RLP\RLP;
@@ -157,7 +158,6 @@ class MinterCheck
         // prepare check string and convert to hex array
         $check = Helper::removePrefix($check, MinterPrefix::CHECK);
         $check = $this->rlp->decode('0x' . $check);
-        $check = Helper::rlpArrayToHexArray($check);
 
         // prepare decoded data
         foreach ($check as $key => $value) {
@@ -175,7 +175,7 @@ class MinterCheck
                     break;
 
                 default:
-                    $data[$field] = $value;
+                    $data[$field] = (string) $value;
                     if(in_array($field, ['dueBlock', 'v', 'chainId'])) {
                         $data[$field] = hexdec($value);
                     }
@@ -207,7 +207,13 @@ class MinterCheck
         $msg = $this->serialize($check);
 
         // recover public key
-        $publicKey = ECDSA::recover($msg, $signature['r'], $signature['s'], $signature['v']);
+        $signature = new Signature([
+            'r' => (string) $signature['r'],
+            's' => (string) $signature['s'],
+            'recoveryParam' => (int) $signature['v']
+        ]);
+
+        $publicKey = ECDSA::recover($msg, $signature);
         $publicKey = MinterPrefix::PUBLIC_KEY . $publicKey;
 
         $this->minterAddress = MinterWallet::getAddressFromPublicKey($publicKey);

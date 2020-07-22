@@ -50,7 +50,7 @@ class MinterSellCoinTx extends MinterCoinTx implements MinterTxInterface
         ];
     }
 
-    public function decodeData(): array
+    public function decodeData()
     {
         $this->coinToSell        = hexdec($this->coinToSell);
         $this->valueToSell       = MinterConverter::convertToBase(Helper::hexDecode($this->valueToSell));

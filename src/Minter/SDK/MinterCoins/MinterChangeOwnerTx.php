@@ -44,7 +44,7 @@ class MinterChangeOwnerTx extends MinterCoinTx implements MinterTxInterface
 
     public function decodeData()
     {
-        $this->symbol   = Helper::hexDecode($this->symbol);
+        $this->symbol   = Helper::hex2str($this->symbol);
         $this->newOwner = Helper::addWalletPrefix($this->newOwner);
     }
 }

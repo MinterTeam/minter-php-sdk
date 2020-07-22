@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Minter\SDK\MinterCoins\MinterSendCoinTx;
 use PHPUnit\Framework\TestCase;
 use Minter\SDK\MinterTx;
 
@@ -9,29 +10,7 @@ use Minter\SDK\MinterTx;
  */
 final class MinterMultisigTxTest extends TestCase
 {
-    /**
-     * Transaction structure
-     */
-    const TX = [
-        'nonce' => 1,
-        'chainId' => 2,
-        'gasPrice' => 1,
-        'gasCoin' => 'MNT',
-        'type' => 1,
-        'data' => [
-            'coin' => 'MNT',
-            'to' => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
-            'value' => 1
-        ],
-        'payload' => '',
-        'serviceData' => '',
-        'signatureType' => 2
-    ];
-
-    /**
-     * Sender Minter address
-     */
-    const SENDER_ADDRESS = 'Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2';
+    const SENDER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fd';
 
     /**
      * Private key for transaction
@@ -45,14 +24,14 @@ final class MinterMultisigTxTest extends TestCase
     /**
      * Predefined valid transaction
      */
-    const VALID_TX = '0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454';
+    const VALID_TX = '0xf901130101018001a0df809467691076548b20234461ff6fd2bc9c64393eb8fc8801b4fbd92b5f8000808002b8e8f8e69467691076548b20234461ff6fd2bc9c64393eb8fdf8cff8431ca0e710b173287ec60a03bc8bdd2821045b5a5be1a08cfa1f7abc4fd22ed093b99ca03c18e46bbfa4b221d8b951ba3a677bb0ed1fdbd0c8e635f324bef49ba5ab19f9f8431ba05bda1e622619a67ace87e23ed16d4103a89558bca975c1212dee5c6211b2ab39a079e69519f43278c36cbf80a138f2deb695110ffefb88373af4046902e600b234f8431ba0b6fe63fa00cea4584bb24102ca79aac547358749f338e55b361af0fd116f5fcda05ad8e871ee0fef610a832d1d2eaf352bc1ee16c6e4f0b013bb2b25947dac77b7';
 
     /**
      * Test signing.
      */
     public function testSign()
     {
-        $tx = new MinterTx(self::TX);
+        $tx = new MinterTx(1, new MinterSendCoinTx(0, 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc', '0.123'));
         $signedTx = $tx->signMultisig(self::SENDER_ADDRESS, self::PRIVATE_KEYS);
         $this->assertEquals(self::VALID_TX, $signedTx);
     }
@@ -62,9 +41,8 @@ final class MinterMultisigTxTest extends TestCase
      */
     public function testDecode()
     {
-        $tx = new MinterTx(self::VALID_TX);
-        $this->assertEquals(self::TX['data'], $tx->data);
-        $this->assertEquals(self::SENDER_ADDRESS, $tx->from);
+        $tx = MinterTx::decode(self::VALID_TX);
+        $this->assertEquals(self::SENDER_ADDRESS, $tx->getSenderAddress());
     }
 
     /**
@@ -72,7 +50,7 @@ final class MinterMultisigTxTest extends TestCase
      */
     public function testSignBySignatures()
     {
-        $tx = new MinterTx(self::TX);
+        $tx = new MinterTx(1, new MinterSendCoinTx(0, 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc', '0.123'));
 
         $signatures = [];
         foreach (self::PRIVATE_KEYS as $privateKey) {

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterBuyCoinTx;
+use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterBuyCoinTx
+ * Class for testing MinterRecreateCoinTx
  */
-final class MinterBuyCoinTxTest extends TestCase
+final class MinterRecreateCoinTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -23,10 +23,10 @@ final class MinterBuyCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf865020101800495d40187038d7ea4c680008089056bc75e2d63100000808001b845f8431ca0f64de1594ea6ea7717a2161771a429a2202e78ae4f1bf628a8c2e12a2df13e4aa04b8eb64ef9e7574983cc66960e98829fd93ab61fd2d7794c3e8810970e9e3693';
+    const VALID_SIGNATURE = '0xf87e0a01018010aeed8a535550455254455354318a021e19e0c9bab24000008a021e19e0c9bab2400000638a021e27c1806e59a40000808001b845f8431ba084a67a9c402533e296c656ea82e29d3cc2a2cd4c978944978328cb3afae9cae4a018e444ff0eb3b343c940aa74125f9513454d0b9fc50b8f21dc285fb52767a0f6';
 
     /**
-     * Test to decode data for MinterBuyCoinTx
+     * Test to decode data for MinterRecreateCoinTx
      */
     public function testDecode(): void
     {
@@ -37,15 +37,16 @@ final class MinterBuyCoinTxTest extends TestCase
         $this->assertSame($validTx->getGasCoin(), $tx->getGasCoin());
         $this->assertSame($validTx->getGasPrice(), $tx->getGasPrice());
         $this->assertSame($validTx->getChainID(), $tx->getChainID());
-        $this->assertSame($validTx->getData()->coinToBuy, $tx->getData()->coinToBuy);
-        $this->assertSame($validTx->getData()->coinToSell, $tx->getData()->coinToSell);
-        $this->assertSame($validTx->getData()->maximumValueToSell, $tx->getData()->maximumValueToSell);
-        $this->assertSame($validTx->getData()->valueToBuy, $tx->getData()->valueToBuy);
+        $this->assertSame($validTx->getData()->symbol, $tx->getData()->symbol);
+        $this->assertSame($validTx->getData()->amount, $tx->getData()->amount);
+        $this->assertSame($validTx->getData()->reserve, $tx->getData()->reserve);
+        $this->assertSame($validTx->getData()->crr, $tx->getData()->crr);
+        $this->assertSame($validTx->getData()->maxSupply, $tx->getData()->maxSupply);
         $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
     }
 
     /**
-     * Test signing MinterBuyCoinTx
+     * Test signing MinterRecreateCoinTx
      */
     public function testSign(): void
     {
@@ -58,7 +59,7 @@ final class MinterBuyCoinTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterBuyCoinTx(1, '0.001', 0, '100');
-        return new MinterTx(2, $data);
+        $data = new MinterRecreateCoinTx('SUPERTEST1', '10000', '10000', 99, '10001');
+        return new MinterTx(10, $data);
     }
 }

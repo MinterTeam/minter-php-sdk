@@ -59,7 +59,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
     {
         $this->address    = Helper::addWalletPrefix($this->address);
         $this->publicKey  = MinterPrefix::PUBLIC_KEY . $this->publicKey;
-        $this->commission = Helper::hexDecode($this->commission);
+        $this->commission = (int) Helper::hexDecode($this->commission);
         $this->coin       = hexdec($this->coin);
         $this->stake      = MinterConverter::convertToBase(Helper::hexDecode($this->stake));
     }
