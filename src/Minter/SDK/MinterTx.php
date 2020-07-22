@@ -19,6 +19,7 @@ use Minter\SDK\MinterCoins\MinterSellCoinTx;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
+use Minter\SDK\MinterCoins\MinterSetHaltBlockTx;
 use Minter\SDK\MinterCoins\MinterUnbondTx;
 use Web3p\RLP\RLP;;
 use Minter\Library\Helper;
@@ -331,7 +332,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterChangeOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterChangeOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx
      */
     public function getData(): MinterTxInterface
     {

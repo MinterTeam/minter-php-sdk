@@ -46,8 +46,9 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [MultiSend](#example-14)
 		- [EditCandidate](#example-15)
 		- [CreateMultisig](#example-16)
-		- [RecreateCoin](#example-17)
-		- [ChangeOwner](#example-18)
+		- [SetHaltBlock](#example-17)
+		- [RecreateCoin](#example-18)
+		- [ChangeOwner](#example-19)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -531,6 +532,18 @@ $data = new MinterCreateMultisigTx(7, [1, 3, 5], [
 ]);
 
 $tx = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>SetHaltBlock</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSetHaltBlockTx;
+
+$data = new MinterSetHaltBlockTx('your public key', 236503);
+$tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```
 
