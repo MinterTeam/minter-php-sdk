@@ -54,6 +54,8 @@ class MinterWallet
         $wallet->privateKey = $privateKey;
         $wallet->publicKey  = self::privateToPublic($wallet->getPrivateKey());
         $wallet->address    = self::getAddressFromPublicKey($wallet->getPublicKey());
+
+        return $wallet;
     }
 
     /**
@@ -69,6 +71,8 @@ class MinterWallet
         $wallet->privateKey = self::mnemonicToPrivateKey($wallet->getMnemonic());
         $wallet->publicKey  = self::privateToPublic($wallet->getPrivateKey());
         $wallet->address    = self::getAddressFromPublicKey($wallet->getPublicKey());
+
+        return $wallet;
     }
 
     /**
