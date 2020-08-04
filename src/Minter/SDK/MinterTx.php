@@ -328,6 +328,7 @@ class MinterTx
 
         // encode transaction data
         $decodedTx = $this->prepareResult($tx);
+
         return $this->encode($decodedTx, true);
     }
 

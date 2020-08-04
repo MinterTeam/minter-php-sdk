@@ -30,7 +30,7 @@ final class MinterSendCoinTxTest extends TestCase
      * Predefined data
      */
     const DATA = [
-        'coin'  => '0',
+        'coin'  => 0,
         'to'    => 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc',
         'value' => '0.012345'
     ];

@@ -60,7 +60,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             // Add Minter wallet prefix to hex string
-            'check' => MinterPrefix::CHECK . $txData[0],
+            'check' => MinterPrefix::CHECK . hex2bin($txData[0]),
 
             // Define proof field
             'proof' => $txData[1],

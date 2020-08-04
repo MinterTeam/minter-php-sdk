@@ -16,10 +16,10 @@ final class MinterMultisigTxTest extends TestCase
         'nonce' => 1,
         'chainId' => 2,
         'gasPrice' => 1,
-        'gasCoin' => 'MNT',
+        'gasCoin' => 0,
         'type' => 1,
         'data' => [
-            'coin' => 'MNT',
+            'coin' => 0,
             'to' => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
             'value' => 1
         ],
@@ -45,7 +45,7 @@ final class MinterMultisigTxTest extends TestCase
     /**
      * Predefined valid transaction
      */
-    const VALID_TX = '0xf901270102018a4d4e540000000000000001aae98a4d4e540000000000000094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ca0a116e33d2fea86a213577fc9dae16a7e4cadb375499f378b33cddd1d4113b6c1a021ee1e9eb61bbd24233a0967e1c745ab23001cf8816bb217d01ed4595c6cb2cdf8431ca0f7f9c7a6734ab2db210356161f2d012aa9936ee506d88d8d0cba15ad6c84f8a7a04b71b87cbbe7905942de839211daa984325a15bdeca6eea75e5d0f28f9aaeef8f8431ba0d8c640d7605034eefc8870a6a3d1c22e2f589a9319288342632b1c4e6ce35128a055fe3f93f31044033fe7b07963d547ac50bccaac38a057ce61665374c72fb454';
+    const VALID_TX = '0xf901130102018001a0df8094d82558ea00eb81d35f2654953598f5d51737d31d880de0b6b3a7640000808002b8e8f8e694db4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2f8cff8431ba0d6e0e254e778d7561a8b04e08aafce2e7386df43f0f8ae018ee0364ba1690dfda037ce1cea1d2a41c1d6825fa15c71669a43142bb5eb7ba52ac6d2322dd1de2971f8431ba012b389e3dd031e3c7627c9ab8b808a0a657b03f14e7f18a65f49ba8f9a81c001a077d24311c974caf7a1fdf2c0c8c3a397734169dfd791074ffda220fbbd2b93aff8431ca0b6c8aedf7dfb6dfbd2808624a4c2f92e5895a60a93efc9806c2396c786de0daaa00a69ef06f735eb7e29c4bfc788be3ecb4f4f94d749756f692faa2c24fd303544';
 
     /**
      * Test signing.

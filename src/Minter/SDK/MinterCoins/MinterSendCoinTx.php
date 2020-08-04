@@ -60,7 +60,7 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
-            'coin' => Helper::hexDecode($txData[0]),
+            'coin' => hexdec($txData[0]),
 
             'to' => Helper::addWalletPrefix($txData[1]),
 

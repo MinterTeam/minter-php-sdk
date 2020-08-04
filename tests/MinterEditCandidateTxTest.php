@@ -13,26 +13,28 @@ final class MinterEditCandidateTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = 'a3fb55450f53dbbf4f2494280188f7f0cd51a7b51ec27ed49ed364d920e326ba';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mxa879439b0a29ecc7c5a0afe54b9eb3c22dbde8d9';
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
+
+    /**
+     * Predefined valid signature
+     */
+    const VALID_SIGNATURE = '0xf8d4100101800eb883f881a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe194d82558ea00eb81d35f2654953598f5d51737d31d94d82558ea00eb81d35f2654953598f5d51737d31d94d82558ea00eb81d35f2654953598f5d51737d31d808001b845f8431ca06a9ce263674f403e2e612ac7055933c662db6c2db199635de985a69b9c0032baa03f4e2cd2bb33f89a10d4fdd4024f1767bfa94e87da47e075b4d5cbcaf519f66b';
 
     /**
      * Predefined data
      */
     const DATA = [
-        'pubkey' => 'Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8',
-        'reward_address' => 'Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47',
-        'owner_address' => 'Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0'
+        'pubkey'          => 'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0',
+        'new_pubkey'      => 'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe1',
+        'reward_address'  => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
+        'owner_address'   => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
+        'control_address' => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d'
     ];
-
-    /**
-     * Predefined valid signature
-     */
-    const VALID_SIGNATURE = '0xf8a80102018a4d4e54000000000000000eb84df84ba04ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b89489e5dc185e6bab772ac8e00cf3fb3f4cb0931c4794e731fcddd37bb6e72286597d22516c8ba3ddffa0808001b845f8431ca0421470f27f78231b669c1bf1fcc56168954d64fbb7dc3ff021bab01311fab6eaa075e86365d98c87e806fcbc5c542792f569e19d8ae7af671d9ba4679acc86d35e';
 
     /**
      * Test to decode data for MinterEditCandidateTx
@@ -51,16 +53,11 @@ final class MinterEditCandidateTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterEditCandidateTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
+           'nonce'   => 16,
+           'chainId' => MinterTx::MAINNET_CHAIN_ID,
+           'type'    => MinterEditCandidateTx::TYPE,
+           'data'    => self::DATA
+       ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
 

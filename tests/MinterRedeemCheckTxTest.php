@@ -50,7 +50,7 @@ final class MinterRedeemCheckTxTest extends TestCase
     {
         $tx = new MinterTx([
             'nonce' => 17,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
+            'chainId' => MinterTx::MAINNET_CHAIN_ID,
             'type' => MinterRedeemCheckTx::TYPE,
             'data' => self::DATA,
         ]);

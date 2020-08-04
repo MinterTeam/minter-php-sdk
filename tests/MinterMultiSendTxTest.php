@@ -13,12 +13,17 @@ final class MinterMultiSendTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mx31e61a05adbd13c6b625262704bc305bf7725026';
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
+
+    /**
+     * Predefined valid signature
+     */
+    const VALID_SIGNATURE = '0xf895060101800db844f842f840df809467691076548b20234461ff6fd2bc9c64393eb8fc8801b4fbd92b5f8000df8094d82558ea00eb81d35f2654953598f5d51737d31d8804746bcc9ce68000808001b845f8431ba0a936ac922d8d67f06efc996f50f3d2af55a77453f521bc96d73158de16b530baa0192f5d1f2feb520b38d92513ed89fc1ede26353ce3660502f61721ea6232b261';
 
     /**
      * Predefined data
@@ -26,21 +31,17 @@ final class MinterMultiSendTxTest extends TestCase
     const DATA = [
         'list' => [
             [
-                'coin' => 'MNT',
-                'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
-                'value' => '0.1'
-            ], [
-                'coin' => 'MNT',
-                'to' => 'Mxddab6281766ad86497741ff91b6b48fe85012e3c',
-                'value' => '0.2'
+                'coin'  => 0,
+                'to'    => 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc',
+                'value' => '0.123'
+            ],
+            [
+                'coin'  => 0,
+                'to'    => 'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
+                'value' => '0.321'
             ]
         ]
     ];
-
-    /**
-     * Predefined valid signature
-     */
-    const VALID_SIGNATURE = '0xf8b30102018a4d4e54000000000000000db858f856f854e98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000e98a4d4e540000000000000094ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ca0b15dcf2e013df1a2aea02e36a17af266d8ee129cdcb3e881d15b70c9457e7571a0226af7bdaca9d42d6774c100b22e0c7ba4ec8dd664d17986318e905613013283';
 
     /**
      * Test to decode data for MinterSendCoinTx
@@ -59,16 +60,11 @@ final class MinterMultiSendTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterMultiSendTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
+           'nonce'         => 6,
+           'chainId'       => MinterTx::MAINNET_CHAIN_ID,
+           'type'          => MinterMultiSendTx::TYPE,
+           'data'          => self::DATA,
+       ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
 
