@@ -13,12 +13,12 @@ final class MinterCheckTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '64e27afaab363f21eec05291084367f6f1297a7b280d69d672febecda94a09ea';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
      * Predefined Minter address
      */
-    const ADDRESS = 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47';
+    const ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
 
     /**
      * Predefined passphrase
@@ -28,12 +28,12 @@ final class MinterCheckTest extends TestCase
     /**
      * Predefined valid check string
      */
-    CONST VALID_CHECK = 'Mcf8ae8334383002830f423f8a4d4e5400000000000000888ac7230489e800008a4d4e5400000000000000b841497c5f3e6fc182fd1a791522a9ef7576710bdfbc86fdbf165476ef220e89f9ff1380f93f2d9a2f92fdab0edc1e2605cc2c69b707cd404b2cb1522b7aba4defd5001ba083c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594a047b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df';
+    CONST VALID_CHECK = 'Mcf89a8334383001830f423f80888ac7230489e8000080b84191ea56636b6667bb9da14bd412d492b90b9ae29799a90d0d69a637f3894c8ba246aae2b466fe76acab0a65cc6791ab2ae29d155b56efe84a929e089a22e15615001ba0d88c6543ac5d791428d46f8625c0af8e908fde3ec339e3d77ecb585e7c507ea8a021debf60dd96497d430b3cd92dac7bf22a00b4518f39d084c1dc50ba4c8b0d3b';
 
     /**
      * Predefined valid proof
      */
-    const VALID_PROOF = 'da021d4f84728e0d3d312a18ec84c21768e0caa12a53cb0a1452771f72b0d1a91770ae139fd6c23bcf8cec50f5f2e733eabb8482cf29ee540e56c6639aac469600';
+    const VALID_PROOF = '7afddf8a86013784a056a3fa7ce3b5b07e259870e686c5f3df4eb656f8e6800c732bd8cb13fbdca0100433d98a760a8736249a41ad34b8af445b807ba53974f500';
 
     /**
      * Test that Minter Check return valid signature
@@ -42,11 +42,11 @@ final class MinterCheckTest extends TestCase
     {
         $check = new MinterCheck([
             'nonce' => 480,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
+            'chainId' => MinterTx::MAINNET_CHAIN_ID,
             'dueBlock' => 999999,
-            'coin' => 'MNT',
+            'coin' => 0,
             'value' => 10,
-            'gasCoin' => 'MNT'
+            'gasCoin' => 0
         ], self::PASSPHRASE);
 
         $signature = $check->sign(self::PRIVATE_KEY);
@@ -76,17 +76,17 @@ final class MinterCheckTest extends TestCase
 
         $this->assertSame([
             'nonce' => '480',
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
+            'chainId' => MinterTx::MAINNET_CHAIN_ID,
             'dueBlock' => 999999,
-            'coin' => 'MNT',
+            'coin' => 0,
             'value' => '10',
-            'gasCoin' => 'MNT',
-            'lock' => '497c5f3e6fc182fd1a791522a9ef7576710bdfbc86fdbf165476ef220e89f9ff1380f93f2d9a2f92fdab0edc1e2605cc2c69b707cd404b2cb1522b7aba4defd500',
+            'gasCoin' => 0,
+            'lock' => '91ea56636b6667bb9da14bd412d492b90b9ae29799a90d0d69a637f3894c8ba246aae2b466fe76acab0a65cc6791ab2ae29d155b56efe84a929e089a22e1561500',
             'v' => 27,
-            'r' => '83c9945169f0a7bbe596973b32dc887608780580b1d3bc7b188bedb3bd385594',
-            's' => '47b2d5345946ed5498f5bee713f86276aac046a5fef820beaee77a9b6f9bc1df'
+            'r' => 'd88c6543ac5d791428d46f8625c0af8e908fde3ec339e3d77ecb585e7c507ea8',
+            's' => '21debf60dd96497d430b3cd92dac7bf22a00b4518f39d084c1dc50ba4c8b0d3b'
         ], $check->getBody());
 
-        $this->assertSame('Mxce931863b9c94a526d94acd8090c1c5955a6eb4b', $check->getOwnerAddress());
+        $this->assertSame(self::ADDRESS, $check->getOwnerAddress());
     }
 }
