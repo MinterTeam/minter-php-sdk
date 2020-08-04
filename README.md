@@ -333,7 +333,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MNT',
+        'coin' => '12345',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ]
@@ -353,10 +353,10 @@ $tx = new MinterTx([
     'nonce' => $nonce,
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'gasPrice' => 1,
-    'gasCoin' => 'MNT',
+    'gasCoin' => '12345',
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MNT',
+        'coin' => '12345',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ],
@@ -379,7 +379,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterSellCoinTx::TYPE,
     'data' => [
-         'coinToSell' => 'MNT',
+         'coinToSell' => '12345',
          'valueToSell' => '1',
          'coinToBuy' => 'TEST',
          'minimumValueToBuy' => 1
@@ -402,7 +402,7 @@ $tx = new MinterTx([
     'type' => MinterSellAllCoinTx::TYPE,
     'data' => [
          'coinToSell' => 'TEST',
-         'coinToBuy' => 'MNT',
+         'coinToBuy' => '12345',
          'minimumValueToBuy' => 1
     ]
 ]);
@@ -422,7 +422,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterBuyCoinTx::TYPE,
     'data' => [
-         'coinToBuy' => 'MNT',
+         'coinToBuy' => '12345',
          'valueToBuy' => '1',
          'coinToSell' => 'TEST',
          'maximumValueToSell' => 1
@@ -471,7 +471,7 @@ $tx = new MinterTx([
         'address' => 'Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47',
         'pubkey' => 'Mp023853f15fc1b1073ad7a1a0d4490a3b1fadfac00f36039b6651bc4c7f52ba9c02',
         'commission' => 10,
-        'coin' => 'MNT',
+        'coin' => '12345',
         'stake' => '5'
     ]
 ]);
@@ -492,7 +492,7 @@ $tx = new MinterTx([
     'type' => MinterDelegateTx::TYPE,
     'data' => [
         'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
-        'coin' => 'MNT',
+        'coin' => '12345',
         'stake' => '5'
     ]
 ]);
@@ -571,7 +571,7 @@ $tx = new MinterTx([
     'type' => MinterUnbondTx::TYPE,
     'data' => [
         'pubkey' => 'Mp....',
-        'coin' => 'MNT',
+        'coin' => '12345',
         'value' => '1'
     ]
 ]);
@@ -593,11 +593,11 @@ $tx = new MinterTx([
     'data' => [
         'list' => [
             [
-                'coin' => 'MNT',
+                'coin' => '12345',
                 'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
                 'value' => '10'
             ], [
-                'coin' => 'MNT',
+                'coin' => '12345',
                 'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee92',
                 'value' => '15'
             ]
@@ -620,9 +620,11 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterEditCandidateTx::TYPE,
     'data' => [
-        'pubkey' => 'candidate public key',
+        'pubkey' => 'current candidate public key',
+        'new_pubkey' => 'new candidate public key',
         'reward_address' => 'Minter address for rewards',
-        'owner_address' => 'Minter address of owner'
+        'owner_address' => 'Minter address of owner',
+        'control_address' => 'Minter address for control'
     ]
 ]);
 
@@ -654,6 +656,70 @@ $tx = new MinterTx([
 $tx->sign('your private key')
 ```
 
+###### Example
+* Sign the <b>SetHaltBlock</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSetHaltBlockTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterSetHaltBlockTx::TYPE,
+    'data' => [
+        'pubkey' => 'Mp....',
+        'height' => '12345'
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>RecreateCoin</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterRecreateCoinTx::TYPE,
+    'data' => [
+        'name' => 'TEST COIN',
+        'symbol' => 'TEST',
+        'initialAmount' => '100',
+        'initialReserve' => '10',
+        'crr' => 10,
+        'maxSupply' => '10000'
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>ChangeOwner</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterChangeOwnerTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterChangeOwnerTx::TYPE,
+    'data' => [
+        'symbol'   => 'TEST',
+        'newOwner' => 'Mxee81347211c72524338f9680072af90744333143'
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
 ### Sign transaction with multisignatures
 
 Returns a signed tx.
@@ -672,7 +738,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MNT',
+        'coin' => '12345',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ]
@@ -699,7 +765,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MNT',
+        'coin' => '12345',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ]
@@ -722,7 +788,7 @@ $tx = new MinterTx([
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'type' => MinterSendCoinTx::TYPE,
     'data' => [
-        'coin' => 'MNT',
+        'coin' => '12345',
         'to' => 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99',
         'value' => '10'
     ]
@@ -800,9 +866,9 @@ $check = new MinterCheck([
     'nonce' => $nonce,
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
     'dueBlock' => 999999,
-    'coin' => 'MNT',
+    'coin' => '12345',
     'value' => '10',
-    'gasCoin' => 'MNT'
+    'gasCoin' => '12345'
 ], 'your pass phrase');
 
 echo $check->sign('your private key here'); 
@@ -905,7 +971,7 @@ use Minter\SDK\MinterDeepLink;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
 $txData = new MinterSendCoinTx([
-    'coin'  => 'BIP',
+    'coin'  => '12345',
     'to'    => 'Mx18467bbb64a8edf890201d526c35957d82be3d95',
     'value' => '1.23456789'
 ]);
@@ -921,7 +987,7 @@ use Minter\SDK\MinterDeepLink;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
 $txData = new MinterSendCoinTx([
-    'coin'  => 'BIP',
+    'coin'  => '12345',
     'to'    => 'Mx18467bbb64a8edf890201d526c35957d82be3d95',
     'value' => '1.23456789'
 ]);
