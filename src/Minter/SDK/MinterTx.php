@@ -8,11 +8,13 @@ use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
+    MinterChangeOwnerTx,
     MinterCoinTx,
     MinterCreateMultisigTx,
     MinterDelegateTx,
     MinterEditCandidateTx,
     MinterMultiSendTx,
+    MinterRecreateCoinTx,
     MinterRedeemCheckTx,
     MinterSellAllCoinTx,
     MinterSetCandidateOffTx,
@@ -20,6 +22,7 @@ use Minter\SDK\MinterCoins\{
     MinterCreateCoinTx,
     MinterDeclareCandidacyTx,
     MinterSendCoinTx,
+    MinterSetHaltBlockTx,
     MinterUnbondTx,
     MinterSellCoinTx,
     MinterBuyCoinTx};
@@ -408,6 +411,18 @@ class MinterTx
 
             case MinterEditCandidateTx::TYPE:
                 $this->txDataObject = new MinterEditCandidateTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterSetHaltBlockTx::TYPE:
+                $this->txDataObject = new MinterSetHaltBlockTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterRecreateCoinTx::TYPE:
+                $this->txDataObject = new MinterRecreateCoinTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterChangeOwnerTx::TYPE:
+                $this->txDataObject = new MinterChangeOwnerTx($tx['data'], $isHexFormat);
                 break;
 
             default:
