@@ -37,14 +37,14 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            Helper::removePrefix($this->check, MinterPrefix::CHECK),
+            hex2bin(Helper::removePrefix($this->check, MinterPrefix::CHECK)),
             hex2bin($this->proof)
         ];
     }
 
     public function decodeData()
     {
-        $this->check = MinterPrefix::CHECK . hex2bin($this->check);
-        $this->proof = (string)$this->proof;
+        $this->check = MinterPrefix::CHECK . $this->check;
+        $this->proof = (string) $this->proof;
     }
 }
