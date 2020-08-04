@@ -14,10 +14,10 @@ final class MinterDeepLinkTest extends TestCase
         $txData = new MinterSendCoinTx(0, 'Mx7633980c000139dd3bd24a3f54e06474fa941e16', 10);
         $link   = new MinterDeepLink($txData);
 
-        $link->setPayload('custom message')->setGasCoin('ASD');
+        $link->setPayload('custom message')->setGasCoin(2);
 
         $this->assertSame(
-            self::HOST_BASE_URL . '/9wGg34CUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2WAgINBU0Q',
+            self::HOST_BASE_URL . '/9AGg34CUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2WAgAI',
             $link->encode());
     }
 
