@@ -13,31 +13,29 @@ final class MinterCreateMultisigTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = 'bc3503cae8c8561df5eadc4a9eda21d32c252a6c94cfae55b5310bf6085c8582';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mx3e4d56e776ff42c023b1ec99a7486b592a654981';
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
+
+    /**
+     * Predefined valid signature
+     */
+    const VALID_SIGNATURE = '0xf880080101800cb0ef03c20102ea9467691076548b20234461ff6fd2bc9c64393eb8fc94c26dbd06984949a0efce1517925ca57a8d7a2c06808001b845f8431ba077b3ac0b0605279239bdcec12a698f7beb2c5d9d213c2cdc90638b3da020bbeaa021f4a509eaa7e93bc77901de3061d98e092c9ce1c414ad779a92804aedf4eb97';
 
     /**
      * Predefined data
      */
     const DATA = [
-        'threshold' => 7,
-        'weights' => [1, 3, 5],
+        'threshold' => 3,
+        'weights'   => [1, 2],
         'addresses' => [
-            'Mxee81347211c72524338f9680072af90744333143',
-            'Mxee81347211c72524338f9680072af90744333145',
-            'Mxee81347211c72524338f9680072af90744333144'
+            'Mx67691076548b20234461ff6fd2bc9c64393eb8fc',
+            'Mxc26dbd06984949a0efce1517925ca57a8d7a2c06'
         ]
     ];
-
-    /**
-     * Predefined valid signature
-     */
-
-    const VALID_SIGNATURE = '0xf8a30102018a4d4e54000000000000000cb848f84607c3010305f83f94ee81347211c72524338f9680072af9074433314394ee81347211c72524338f9680072af9074433314594ee81347211c72524338f9680072af90744333144808001b845f8431ca094eb41d39e6782f5539615cc66da7073d4283893f0b3ee2b2f36aee1eaeb7c57a037f90ffdb45eb9b6f4cf301b48e73a6a81df8182e605b656a52057537d264ab4';
 
     /**
      * Test to decode data for MinterCreateMultisigTx
@@ -56,16 +54,11 @@ final class MinterCreateMultisigTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterCreateMultisigTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
+           'nonce'   => 8,
+           'chainId' => MinterTx::MAINNET_CHAIN_ID,
+           'type'    => MinterCreateMultisigTx::TYPE,
+           'data'    => self::DATA
+       ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
 

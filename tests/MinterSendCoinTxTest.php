@@ -13,26 +13,27 @@ final class MinterSendCoinTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
 
     /**
      * Predefined minter address
      */
-    const MINTER_ADDRESS = 'Mx31e61a05adbd13c6b625262704bc305bf7725026';
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
+
+    /**
+     * Predefined valid signature
+     */
+    const VALID_SIGNATURE = '0xf86f01010180019fde809467691076548b20234461ff6fd2bc9c64393eb8fc872bdbb64bc09000808001b845f8431ca08be3f0c3aecc80ec97332e8aa39f20cd9e735092c0de37eb726d8d3d0a255a66a02040a1001d1a9116317eb24aa7ee4730ed980bd08a1fc0adb4e7598425178d3a';
+
 
     /**
      * Predefined data
      */
     const DATA = [
-        'coin' => 'MNT',
-        'to' => 'Mx1b685a7c1e78726c48f619c497a07ed75fe00483',
-        'value' => '1'
+        'coin'  => '0',
+        'to'    => 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc',
+        'value' => '0.012345'
     ];
-
-    /**
-     * Predefined valid signature
-     */
-    const VALID_SIGNATURE = '0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a';
 
     /**
      * Test to decode data for MinterSendCoinTx
@@ -51,16 +52,12 @@ final class MinterSendCoinTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterSendCoinTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
+           'nonce'    => 1,
+           'chainId'  => MinterTx::MAINNET_CHAIN_ID,
+           'gasPrice' => 1,
+           'type'     => MinterSendCoinTx::TYPE,
+           'data'     => self::DATA
+       ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
 

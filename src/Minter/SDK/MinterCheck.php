@@ -166,8 +166,6 @@ class MinterCheck
 
             switch ($field) {
                 case 'nonce':
-                case 'coin':
-                case 'gasCoin':
                     $data[$field] = Helper::hex2str($value);
                     break;
 
@@ -177,7 +175,7 @@ class MinterCheck
 
                 default:
                     $data[$field] = $value;
-                    if(in_array($field, ['dueBlock', 'v', 'chainId'])) {
+                    if(in_array($field, ['dueBlock', 'v', 'chainId', 'coin', 'gasCoin'])) {
                         $data[$field] = hexdec($value);
                     }
                     break;
@@ -249,11 +247,11 @@ class MinterCheck
 
             'dueBlock' => $check['dueBlock'],
 
-            'coin' => MinterConverter::convertCoinName($check['coin']),
+            'coin' => dechex($check['coin']),
 
             'value' => MinterConverter::convertToPip($check['value']),
 
-            'gasCoin' => MinterConverter::convertCoinName($check['gasCoin'])
+            'gasCoin' => dechex($check['gasCoin'])
         ];
     }
 

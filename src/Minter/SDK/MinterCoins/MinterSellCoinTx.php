@@ -28,9 +28,9 @@ class MinterSellCoinTx extends MinterCoinTx implements MinterTxInterface
      * @var array
      */
     public $data = [
-        'coinToSell' => '',
-        'valueToSell' => '',
-        'coinToBuy' => '',
+        'coinToSell'        => '',
+        'valueToSell'       => '',
+        'coinToBuy'         => '',
         'minimumValueToBuy' => ''
     ];
 
@@ -42,16 +42,9 @@ class MinterSellCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encode(): array
     {
         return [
-            // Add nulls before symbol
-            'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
-
-            // Convert field from BIP to PIP
-            'valueToSell' => MinterConverter::convertToPip($this->data['valueToSell']),
-
-            // Add nulls before symbol
-            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy']),
-
-            // Convert field from BIP to PIP
+            'coinToSell'        => $this->data['coinToSell'],
+            'valueToSell'       => MinterConverter::convertToPip($this->data['valueToSell']),
+            'coinToBuy'         => $this->data['coinToBuy'],
             'minimumValueToBuy' => MinterConverter::convertToPip($this->data['minimumValueToBuy'])
         ];
     }
@@ -65,16 +58,9 @@ class MinterSellCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
-            // Pack symbol
-            'coinToSell' => Helper::hex2str($txData[0]),
-
-            // Convert field from PIP to BIP
-            'valueToSell' => MinterConverter::convertToBase(Helper::hexDecode($txData[1])),
-
-            // Pack symbol
-            'coinToBuy' => Helper::hex2str($txData[2]),
-
-            // Convert field from PIP to BIP
+            'coinToSell'        => hexdec($txData[0]),
+            'valueToSell'       => MinterConverter::convertToBase(Helper::hexDecode($txData[1])),
+            'coinToBuy'         => hexdec($txData[2]),
             'minimumValueToBuy' => MinterConverter::convertToBase(Helper::hexDecode($txData[3]))
         ];
     }

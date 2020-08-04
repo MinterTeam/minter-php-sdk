@@ -13,21 +13,27 @@ final class MinterUnbondTxTest extends TestCase
     /**
      * Predefined private key
      */
-    const PRIVATE_KEY = '6e1df6ec69638d152f563c5eca6c13cdb5db4055861efc11ec1cdd578afd96bf';
+    const PRIVATE_KEY = '4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e';
+
+    /**
+     * Predefined minter address
+     */
+    const MINTER_ADDRESS = 'Mx67691076548b20234461ff6fd2bc9c64393eb8fc';
+
+    /**
+     * Predefined valid signature
+     */
+    const VALID_SIGNATURE = '0xf87c0701018008aceba00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe880880e92596fd6290000808001b845f8431ba00d60995f30fccc40de871a7264c748a21220ee3cd8f88e8bc893163f4f735d04a0103498704eeb2368a9b95b7baf60a2c92f949aa98be9acd78b0fb8999b75a8fd';
+
 
     /**
      * Predefined data
      */
     const DATA = [
-        'pubkey' => 'Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43',
-        'coin' => 'MNT',
-        'value' => '10'
+        'pubkey' => 'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe8',
+        'coin'   => 0,
+        'value'  => '1.05'
     ];
-
-    /**
-     * Predefined valid signature
-     */
-    const VALID_SIGNATURE = '0xf88f0102018a4d4e540000000000000008b6f5a00eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a438a4d4e5400000000000000888ac7230489e80000808001b844f8421ca0ff5766c85847b37a276f3f9d027fb7c99745920fa395c7bd399cedd8265c5e1d9f791bcdfe4d1bc1e73ada7bf833103c828f22d83189dad2b22ad28a54aacf2a';
 
     /**
      * Test to decode data for MinterUnbondTx
@@ -45,16 +51,12 @@ final class MinterUnbondTxTest extends TestCase
     public function testSign(): void
     {
         $tx = new MinterTx([
-            'nonce' => 1,
-            'chainId' => MinterTx::TESTNET_CHAIN_ID,
-            'gasPrice' => 1,
-            'gasCoin' => 'MNT',
-            'type' => MinterUnbondTx::TYPE,
-            'data' => self::DATA,
-            'payload' => '',
-            'serviceData' => '',
-            'signatureType' => MinterTx::SIGNATURE_SINGLE_TYPE
-        ]);
+           'nonce'         => 7,
+           'chainId'       => MinterTx::MAINNET_CHAIN_ID,
+           'gasPrice'      => 1,
+           'type'          => MinterUnbondTx::TYPE,
+           'data'          => self::DATA,
+       ]);
 
         $signature = $tx->sign(self::PRIVATE_KEY);
 

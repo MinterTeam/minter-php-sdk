@@ -103,10 +103,7 @@ class MinterTx
     const DEFAULT_GAS_PRICE = 1;
 
     /** @var array */
-    const DEFAULT_GAS_COINS = [
-        self::MAINNET_CHAIN_ID => 'BIP',
-        self::TESTNET_CHAIN_ID => 'MNT'
-    ];
+    const DEFAULT_GAS_COINS = 0;
 
     /**
      * MinterTx constructor.
@@ -348,7 +345,7 @@ class MinterTx
         $tx['payload']     = $tx['payload']     ?? '';
         $tx['serviceData'] = $tx['serviceData'] ?? '';
         $tx['gasPrice']    = $tx['gasPrice']    ?? self::DEFAULT_GAS_PRICE;
-        $tx['gasCoin']     = $tx['gasCoin']     ?? self::DEFAULT_GAS_COINS[$tx['chainId']];
+        $tx['gasCoin']     = $tx['gasCoin']     ?? self::DEFAULT_GAS_COINS;
 
         // make right order in transaction params
         $txFields = array_flip($this->structure);
@@ -434,7 +431,7 @@ class MinterTx
             'nonce' => hexdec($tx['nonce']),
             'chainId' => hexdec($tx['chainId']),
             'gasPrice' => hexdec($tx['gasPrice']),
-            'gasCoin' => MinterConverter::convertCoinName(Helper::hex2str($tx['gasCoin'])),
+            'gasCoin' => hexdec($tx['gasCoin']),
             'type' => hexdec($tx['type']),
             'data' => $tx['data'],
             'payload' => Helper::hex2str($tx['payload']),
@@ -488,7 +485,6 @@ class MinterTx
     private function encodeTxToRlp(array $tx): array
     {
         $tx['payload'] = Helper::str2buffer($tx['payload']);
-        $tx['gasCoin'] = MinterConverter::convertCoinName($tx['gasCoin']);
         $tx['data'] = $this->rlp->encode($tx['data']);
 
         return $tx;

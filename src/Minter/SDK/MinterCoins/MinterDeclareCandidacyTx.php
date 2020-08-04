@@ -57,8 +57,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             // Define commission field
             'commission' => $this->data['commission'] === 0 ? '' : $this->data['commission'],
 
-            // Convert coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
+            'coin' => $this->data['coin'],
 
             // Convert stake field from BIP to PIP
             'stake' => MinterConverter::convertToPip($this->data['stake'])
@@ -83,8 +82,7 @@ class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
             // Decode hex string to number
             'commission' => Helper::hexDecode($txData[2]),
 
-            // Pack coin name
-            'coin' => Helper::hex2str($txData[3]),
+            'coin' => hexdec($txData[3]),
 
             // Convert stake from PIP to BIP
             'stake' => MinterConverter::convertToBase(Helper::hexDecode($txData[4]))

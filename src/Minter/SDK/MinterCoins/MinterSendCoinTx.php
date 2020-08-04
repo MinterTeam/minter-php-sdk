@@ -41,15 +41,12 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encode(): array
     {
         return [
-            // Add nulls before coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
+            'coin' => $this->data['coin'],
 
-            // Remove Minter wallet prefix and convert hex string to binary
             'to' => hex2bin(
                 Helper::removeWalletPrefix($this->data['to'])
             ),
 
-            // Convert from BIP to PIP
             'value' => MinterConverter::convertToPip($this->data['value'])
         ];
     }
@@ -63,13 +60,10 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decode(array $txData): array
     {
         return [
-            // Pack binary to string
-            'coin' => Helper::hex2str($txData[0]),
+            'coin' => Helper::hexDecode($txData[0]),
 
-            // Add Minter wallet prefix to string
             'to' => Helper::addWalletPrefix($txData[1]),
 
-            // Convert value from PIP to BIP
             'value' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
         ];
     }

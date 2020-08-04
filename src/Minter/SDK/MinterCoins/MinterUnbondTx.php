@@ -48,7 +48,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
             ),
 
             // Add nulls before coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
+            'coin' => $this->data['coin'],
 
             // Convert from BIP to PIP
             'value' => MinterConverter::convertToPip($this->data['value'])
@@ -68,7 +68,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
             'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
             // Pack binary to string
-            'coin' => Helper::hex2str($txData[1]),
+            'coin' => hexdec($txData[1]),
 
             // Convert value from PIP to BIP
             'value' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
