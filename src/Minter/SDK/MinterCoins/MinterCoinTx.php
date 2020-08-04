@@ -29,6 +29,7 @@ abstract class MinterCoinTx implements MinterTxInterface
         MinterEditCandidateTx::TYPE    => MinterEditCandidateTx::class,
         MinterRecreateCoinTx::TYPE     => MinterRecreateCoinTx::class,
         MinterChangeOwnerTx::TYPE      => MinterChangeOwnerTx::class,
+        MinterSetHaltBlockTx::TYPE     => MinterSetHaltBlockTx::class
     ];
 
     /**
