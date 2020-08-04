@@ -22,7 +22,7 @@ class MinterDeepLink
     /** @var int|null */
     private $gasPrice;
 
-    /** @var string|null */
+    /** @var int|string|null */
     private $gasCoin;
 
     /** @var int|null */
@@ -71,10 +71,10 @@ class MinterDeepLink
     }
 
     /**
-     * @param string $gasCoin
+     * @param $gasCoin
      * @return MinterDeepLink
      */
-    public function setGasCoin(string $gasCoin): MinterDeepLink
+    public function setGasCoin($gasCoin): MinterDeepLink
     {
         $this->gasCoin = $gasCoin;
         return $this;
@@ -124,7 +124,7 @@ class MinterDeepLink
     public function encode(): string
     {
         $payload = Helper::str2buffer($this->payload ?? '');
-        $gasCoin = $this->gasCoin ? MinterConverter::convertCoinName($this->gasCoin) : '';
+        $gasCoin = $this->gasCoin ?? MinterTx::BASE_COIN_ID;
         $data    = $this->data->encode();
         $txType  = $this->data->getType();
 

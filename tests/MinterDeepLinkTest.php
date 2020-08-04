@@ -17,7 +17,7 @@ final class MinterDeepLinkTest extends TestCase
         $link->setPayload('custom message')->setGasCoin('ASD');
 
         $this->assertSame(
-            self::HOST_BASE_URL . '/-D4BoN-AlHYzmAwAATndO9JKP1TgZHT6lB4WiIrHIwSJ6AAAjmN1c3RvbSBtZXNzYWdlgICKQVNEAAAAAAAAAA',
+            self::HOST_BASE_URL . '/9wGg34CUdjOYDAABOd070ko_VOBkdPqUHhaIiscjBInoAACOY3VzdG9tIG1lc3NhZ2WAgINBU0Q',
             $link->encode());
     }
 
@@ -38,11 +38,11 @@ final class MinterDeepLinkTest extends TestCase
 
         $link->setNonce('1');
         $link->setPayload('Check payload');
-        $link->setGasCoin('MNT');
+        $link->setGasCoin(1);
         $link->setGasPrice('1');
 
         $this->assertSame(
-            self::HOST_BASE_URL . '/-D0BoN-AlBhGe7tkqO34kCAdUmw1lX2Cvj2ViBEiEPR2jbQAjUNoZWNrIHBheWxvYWQBAYpNTlQAAAAAAAAA',
+            self::HOST_BASE_URL . '/8wGg34CUGEZ7u2So7fiQIB1SbDWVfYK-PZWIESIQ9HaNtACNQ2hlY2sgcGF5bG9hZAEBAQ',
             $link->encode()
         );
     }
