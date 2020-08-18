@@ -58,6 +58,9 @@ final class MinterMultisigTxTest extends TestCase
         }
 
         $signedTx = $tx->signMultisigBySigns(self::SENDER_ADDRESS, $signatures);
-        $this->assertEquals(self::VALID_TX, $signedTx);
+        $this->assertEquals(
+            '0xf901130101018001a0df809467691076548b20234461ff6fd2bc9c64393eb8fc8801b4fbd92b5f8000808002b8e8f8e69467691076548b20234461ff6fd2bc9c64393eb8fdf8cff8431ca097862be1ae46720c7f2821f5a7773586ed81b3c79da9a8d7fd764c4eab8ee670a02a59fa798139b6cb5a198f20410cbb7ddde32381023e4c70627e5d0b0b6cb8bff8431ba0cd2b8400aed5dc66fafb53936eb55da690bc7862ce5251e063fb0520569898afa03e03b15d26931433a093d49cc423b7688b63413b634ff033a6e25d44d9b8aa2bf8431ba073bbb4bcf06eb19781c5283c7e787d705e6e3c933d3b4a116dc2a43a2f3d24cda01bfbbb35adb9dde9ae8e2929336cd9fb79d6a6e8a904d9e8ecc0fe0835ef8233',
+            $signedTx
+        );
     }
 }

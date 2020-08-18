@@ -49,6 +49,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [SetHaltBlock](#example-17)
 		- [RecreateCoin](#example-18)
 		- [ChangeOwner](#example-19)
+		- [EditMultisigOwners](#example-20)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -564,9 +565,21 @@ $tx->sign('your private key')
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterChangeOwnerTx;
+use Minter\SDK\MinterCoins\MinterChangeCoinOwnerTx;
 
-$data = new MinterChangeOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
+$data = new MinterChangeCoinOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>EditMultisigOwners</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditMultisigOwnersTx;
+
+$data = new MinterEditMultisigOwnersTx('multisig address', [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

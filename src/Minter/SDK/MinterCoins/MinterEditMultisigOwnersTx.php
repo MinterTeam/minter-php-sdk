@@ -6,33 +6,33 @@ use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 
 /**
- * Class MinterCreateMultisigTx
+ * Class MinterEditMultisigOwnersTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
+class MinterEditMultisigOwnersTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $threshold;
+    public $multisigAddress;
     public $weights;
     public $addresses;
 
-    const TYPE       = 12;
-    const COMMISSION = 100;
+    const TYPE       = 18;
+    const COMMISSION = 1000;
 
     /**
-     * MinterCreateMultisigTx constructor.
-     * @param $threshold
-     * @param $weights
-     * @param $addresses
+     * MinterEditMultisigOwnersTx constructor.
+     * @param string $multisigAddress
+     * @param array  $weights
+     * @param array  $addresses
      */
-    public function __construct($threshold, $weights, $addresses)
+    public function __construct(string $multisigAddress, array $weights, array $addresses)
     {
-        $this->threshold = $threshold;
-        $this->weights   = $weights;
-        $this->addresses = $addresses;
+        $this->multisigAddress = $multisigAddress;
+        $this->weights         = $weights;
+        $this->addresses       = $addresses;
     }
 
     /**
-     * Prepare data for signing
+     * Prepare tx data for signing
      *
      * @return array
      */
@@ -49,19 +49,15 @@ class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
             $weights[] = $weight === 0 ? '' : $weight;
         }
 
-        $threshold = $this->threshold === 0 ? '' : $this->threshold;
-
         return [
-            $threshold,
+            hex2bin(Helper::removeWalletPrefix($this->multisigAddress)),
             $weights,
-            $addresses,
+            $addresses
         ];
     }
 
     public function decodeData()
     {
-        $threshold = (int)Helper::hexDecode($this->threshold);
-
         $weights = [];
         foreach ($this->weights as $weight) {
             $weights[] = hexdec($weight);
@@ -72,8 +68,8 @@ class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
             $addresses[] = Helper::addWalletPrefix($address);
         }
 
-        $this->threshold = $threshold;
-        $this->weights   = $weights;
-        $this->addresses = $addresses;
+        $this->multisigAddress = Helper::addWalletPrefix($this->multisigAddress);
+        $this->weights         = $weights;
+        $this->addresses       = $addresses;
     }
 }

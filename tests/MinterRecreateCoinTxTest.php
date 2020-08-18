@@ -23,7 +23,7 @@ final class MinterRecreateCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf87e0a01018010aeed8a535550455254455354318a021e19e0c9bab24000008a021e19e0c9bab2400000638a021e27c1806e59a40000808001b845f8431ba084a67a9c402533e296c656ea82e29d3cc2a2cd4c978944978328cb3afae9cae4a018e444ff0eb3b343c940aa74125f9513454d0b9fc50b8f21dc285fb52767a0f6';
+    const VALID_SIGNATURE = '0xf8830201018010b3f284746573748a535550455254455354338a021e19e0c9bab24000008a021e19e0c9bab2400000638a021e27c1806e59a40000808001b845f8431ba0de755c731ccf5c0c131fc26c0eb69298f5cfa53829176ae6725abbba186a7129a00bb33f079db6571918ed7502b1a153c7722f5ce5f011c412ee17d0ec024d5308';
 
     /**
      * Test to decode data for MinterRecreateCoinTx
@@ -59,7 +59,7 @@ final class MinterRecreateCoinTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterRecreateCoinTx('SUPERTEST1', '10000', '10000', 99, '10001');
-        return new MinterTx(10, $data);
+        $data = new MinterRecreateCoinTx('test', 'SUPERTEST3', '10000', '10000', 99, '10001');
+        return new MinterTx(2, $data);
     }
 }

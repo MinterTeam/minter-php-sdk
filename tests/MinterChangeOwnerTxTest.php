@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterChangeOwnerTx;
+use Minter\SDK\MinterCoins\MinterChangeCoinOwnerTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterChangeOwnerTx
+ * Class for testing MinterChangeCoinOwnerTx
  */
-final class MinterChangeOwnerTxTest extends TestCase
+final class MinterChangeCoinOwnerTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -26,7 +26,7 @@ final class MinterChangeOwnerTxTest extends TestCase
     const VALID_SIGNATURE = '0xf8710b01018011a1e08a5355504552544553543194d82558ea00eb81d35f2654953598f5d51737d31c808001b845f8431ca07ec736f2bebcafb9628603c3837dd75a18e76f29bdeae6ecdce635ca8519ae00a04715b58493660840957d5cce0311a2f2caf7a3c14f7f3afaad3ec6c47f91d932';
 
     /**
-     * Test to decode data for MinterChangeOwnerTx
+     * Test to decode data for MinterChangeCoinOwnerTx
      */
     public function testDecode(): void
     {
@@ -43,7 +43,7 @@ final class MinterChangeOwnerTxTest extends TestCase
     }
 
     /**
-     * Test signing MinterChangeOwnerTx
+     * Test signing MinterChangeCoinOwnerTx
      */
     public function testSign(): void
     {
@@ -56,7 +56,7 @@ final class MinterChangeOwnerTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterChangeOwnerTx('SUPERTEST1', 'Mxd82558ea00eb81d35f2654953598f5d51737d31c');
+        $data = new MinterChangeCoinOwnerTx('SUPERTEST1', 'Mxd82558ea00eb81d35f2654953598f5d51737d31c');
         return new MinterTx(11, $data);
     }
 }

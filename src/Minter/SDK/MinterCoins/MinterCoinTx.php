@@ -13,23 +13,24 @@ use Web3p\RLP\RLP;
 abstract class MinterCoinTx implements MinterTxInterface
 {
     public const TYPE_TO_DATA = [
-        MinterSendCoinTx::TYPE         => MinterSendCoinTx::class,
-        MinterSellCoinTx::TYPE         => MinterSellCoinTx::class,
-        MinterSellAllCoinTx::TYPE      => MinterSellAllCoinTx::class,
-        MinterBuyCoinTx::TYPE          => MinterBuyCoinTx::class,
-        MinterCreateCoinTx::TYPE       => MinterCreateCoinTx::class,
-        MinterDeclareCandidacyTx::TYPE => MinterDeclareCandidacyTx::class,
-        MinterDelegateTx::TYPE         => MinterDelegateTx::class,
-        MinterUnbondTx::TYPE           => MinterUnbondTx::class,
-        MinterRedeemCheckTx::TYPE      => MinterRedeemCheckTx::class,
-        MinterSetCandidateOnTx::TYPE   => MinterSetCandidateOnTx::class,
-        MinterSetCandidateOffTx::TYPE  => MinterSetCandidateOffTx::class,
-        MinterCreateMultisigTx::TYPE   => MinterCreateMultisigTx::class,
-        MinterMultiSendTx::TYPE        => MinterMultiSendTx::class,
-        MinterEditCandidateTx::TYPE    => MinterEditCandidateTx::class,
-        MinterRecreateCoinTx::TYPE     => MinterRecreateCoinTx::class,
-        MinterChangeOwnerTx::TYPE      => MinterChangeOwnerTx::class,
-        MinterSetHaltBlockTx::TYPE     => MinterSetHaltBlockTx::class
+        MinterSendCoinTx::TYPE           => MinterSendCoinTx::class,
+        MinterSellCoinTx::TYPE           => MinterSellCoinTx::class,
+        MinterSellAllCoinTx::TYPE        => MinterSellAllCoinTx::class,
+        MinterBuyCoinTx::TYPE            => MinterBuyCoinTx::class,
+        MinterCreateCoinTx::TYPE         => MinterCreateCoinTx::class,
+        MinterDeclareCandidacyTx::TYPE   => MinterDeclareCandidacyTx::class,
+        MinterDelegateTx::TYPE           => MinterDelegateTx::class,
+        MinterUnbondTx::TYPE             => MinterUnbondTx::class,
+        MinterRedeemCheckTx::TYPE        => MinterRedeemCheckTx::class,
+        MinterSetCandidateOnTx::TYPE     => MinterSetCandidateOnTx::class,
+        MinterSetCandidateOffTx::TYPE    => MinterSetCandidateOffTx::class,
+        MinterCreateMultisigTx::TYPE     => MinterCreateMultisigTx::class,
+        MinterMultiSendTx::TYPE          => MinterMultiSendTx::class,
+        MinterEditCandidateTx::TYPE      => MinterEditCandidateTx::class,
+        MinterRecreateCoinTx::TYPE       => MinterRecreateCoinTx::class,
+        MinterChangeCoinOwnerTx::TYPE    => MinterChangeCoinOwnerTx::class,
+        MinterSetHaltBlockTx::TYPE       => MinterSetHaltBlockTx::class,
+        MinterEditMultisigOwnersTx::TYPE => MinterEditMultisigOwnersTx::class,
     ];
 
     /**
