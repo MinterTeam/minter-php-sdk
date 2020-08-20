@@ -579,7 +579,7 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterEditMultisigOwnersTx;
 
-$data = new MinterEditMultisigOwnersTx('multisig address', [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
+$data = new MinterEditMultisigOwnersTx(1, [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

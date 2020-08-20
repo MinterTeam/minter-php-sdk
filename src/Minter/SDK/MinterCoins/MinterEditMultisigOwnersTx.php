@@ -11,24 +11,24 @@ use Minter\Library\Helper;
  */
 class MinterEditMultisigOwnersTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $multisigAddress;
     public $weights;
     public $addresses;
+    public $threshold;
 
     const TYPE       = 18;
     const COMMISSION = 1000;
 
     /**
      * MinterEditMultisigOwnersTx constructor.
-     * @param string $multisigAddress
-     * @param array  $weights
-     * @param array  $addresses
+     * @param       $threshold
+     * @param array $weights
+     * @param array $addresses
      */
-    public function __construct(string $multisigAddress, array $weights, array $addresses)
+    public function __construct($threshold, $weights, $addresses)
     {
-        $this->multisigAddress = $multisigAddress;
-        $this->weights         = $weights;
-        $this->addresses       = $addresses;
+        $this->threshold = $threshold;
+        $this->weights   = $weights;
+        $this->addresses = $addresses;
     }
 
     /**
@@ -49,8 +49,10 @@ class MinterEditMultisigOwnersTx extends MinterCoinTx implements MinterTxInterfa
             $weights[] = $weight === 0 ? '' : $weight;
         }
 
+        $threshold = $this->threshold === 0 ? '' : $this->threshold;
+
         return [
-            hex2bin(Helper::removeWalletPrefix($this->multisigAddress)),
+            $threshold,
             $weights,
             $addresses
         ];
@@ -58,6 +60,8 @@ class MinterEditMultisigOwnersTx extends MinterCoinTx implements MinterTxInterfa
 
     public function decodeData()
     {
+        $threshold = hexdec($this->threshold);
+
         $weights = [];
         foreach ($this->weights as $weight) {
             $weights[] = hexdec($weight);
@@ -68,8 +72,8 @@ class MinterEditMultisigOwnersTx extends MinterCoinTx implements MinterTxInterfa
             $addresses[] = Helper::addWalletPrefix($address);
         }
 
-        $this->multisigAddress = Helper::addWalletPrefix($this->multisigAddress);
-        $this->weights         = $weights;
-        $this->addresses       = $addresses;
+        $this->threshold = $threshold;
+        $this->weights   = $weights;
+        $this->addresses = $addresses;
     }
 }
