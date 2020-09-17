@@ -50,6 +50,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [RecreateCoin](#example-18)
 		- [EditCoinOwner](#example-19)
 		- [EditMultisig](#example-20)
+		- [PriceVote](#example-21)
+		- [EditCandidatePublicKey](#example-22)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
