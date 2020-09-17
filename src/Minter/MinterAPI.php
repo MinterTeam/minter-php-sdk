@@ -155,7 +155,7 @@ class MinterAPI
      */
     public function getNonce(string $address): int
     {
-        return $this->getBalance($address)->result->transaction_count + 1;
+        return $this->getBalance($address)->transaction_count + 1;
     }
 
     /**
