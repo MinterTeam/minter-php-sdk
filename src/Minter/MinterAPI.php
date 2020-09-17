@@ -471,4 +471,45 @@ class MinterAPI
     {
         return $this->get('coin_info_by_id/' . $id, ($height ? ['height' => $height] : null));
     }
+
+    /**
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getHalts(?int $height = null): \stdClass
+    {
+        return $this->get('halts', ($height ? ['height' => $height] : null));
+    }
+
+    /**
+     * @param string|null $address
+     * @param string|null $coin
+     * @return \stdClass
+     */
+    public function getFrozen(?string $address = null, ?string $coin = null): \stdClass
+    {
+        $params = [];
+
+        if ($address) {
+            $params['address'] = $address;
+        }
+
+        if ($coin) {
+            $params['coin'] = $coin;
+        }
+
+        return $this->get('frozen', $params);
+    }
+
+    /**
+     * @param string   $publicKey
+     * @param string   $address
+     * @param int|null $height
+     * @return \stdClass
+     */
+    public function getWaitlist(string $publicKey, string $address, ?int $height = null): \stdClass
+    {
+        return $this->get('waitlist/' . $publicKey . '/' . $address, ($height ? ['height' => $height] : null));
+    }
 }
