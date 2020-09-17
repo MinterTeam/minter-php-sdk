@@ -5,7 +5,7 @@ namespace Minter\SDK;
 use InvalidArgumentException;
 use Minter\Contracts\MinterTxInterface;
 use Minter\SDK\MinterCoins\MinterBuyCoinTx;
-use Minter\SDK\MinterCoins\MinterChangeCoinOwnerTx;
+use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
 use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
@@ -332,7 +332,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterChangeCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx
      */
     public function getData(): MinterTxInterface
     {

@@ -48,8 +48,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [CreateMultisig](#example-16)
 		- [SetHaltBlock](#example-17)
 		- [RecreateCoin](#example-18)
-		- [ChangeOwner](#example-19)
-		- [EditMultisigOwners](#example-20)
+		- [EditCoinOwner](#example-19)
+		- [EditMultisig](#example-20)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -561,25 +561,49 @@ $tx->sign('your private key')
 ```
 
 ###### Example
-* Sign the <b>ChangeOwner</b> transaction
+* Sign the <b>EditCoinOwner</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterChangeCoinOwnerTx;
+use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 
-$data = new MinterChangeCoinOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
+$data = new MinterEditCoinOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```
 
 ###### Example
-* Sign the <b>EditMultisigOwners</b> transaction
+* Sign the <b>EditMultisig</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterEditMultisigOwnersTx;
+use Minter\SDK\MinterCoins\MinterEditMultisigTx;
 
-$data = new MinterEditMultisigOwnersTx(1, [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
+$data = new MinterEditMultisigTx(1, [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>PriceVote</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterPriceVoteTx;
+
+$data = new MinterPriceVoteTx(1000);
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>EditCandidatePublicKey</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditCandidatePublicKey;
+
+$data = new MinterEditCandidatePublicKey('new public key....');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

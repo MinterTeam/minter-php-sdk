@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+use Minter\SDK\MinterCoins\MinterEditCandidatePublicKeyTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterEditCandidateTx
+ * Class for testing MinterEditCandidatePublicKeyTx
  */
-final class MinterEditCandidateTxTest extends TestCase
+final class MinterEditCandidatePublicKeyTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -23,10 +23,10 @@ final class MinterEditCandidateTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf8b3100101800eb862f860a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe094d82558ea00eb81d35f2654953598f5d51737d31d94d82558ea00eb81d35f2654953598f5d51737d31d94d82558ea00eb81d35f2654953598f5d51737d31d808001b845f8431ba021c0f2da522422607325e32fa3915ea29d23559f0e20464da688bb45b04a59a8a06e235dc9fe780dfa4cb349062041be95d7bc656c7ff52a571507de7989c4a8b1';
+    const VALID_SIGNATURE = '0xf8720101018014a2e1a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0808001b845f8431ba082816a6e2d8bfd9e6c0c9a583b78828916802c2e8fbc7e21369a5360c3226059a049d0421a599e2672c766034f511b67d9cd73ffd9b3cf81ab763d463e3695a650';
 
     /**
-     * Test to decode data for MinterEditCandidateTx
+     * Test to decode data for MinterEditCandidatePublicKeyTx
      */
     public function testDecode(): void
     {
@@ -38,9 +38,6 @@ final class MinterEditCandidateTxTest extends TestCase
         $this->assertSame($validTx->getGasPrice(), $tx->getGasPrice());
         $this->assertSame($validTx->getChainID(), $tx->getChainID());
         $this->assertSame($validTx->getData()->publicKey, $tx->getData()->publicKey);
-        $this->assertSame($validTx->getData()->rewardAddress, $tx->getData()->rewardAddress);
-        $this->assertSame($validTx->getData()->ownerAddress, $tx->getData()->ownerAddress);
-        $this->assertSame($validTx->getData()->controlAddress, $tx->getData()->controlAddress);
         $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
     }
 
@@ -58,13 +55,7 @@ final class MinterEditCandidateTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterEditCandidateTx(
-            'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0',
-            'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
-            'Mxd82558ea00eb81d35f2654953598f5d51737d31d',
-            'Mxd82558ea00eb81d35f2654953598f5d51737d31d'
-        );
-
-        return new MinterTx(16, $data);
+        $data = new MinterEditCandidatePublicKeyTx('Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0');
+        return new MinterTx(1, $data);
     }
 }
