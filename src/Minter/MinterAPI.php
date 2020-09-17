@@ -75,13 +75,11 @@ class MinterAPI
      */
     public function getCandidate(string $publicKey, ?int $height = null): \stdClass
     {
-        $params = ['pub_key' => $publicKey];
-
         if ($height) {
-            $params['height'] = $height;
+            $params = ['height' => $height];
         }
 
-        return $this->get('candidate', $params);
+        return $this->get('candidate/' . $publicKey, $params ?? null);
     }
 
     /**
@@ -102,7 +100,7 @@ class MinterAPI
         }
 
         if($perPage) {
-            $params['perPage'] = $perPage;
+            $params['per_page'] = $perPage;
         }
 
         return $this->get('validators', $params);
@@ -113,19 +111,18 @@ class MinterAPI
      *
      * @param string   $address
      * @param null|int $height
+     * @param bool     $delegated
      * @return \stdClass
-     * @throws Exception
      * @throws GuzzleException
      */
-    public function getBalance(string $address, ?int $height = null): \stdClass
+    public function getBalance(string $address, ?int $height = null, bool $delegated = false): \stdClass
     {
-        $params = ['address' => $address];
-
+        $params = ['delegated' => $delegated];
         if ($height) {
             $params['height'] = $height;
         }
 
-        return $this->get('address', $params);
+        return $this->get('address/' . $address, $params);
     }
 
     /**
@@ -133,10 +130,11 @@ class MinterAPI
      *
      * @param array    $addresses
      * @param int|null $height
+     * @param bool     $delegated
      * @return \stdClass
      * @throws GuzzleException
      */
-    public function getAddresses(array $addresses, ?int $height = null): \stdClass
+    public function getAddresses(array $addresses, ?int $height = null, bool $delegated = false): \stdClass
     {
         $params = ['addresses' => json_encode($addresses)];
 
@@ -170,7 +168,7 @@ class MinterAPI
      */
     public function send(string $tx): \stdClass
     {
-        return $this->get('send_transaction', ['tx' => $tx]);
+        return $this->post('send_transaction', ['tx' => $tx]);
     }
 
     /**
@@ -183,7 +181,7 @@ class MinterAPI
      */
     public function getTransaction(string $hash): \stdClass
     {
-        return $this->get('transaction', ['hash' => $hash]);
+        return $this->get('transaction/' . $hash);
     }
 
     /**
@@ -196,7 +194,7 @@ class MinterAPI
      */
     public function getBlock(int $height): \stdClass
     {
-        return $this->get('block', ['height' => $height]);
+        return $this->get('block/' . $height);
     }
 
     /**
@@ -209,7 +207,7 @@ class MinterAPI
      */
     public function getEvents(int $height): \stdClass
     {
-        return $this->get('events', ['height' => $height]);
+        return $this->get('events/' . $height);
     }
 
     /**
@@ -217,13 +215,13 @@ class MinterAPI
      *
      * @param null|int  $height
      * @param bool|null $includeStakes
+     * @param string    $status
      * @return \stdClass
-     * @throws Exception
      * @throws GuzzleException
      */
-    public function getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
+    public function getCandidates(?int $height = null, ?bool $includeStakes = false, string $status = '_'): \stdClass
     {
-        $params = [];
+        $params = ['status' => $status];
 
         if ($includeStakes) {
             $params['include_stakes'] = 'true';
@@ -248,13 +246,11 @@ class MinterAPI
      */
     public function getCoinInfo(string $symbol, ?int $height = null): \stdClass
     {
-        $params = ['symbol' => $symbol];
-
         if ($height) {
             $params['height'] = $height;
         }
 
-        return $this->get('coin_info', $params);
+        return $this->get('coin_info/' . $symbol, $params ?? null);
     }
 
     /**
@@ -384,7 +380,7 @@ class MinterAPI
         }
 
         if ($perPage) {
-            $params['perPage'] = $perPage;
+            $params['per_page'] = $perPage;
         }
 
 
@@ -440,12 +436,7 @@ class MinterAPI
      */
     public function getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
     {
-        $params = ['pub_key' => $pubKey];
-        if ($height) {
-            $params['height'] = $height;
-        }
-
-        return $this->get('missed_blocks', $params);
+        return $this->get('missed_blocks/' . $pubKey, ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -478,11 +469,6 @@ class MinterAPI
      */
     public function getCoinInfoByID(int $id, ?int $height = null):\ stdClass
     {
-        $params = ['id' => $id];
-        if ($height) {
-            $params['height'] = $height;
-        }
-
-        return $this->get('coin_id', $params);
+        return $this->get('coin_info_by_id/' . $id, ($height ? ['height' => $height] : null));
     }
 }
