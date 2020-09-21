@@ -48,7 +48,10 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [CreateMultisig](#example-16)
 		- [SetHaltBlock](#example-17)
         - [RecreateCoin](#example-18)
-        - [ChangeOwner](#example-19)
+        - [EditCoinOwner](#example-19)
+        - [EditMultisigTx](#example-20)
+        - [PriceVoteTx](#example-21)
+        - [EditCandidatePublicKeyTx](#example-22)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Get hash of transaction](#get-hash-of-transaction)
@@ -624,7 +627,6 @@ $tx = new MinterTx([
     'type' => MinterEditCandidateTx::TYPE,
     'data' => [
         'pubkey' => 'current candidate public key',
-        'new_pubkey' => 'new candidate public key',
         'reward_address' => 'Minter address for rewards',
         'owner_address' => 'Minter address of owner',
         'control_address' => 'Minter address for control'
@@ -704,19 +706,82 @@ $tx->sign('your private key')
 ```
 
 ###### Example
-* Sign the <b>ChangeOwner</b> transaction
+* Sign the <b>EditCoinOwner</b> transaction
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterChangeOwnerTx;
+use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 
 $tx = new MinterTx([
     'nonce' => $nonce,
     'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
-    'type' => MinterChangeOwnerTx::TYPE,
+    'type' => MinterEditCoinOwnerTx::TYPE,
     'data' => [
         'symbol'   => 'TEST',
         'newOwner' => 'Mxee81347211c72524338f9680072af90744333143'
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>EditMultisigTx</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditMultisigTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterEditMultisigTx::TYPE,
+    'data' => [
+         'threshold' => 7,
+         'weights' => [1, 3, 5],
+         'addresses' => [
+             'Mxee81347211c72524338f9680072af90744333143',
+             'Mxee81347211c72524338f9680072af90744333145',
+             'Mxee81347211c72524338f9680072af90744333144'
+         ]
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>PriceVoteTx</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterPriceVoteTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterPriceVoteTx::TYPE,
+    'data' => [
+        'price' => 10000
+    ]
+]);
+
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>EditCandidatePublicKeyTx</b> transaction
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditCandidatePublicKeyTx;
+
+$tx = new MinterTx([
+    'nonce' => $nonce,
+    'chainId' => MinterTx::MAINNET_CHAIN_ID, // or MinterTx::TESTNET_CHAIN_ID
+    'type' => MinterEditCandidatePublicKeyTx::TYPE,
+    'data' => [
+        'publicKey' => 'Mp.....'
     ]
 ]);
 

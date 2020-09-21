@@ -29,7 +29,6 @@ class MinterEditCandidateTx extends MinterCoinTx implements MinterTxInterface
      */
     public $data = [
         'pubkey' => '',
-        'new_pubkey' => '',
         'reward_address' => '',
         'owner_address' => '',
         'control_address' => ''
@@ -46,11 +45,6 @@ class MinterEditCandidateTx extends MinterCoinTx implements MinterTxInterface
             // Remove Minter public key prefix and convert hex string to binary
             'pubkey' => hex2bin(
                 Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
-            ),
-
-            // Remove Minter public key prefix and convert hex string to binary
-            'new_pubkey' => hex2bin(
-                Helper::removePrefix($this->data['new_pubkey'], MinterPrefix::PUBLIC_KEY)
             ),
 
             // Remove Minter wallet prefix and convert hex string to binary
@@ -83,16 +77,13 @@ class MinterEditCandidateTx extends MinterCoinTx implements MinterTxInterface
             'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
 
             // Add Minter wallet prefix to string
-            'new_pubkey' => MinterPrefix::PUBLIC_KEY . $txData[1],
+            'reward_address' => Helper::addWalletPrefix($txData[1]),
 
             // Add Minter wallet prefix to string
-            'reward_address' => Helper::addWalletPrefix($txData[2]),
+            'owner_address' => Helper::addWalletPrefix($txData[2]),
 
             // Add Minter wallet prefix to string
-            'owner_address' => Helper::addWalletPrefix($txData[3]),
-
-            // Add Minter wallet prefix to string
-            'control_address' => Helper::addWalletPrefix($txData[4])
+            'control_address' => Helper::addWalletPrefix($txData[3])
         ];
     }
 }

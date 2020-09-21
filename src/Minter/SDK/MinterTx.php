@@ -8,12 +8,15 @@ use Web3p\RLP\RLP;
 use Minter\Library\ECDSA;
 use Minter\Library\Helper;
 use Minter\SDK\MinterCoins\{
-    MinterChangeOwnerTx,
+    MinterEditCoinOwnerTx,
     MinterCoinTx,
     MinterCreateMultisigTx,
     MinterDelegateTx,
+    MinterEditCandidatePublicKeyTx,
     MinterEditCandidateTx,
+    MinterEditMultisigTx,
     MinterMultiSendTx,
+    MinterPriceVoteTx,
     MinterRecreateCoinTx,
     MinterRedeemCheckTx,
     MinterSellAllCoinTx,
@@ -421,8 +424,20 @@ class MinterTx
                 $this->txDataObject = new MinterRecreateCoinTx($tx['data'], $isHexFormat);
                 break;
 
-            case MinterChangeOwnerTx::TYPE:
-                $this->txDataObject = new MinterChangeOwnerTx($tx['data'], $isHexFormat);
+            case MinterEditCoinOwnerTx::TYPE:
+                $this->txDataObject = new MinterEditCoinOwnerTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterEditMultisigTx::TYPE:
+                $this->txDataObject = new MinterEditMultisigTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterPriceVoteTx::TYPE:
+                $this->txDataObject = new MinterPriceVoteTx($tx['data'], $isHexFormat);
+                break;
+
+            case MinterEditCandidatePublicKeyTx::TYPE:
+                $this->txDataObject = new MinterEditCandidatePublicKeyTx($tx['data'], $isHexFormat);
                 break;
 
             default:
