@@ -196,74 +196,92 @@ class MinterTx extends MinterTxSigner
 
     /**
      * @param int $nonce
+     * @return MinterTx
      */
-    public function setNonce(int $nonce)
+    public function setNonce(int $nonce): MinterTx
     {
         $this->nonce = $nonce;
+        return $this;
     }
 
     /**
      * @param int $gasPrice
+     * @return MinterTx
      */
-    public function setGasPrice(int $gasPrice): void
+    public function setGasPrice(int $gasPrice): MinterTx
     {
         $this->gasPrice = $gasPrice;
+        return $this;
     }
 
     /**
      * @param int $gasCoin
+     * @return MinterTx
      */
-    public function setGasCoin(int $gasCoin): void
+    public function setGasCoin(int $gasCoin): MinterTx
     {
         $this->gasCoin = $gasCoin;
+        return $this;
     }
 
     /**
      * @param mixed $data
+     * @return MinterTx
      */
-    public function setData($data): void
+    public function setData($data): MinterTx
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
      * @param int $signatureType
+     * @return MinterTx
      */
-    public function setSignatureType(int $signatureType): void
+    public function setSignatureType(int $signatureType): MinterTx
     {
         $this->signatureType = $signatureType;
+        return $this;
     }
 
     /**
      * @param MinterSignature $signatureData
+     * @return MinterTx
      */
-    public function setSignatureData(MinterSignature $signatureData): void
+    public function setSignatureData(MinterSignature $signatureData): MinterTx
     {
         $this->signatureData = $signatureData;
+        return $this;
     }
 
     /**
      * @param int $chainID
+     * @return MinterTx
      */
-    public function setChainID(int $chainID): void
+    public function setChainID(int $chainID): MinterTx
     {
         $this->chainID = $chainID;
+        return $this;
     }
 
     /**
      * @param mixed $payload
+     * @return MinterTx
      */
-    public function setPayload($payload): void
+    public function setPayload($payload): MinterTx
     {
         $this->payload = $payload;
+        return $this;
     }
 
     /**
      * @param mixed $serviceData
+     * @return MinterTx
      */
-    public function setServiceData($serviceData): void
+    public function setServiceData($serviceData): MinterTx
     {
         $this->serviceData = $serviceData;
+        return $this;
     }
 
     /**
