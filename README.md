@@ -333,7 +333,7 @@ Returns a signed tx.
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
-$data = new MinterSendCoinTx('MNT', 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
+$data = new MinterSendCoinTx($coinID, 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
 $tx = new MinterTx($nonce, $data);
 
 $tx->sign('your private key')
@@ -346,7 +346,7 @@ gas price, gas coin, payload, serviceData, chain id</b>
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 
-$data = new MinterSendCoinTx('MNT', 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
+$data = new MinterSendCoinTx($coinID, 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
 $tx   = (new MinterTx($nonce, $data))
    ->setChainID(MinterTx::TESTNET_CHAIN_ID)
    ->setGasPrice(1)
