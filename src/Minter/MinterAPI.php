@@ -219,7 +219,7 @@ class MinterAPI
      * @return \stdClass
      * @throws GuzzleException
      */
-    public function getCandidates(?int $height = null, ?bool $includeStakes = false, string $status = '_'): \stdClass
+    public function getCandidates(?int $height = null, ?bool $includeStakes = false, string $status = 'all'): \stdClass
     {
         $params = ['status' => $status];
 
