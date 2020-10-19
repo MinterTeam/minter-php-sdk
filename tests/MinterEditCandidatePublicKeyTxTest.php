@@ -23,7 +23,7 @@ final class MinterEditCandidatePublicKeyTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf8720101018014a2e1a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0808001b845f8431ba082816a6e2d8bfd9e6c0c9a583b78828916802c2e8fbc7e21369a5360c3226059a049d0421a599e2672c766034f511b67d9cd73ffd9b3cf81ab763d463e3695a650';
+    const VALID_SIGNATURE = '0xf8950101018014b844f842a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe1a00208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0808001b845f8431ca0c8f6d425e8b95230a9b55087f8696bb38c1a9cccb52199acff27aa1a3dfa8c63a05b912d862b18dc232eee5a1bd7a4bae687b5682c9697d87b059d68853a340da6';
 
     /**
      * Test to decode data for MinterEditCandidatePublicKeyTx
@@ -55,7 +55,11 @@ final class MinterEditCandidatePublicKeyTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterEditCandidatePublicKeyTx('Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0');
+        $data = new MinterEditCandidatePublicKeyTx(
+            'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe1',
+            'Mp0208f8a2bd535f65ecbe4b057b3b3c5fbfef6003b0713dc37b697b1d19153fe0'
+        );
+
         return new MinterTx(1, $data);
     }
 }
