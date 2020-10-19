@@ -13,81 +13,54 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 6;
-
-    /**
-     * Fee units
-     */
+    const TYPE       = 6;
     const COMMISSION = 10000;
 
+    public $address;
+    public $publicKey;
+    public $commission;
+    public $coin;
+    public $stake;
+
     /**
-     * Declare candidacy tx data
-     *
-     * @var array
+     * MinterDeclareCandidacyTx constructor.
+     * @param $address
+     * @param $publicKey
+     * @param $commission
+     * @param $coin
+     * @param $stake
      */
-    public $data = [
-        'address' => '',
-        'pubkey' => '',
-        'commission' => '',
-        'coin' => '',
-        'stake' => ''
-    ];
+    public function __construct($address, $publicKey, $commission, $coin, $stake)
+    {
+        $this->address    = $address;
+        $this->publicKey  = $publicKey;
+        $this->commission = $commission;
+        $this->coin       = $coin;
+        $this->stake      = $stake;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Remove Minter wallet prefix and convert hex string to binary
-            'address' => hex2bin(
-                Helper::removeWalletPrefix($this->data['address'])
-            ),
-
-            // Remove Minter wallet prefix and convert hex string to binary
-            'pubkey' => hex2bin(
-                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
-            ),
-
-            // Define commission field
-            'commission' => $this->data['commission'] === 0 ? '' : $this->data['commission'],
-
-            // Convert coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
-
-            // Convert stake field from BIP to PIP
-            'stake' => MinterConverter::convertToPip($this->data['stake'])
+            hex2bin(Helper::removeWalletPrefix($this->address)),
+            hex2bin(Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)),
+            $this->commission === 0 ? '' : $this->commission,
+            $this->coin,
+            MinterConverter::convertToPip($this->stake)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Add Minter wallet prefix to string
-            'address' => Helper::addWalletPrefix($txData[0]),
-
-            // Add Minter wallet prefix to string
-            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[1],
-
-            // Decode hex string to number
-            'commission' => Helper::hexDecode($txData[2]),
-
-            // Pack coin name
-            'coin' => Helper::hex2str($txData[3]),
-
-            // Convert stake from PIP to BIP
-            'stake' => MinterConverter::convertToBase(Helper::hexDecode($txData[4]))
-        ];
+        $this->address    = Helper::addWalletPrefix($this->address);
+        $this->publicKey  = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->commission = (int) Helper::hexDecode($this->commission);
+        $this->coin       = hexdec($this->coin);
+        $this->stake      = MinterConverter::convertToBase(Helper::hexDecode($this->stake));
     }
 }

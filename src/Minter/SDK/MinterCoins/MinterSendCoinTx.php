@@ -12,65 +12,39 @@ use Minter\SDK\MinterConverter;
  */
 class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 1;
+    public $coin;
+    public $to;
+    public $value;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 1;
     const COMMISSION = 10;
 
     /**
-     * Send coin tx data
-     *
-     * @var array
+     * MinterSendCoinTx constructor.
+     * @param $coin
+     * @param $to
+     * @param $value
      */
-    public $data = [
-        'coin' => '',
-        'to' => '',
-        'value' => ''
-    ];
+    public function __construct($coin, $to, $value)
+    {
+        $this->coin  = $coin;
+        $this->to    = $to;
+        $this->value = $value;
+    }
 
-    /**
-     * Prepare data for signing
-     *
-     * @return array
-     */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Add nulls before coin name
-            'coin' => MinterConverter::convertCoinName($this->data['coin']),
-
-            // Remove Minter wallet prefix and convert hex string to binary
-            'to' => hex2bin(
-                Helper::removeWalletPrefix($this->data['to'])
-            ),
-
-            // Convert from BIP to PIP
-            'value' => MinterConverter::convertToPip($this->data['value'])
+            $this->coin,
+            hex2bin(Helper::removeWalletPrefix($this->to)),
+            MinterConverter::convertToPip($this->value)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Pack binary to string
-            'coin' => Helper::hex2str($txData[0]),
-
-            // Add Minter wallet prefix to string
-            'to' => Helper::addWalletPrefix($txData[1]),
-
-            // Convert value from PIP to BIP
-            'value' => MinterConverter::convertToBase(Helper::hexDecode($txData[2]))
-        ];
+        $this->coin  = hexdec($this->coin);
+        $this->to    = Helper::addWalletPrefix($this->to);
+        $this->value = MinterConverter::convertToBase(Helper::hexDecode($this->value));
     }
 }

@@ -6,23 +6,23 @@ use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
 
 /**
- * Class MinterCreateMultisigTx
+ * Class MinterEditMultisigTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
+class MinterEditMultisigTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $threshold;
     public $weights;
     public $addresses;
+    public $threshold;
 
-    const TYPE       = 12;
-    const COMMISSION = 100;
+    const TYPE       = 18;
+    const COMMISSION = 1000;
 
     /**
-     * MinterCreateMultisigTx constructor.
-     * @param $threshold
-     * @param $weights
-     * @param $addresses
+     * MinterEditMultisigTx constructor.
+     * @param       $threshold
+     * @param array $weights
+     * @param array $addresses
      */
     public function __construct($threshold, $weights, $addresses)
     {
@@ -32,7 +32,7 @@ class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
     }
 
     /**
-     * Prepare data for signing
+     * Prepare tx data for signing
      *
      * @return array
      */
@@ -54,13 +54,13 @@ class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
         return [
             $threshold,
             $weights,
-            $addresses,
+            $addresses
         ];
     }
 
     public function decodeData()
     {
-        $threshold = (int)Helper::hexDecode($this->threshold);
+        $threshold = hexdec($this->threshold);
 
         $weights = [];
         foreach ($this->weights as $weight) {

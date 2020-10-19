@@ -36,22 +36,6 @@ class MinterConverter
     }
 
     /**
-     * Convert value
-     *
-     * @param string $num
-     * @param string $to
-     * @return string
-     */
-    public static function convertValue(string $num, string $to)
-    {
-        if ($to === 'pip') {
-            return bcmul(self::DEFAULT, $num, 0);
-        } else if ($to === 'bip') {
-            return Helper::niceNumber(bcdiv($num, self::DEFAULT, 25));
-        }
-    }
-
-    /**
      * Add nulls to coin name
      *
      * @param string $symbol

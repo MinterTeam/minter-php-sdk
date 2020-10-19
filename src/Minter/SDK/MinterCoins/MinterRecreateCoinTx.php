@@ -7,23 +7,23 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterCreateCoinTx
+ * Class MinterRecreateCoinTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterRecreateCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $name;
     public $symbol;
     public $amount;
     public $reserve;
     public $crr;
     public $maxSupply;
+    public $name;
 
-    const TYPE       = 5;
-    const COMMISSION = 1000;
+    const TYPE       = 16;
+    const COMMISSION = 10000000;
 
     /**
-     * MinterCreateCoinTx constructor.
+     * MinterRecreateCoinTx constructor.
      * @param $name
      * @param $symbol
      * @param $amount

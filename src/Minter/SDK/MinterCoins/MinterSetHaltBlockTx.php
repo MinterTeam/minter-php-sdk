@@ -7,23 +7,26 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterPrefix;
 
 /**
- * Class MinterSetCandidateOffTx
+ * Class MinterSetHaltBlockTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterSetCandidateOffTx extends MinterCoinTx implements MinterTxInterface
+class MinterSetHaltBlockTx extends MinterCoinTx implements MinterTxInterface
 {
     public $publicKey;
+    public $height;
 
-    const TYPE       = 11;
-    const COMMISSION = 100;
+    const TYPE       = 15;
+    const COMMISSION = 1000;
 
     /**
-     * MinterSetCandidateOffTx constructor.
+     * MinterUnbondTx constructor.
      * @param $publicKey
+     * @param $height
      */
-    public function __construct($publicKey)
+    public function __construct($publicKey, $height)
     {
         $this->publicKey = $publicKey;
+        $this->height    = $height;
     }
 
     /**
@@ -34,14 +37,14 @@ class MinterSetCandidateOffTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            hex2bin(
-                Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)
-            ),
+            hex2bin(Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)),
+            $this->height,
         ];
     }
 
     public function decodeData()
     {
         $this->publicKey = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->height    = (int)hexdec($this->height);
     }
 }

@@ -12,70 +12,44 @@ use Minter\SDK\MinterConverter;
  */
 class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 4;
+    public $coinToBuy;
+    public $coinToSell;
+    public $valueToBuy;
+    public $maximumValueToSell;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 4;
     const COMMISSION = 100;
 
     /**
-     * Send coin tx data
-     *
-     * @var array
+     * MinterBuyCoinTx constructor.
+     * @param $coinToBuy
+     * @param $valueToBuy
+     * @param $coinToSell
+     * @param $maximumValueToSell
      */
-    public $data = [
-        'coinToBuy' => '',
-        'valueToBuy' => '',
-        'coinToSell' => '',
-        'maximumValueToSell' => ''
-    ];
+    public function __construct($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)
+    {
+        $this->coinToBuy          = $coinToBuy;
+        $this->coinToSell         = $coinToSell;
+        $this->valueToBuy         = $valueToBuy;
+        $this->maximumValueToSell = $maximumValueToSell;
+    }
 
-    /**
-     * Prepare tx data for signing
-     *
-     * @return array
-     */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Add nulls before symbol
-            'coinToBuy' => MinterConverter::convertCoinName($this->data['coinToBuy']),
-
-            // Convert field from BIP to PIP
-            'valueToBuy' => MinterConverter::convertToPip($this->data['valueToBuy']),
-
-            // Add nulls before symbol
-            'coinToSell' => MinterConverter::convertCoinName($this->data['coinToSell']),
-
-            // Convert field from BIP to PIP
-            'maximumValueToSell' => MinterConverter::convertToPip($this->data['maximumValueToSell'])
+            $this->coinToBuy,
+            MinterConverter::convertToPip($this->valueToBuy),
+            $this->coinToSell,
+            MinterConverter::convertToPip($this->maximumValueToSell)
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Pack symbol
-            'coinToBuy' => Helper::hex2str($txData[0]),
-
-            // Convert field from PIP to BIP
-            'valueToBuy' => MinterConverter::convertToBase(Helper::hexDecode($txData[1])),
-
-            // Pack symbol
-            'coinToSell' => Helper::hex2str($txData[2]),
-
-            // Convert field from PIP to BIP
-            'maximumValueToSell' => MinterConverter::convertToBase(Helper::hexDecode($txData[3]))
-        ];
+        $this->coinToBuy          = hexdec($this->coinToBuy);
+        $this->valueToBuy         = MinterConverter::convertToBase(Helper::hexDecode($this->valueToBuy));
+        $this->coinToSell         = hexdec($this->coinToSell);
+        $this->maximumValueToSell = MinterConverter::convertToBase(Helper::hexDecode($this->maximumValueToSell));
     }
 }

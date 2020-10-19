@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterBuyCoinTx;
+use Minter\SDK\MinterCoins\MinterPriceVoteTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class for testing MinterBuyCoinTx
+ * Class for testing MinterPriceVoteTx
  */
-final class MinterBuyCoinTxTest extends TestCase
+final class MinterPriceVoteTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -23,10 +23,10 @@ final class MinterBuyCoinTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf865020101800495d40187038d7ea4c680008089056bc75e2d63100000808001b845f8431ca0f64de1594ea6ea7717a2161771a429a2202e78ae4f1bf628a8c2e12a2df13e4aa04b8eb64ef9e7574983cc66960e98829fd93ab61fd2d7794c3e8810970e9e3693';
+    const VALID_SIGNATURE = '0xf8540a0101801384c3822710808001b845f8431ba04243bc0e8af53fc9b0486baf58977659e775447bbdef680aec2088df30881aa8a06abedc7bbddaa70bbd9174302e26d96388a593cb7ec2bf3053bd610a406449bd';
 
     /**
-     * Test to decode data for MinterBuyCoinTx
+     * Test to decode data for MinterPriceVoteTx
      */
     public function testDecode(): void
     {
@@ -37,15 +37,12 @@ final class MinterBuyCoinTxTest extends TestCase
         $this->assertSame($validTx->getGasCoin(), $tx->getGasCoin());
         $this->assertSame($validTx->getGasPrice(), $tx->getGasPrice());
         $this->assertSame($validTx->getChainID(), $tx->getChainID());
-        $this->assertSame($validTx->getData()->coinToBuy, $tx->getData()->coinToBuy);
-        $this->assertSame($validTx->getData()->coinToSell, $tx->getData()->coinToSell);
-        $this->assertSame($validTx->getData()->maximumValueToSell, $tx->getData()->maximumValueToSell);
-        $this->assertSame($validTx->getData()->valueToBuy, $tx->getData()->valueToBuy);
+        $this->assertSame($validTx->getData()->price, $tx->getData()->price);
         $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
     }
 
     /**
-     * Test signing MinterBuyCoinTx
+     * Test signing MinterEditCoinOwnerTx
      */
     public function testSign(): void
     {
@@ -58,7 +55,7 @@ final class MinterBuyCoinTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterBuyCoinTx(1, '0.001', 0, '100');
-        return new MinterTx(2, $data);
+        $data = new MinterPriceVoteTx(10000);
+        return new MinterTx(10, $data);
     }
 }

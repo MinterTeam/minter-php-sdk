@@ -14,6 +14,11 @@ use Minter\Library\Helper;
  */
 class MinterWallet
 {
+    private $mnemonic;
+    private $privateKey;
+    private $publicKey;
+    private $address;
+
     /**
      * Amount of entropy bits
      */
@@ -25,26 +30,49 @@ class MinterWallet
     const BIP44_SEED_ADDRESS_PATH = "m/44'/60'/0'/0/0";
 
     /**
-     * Create Minter wallet
+     * Generate new random Minter wallet
      *
-     * @return array
-     * @throws \Exception
+     * MinterWallet constructor.
      */
-    public static function create(): array
+    public function __construct()
     {
-        $mnemonic = self::generateMnemonic();
-        $seed = self::mnemonicToSeed($mnemonic);
-        $privateKey = self::seedToPrivateKey($seed);
-        $publicKey = self::privateToPublic($privateKey);
-        $address = self::getAddressFromPublicKey($publicKey);
+        $this->mnemonic   = self::generateMnemonic();
+        $this->privateKey = self::mnemonicToPrivateKey($this->mnemonic);
+        $this->publicKey  = self::privateToPublic($this->privateKey);
+        $this->address    = self::getAddressFromPublicKey($this->publicKey);
+    }
 
-        return [
-            'seed' => $seed,
-            'address' => $address,
-            'mnemonic' => $mnemonic,
-            'public_key' => $publicKey,
-            'private_key' => $privateKey
-        ];
+    /**
+     * Create Minter wallet by private key
+     *
+     * @param string $privateKey
+     * @return MinterWallet
+     */
+    public static function createFromPrivate(string $privateKey): MinterWallet
+    {
+        $wallet             = new MinterWallet();
+        $wallet->privateKey = $privateKey;
+        $wallet->publicKey  = self::privateToPublic($wallet->getPrivateKey());
+        $wallet->address    = self::getAddressFromPublicKey($wallet->getPublicKey());
+
+        return $wallet;
+    }
+
+    /**
+     * Create Minter wallet by mnemonic phrase
+     *
+     * @param string $mnemonic
+     * @return MinterWallet
+     */
+    public static function createFromMnemonic(string $mnemonic): MinterWallet
+    {
+        $wallet             = new MinterWallet();
+        $wallet->mnemonic   = $mnemonic;
+        $wallet->privateKey = self::mnemonicToPrivateKey($wallet->getMnemonic());
+        $wallet->publicKey  = self::privateToPublic($wallet->getPrivateKey());
+        $wallet->address    = self::getAddressFromPublicKey($wallet->getPublicKey());
+
+        return $wallet;
     }
 
     /**
@@ -63,16 +91,11 @@ class MinterWallet
      *
      * @param string $publicKey
      * @return string
-     * @throws \Exception
      */
     public static function getAddressFromPublicKey(string $publicKey): string
     {
-        // remove public key
         $publicKey = Helper::removePrefix($publicKey, MinterPrefix::PUBLIC_KEY);
-
-        // create keccak hash
         $hash = Keccak::hash(hex2bin($publicKey), 256);
-
         return MinterPrefix::ADDRESS . substr($hash, -40);
     }
 
@@ -89,28 +112,6 @@ class MinterWallet
     }
 
     /**
-     * Get seed from the mnemonic phrase.
-     *
-     * @param string $mnemonic
-     * @return string
-     */
-    public static function mnemonicToSeed(string $mnemonic): string
-    {
-        return BIP39::mnemonicToSeedHex($mnemonic, '');
-    }
-
-    /**
-     * Get private key from seed.
-     *
-     * @param string $seed
-     * @return string
-     */
-    public static function seedToPrivateKey(string $seed): string
-    {
-        return BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
-    }
-
-    /**
      * Get private key from mnemonic.
      *
      * @param string $mnemonic
@@ -118,8 +119,8 @@ class MinterWallet
      */
     public static function mnemonicToPrivateKey(string $mnemonic): string
     {
-        $seed = self::mnemonicToSeed($mnemonic);
-        return self::seedToPrivateKey($seed);
+        $seed = BIP39::mnemonicToSeedHex($mnemonic, '');
+        return BIP44::fromMasterSeed($seed)->derive(self::BIP44_SEED_ADDRESS_PATH)->privateKey;
     }
 
     /**
@@ -131,5 +132,37 @@ class MinterWallet
     public static function validateAddress(string $address): bool
     {
         return strlen($address) === 42 && substr($address, 0, 2) === MinterPrefix::ADDRESS && ctype_xdigit(substr($address, -40));
+    }
+
+    /**
+     * @return string
+     */
+    public function getMnemonic(): string
+    {
+        return $this->mnemonic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrivateKey(): string
+    {
+        return $this->privateKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicKey(): string
+    {
+        return $this->publicKey;
     }
 }

@@ -24,11 +24,6 @@ final class MinterWalletTest extends TestCase
      */
     const VALID_ADDRESS = 'Mx17b1240ba6d45258f836b45ae0c4fc1106f5ce59';
 
-    // Data for testing mnemonicToSeed, seedToPrivateKey
-    const MNEMONIC = 'suffer draft bacon typical start retire air sniff large biology mail diagram';
-    const VALID_SEED = '33fa1096997d9b0f47469463710b3a2e91971144265b281dc71f831539a3b8e3413e5969e5ffb4d3c5a37cfa0f964bcc779efe4ae37fceef048175105caad624';
-    const VALID_PRIVATE_KEY_FROM_SEED = 'd3520cc797f12b8a81e805ddf5a5bf8b994e347003ea25c9ccaecb5073f3fef1';
-
     /**
      * Test converting private key to public key.
      */
@@ -79,49 +74,73 @@ final class MinterWalletTest extends TestCase
      */
     public function testCreateWallet()
     {
-        $wallet = MinterWallet::create();
-
-        // check seed length
-        $this->assertEquals(128, strlen($wallet['seed']));
+        $wallet = new MinterWallet();
 
         // check mnemonic words count
-        $this->assertEquals(12, str_word_count($wallet['mnemonic']));
+        $this->assertEquals(12, str_word_count($wallet->getMnemonic()));
 
         // check public key length
-        $this->assertEquals(130, strlen($wallet['public_key']));
+        $this->assertEquals(130, strlen($wallet->getPublicKey()));
 
         // check private key length
-        $this->assertEquals(64, strlen($wallet['private_key']));
+        $this->assertEquals(64, strlen($wallet->getPrivateKey()));
 
         // check that address is valid
-        $this->assertTrue(MinterWallet::validateAddress($wallet['address']));
+        $this->assertTrue(MinterWallet::validateAddress($wallet->getAddress()));
 
         // check that address retrieved from public key
         $this->assertEquals(
-            $wallet['address'],
-            MinterWallet::getAddressFromPublicKey($wallet['public_key'])
+            $wallet->getAddress(),
+            MinterWallet::getAddressFromPublicKey($wallet->getPublicKey())
         );
 
         // check that private key and public key matches
         $this->assertEquals(
-            $wallet['public_key'],
-            MinterWallet::privateToPublic($wallet['private_key'])
+            $wallet->getPublicKey(),
+            MinterWallet::privateToPublic($wallet->getPrivateKey())
         );
     }
 
     /**
-     * Test mnemonic to seed.
+     * Test creating wallet from mnemonic phrase.
      */
-    public function testMnemonicToSeed()
+    public function testCreateWalletFromMnemonic()
     {
-        $this->assertEquals(self::VALID_SEED, MinterWallet::mnemonicToSeed(self::MNEMONIC));
+        $wallet = MinterWallet::createFromMnemonic('penalty tube illegal bleak typical sausage glance taste calm stay slide found');
+
+        // check mnemonic words count
+        $this->assertEquals(12, str_word_count($wallet->getMnemonic()));
+
+        // check public key length
+        $this->assertEquals(130, strlen($wallet->getPublicKey()));
+
+        // check private key length
+        $this->assertEquals(64, strlen($wallet->getPrivateKey()));
+
+        // check that address retrieved from public key
+        $this->assertEquals('Mx67691076548b20234461ff6fd2bc9c64393eb8fc', $wallet->getAddress());
+
+        // check that private key and public key matches
+        $this->assertEquals('4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e', $wallet->getPrivateKey());
     }
 
     /**
-     * Test seed to private key.
+     * Test creating wallet from private key.
      */
-    public function testSeedToPrivateKey()
+    public function testCreateWalletFromPrivateKey()
     {
-        $this->assertEquals(self::VALID_PRIVATE_KEY_FROM_SEED, MinterWallet::seedToPrivateKey(self::VALID_SEED));
+        $wallet = MinterWallet::createFromPrivate('4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e');
+
+        // check public key length
+        $this->assertEquals(130, strlen($wallet->getPublicKey()));
+
+        // check private key length
+        $this->assertEquals(64, strlen($wallet->getPrivateKey()));
+
+        // check that address retrieved from public key
+        $this->assertEquals('Mx67691076548b20234461ff6fd2bc9c64393eb8fc', $wallet->getAddress());
+
+        // check that private key and public key matches
+        $this->assertEquals('4daf02f92bf760b53d3c725d6bcc0da8e55d27ba5350c78d3a88f873e502bd6e', $wallet->getPrivateKey());
     }
 }

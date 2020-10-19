@@ -12,69 +12,49 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterEditCandidateTx extends MinterCoinTx implements MinterTxInterface
 {
-    /**
-     * Type
-     */
-    const TYPE = 14;
+    public $publicKey;
+    public $rewardAddress;
+    public $ownerAddress;
+    public $controlAddress;
 
-    /**
-     * Fee units
-     */
+    const TYPE       = 14;
     const COMMISSION = 10000;
 
     /**
-     * Edit candidate tx data
-     *
-     * @var array
+     * MinterEditCandidateTx constructor.
+     * @param $publicKey
+     * @param $rewardAddress
+     * @param $ownerAddress
+     * @param $controlAddress
      */
-    public $data = [
-        'pubkey' => '',
-        'reward_address' => '',
-        'owner_address' => ''
-    ];
+    public function __construct($publicKey, $rewardAddress, $ownerAddress, $controlAddress)
+    {
+        $this->publicKey      = $publicKey;
+        $this->rewardAddress  = $rewardAddress;
+        $this->ownerAddress   = $ownerAddress;
+        $this->controlAddress = $controlAddress;
+    }
 
     /**
      * Prepare data for signing
      *
      * @return array
      */
-    public function encode(): array
+    public function encodeData(): array
     {
         return [
-            // Remove Minter public key prefix and convert hex string to binary
-            'pubkey' => hex2bin(
-                Helper::removePrefix($this->data['pubkey'], MinterPrefix::PUBLIC_KEY)
-            ),
-
-            // Remove Minter wallet prefix and convert hex string to binary
-            'reward_address' => hex2bin(
-                Helper::removeWalletPrefix($this->data['reward_address'])
-            ),
-
-            // Remove Minter wallet prefix and convert hex string to binary
-            'owner_address' => hex2bin(
-                Helper::removeWalletPrefix($this->data['owner_address'])
-            )
+            hex2bin(Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)),
+            hex2bin(Helper::removeWalletPrefix($this->rewardAddress)),
+            hex2bin(Helper::removeWalletPrefix($this->ownerAddress)),
+            hex2bin(Helper::removeWalletPrefix($this->controlAddress))
         ];
     }
 
-    /**
-     * Prepare output tx data
-     *
-     * @param array $txData
-     * @return array
-     */
-    public function decode(array $txData): array
+    public function decodeData()
     {
-        return [
-            // Add Minter wallet prefix to string
-            'pubkey' => MinterPrefix::PUBLIC_KEY . $txData[0],
-
-            // Add Minter wallet prefix to string
-            'reward_address' => Helper::addWalletPrefix($txData[1]),
-
-            // Add Minter wallet prefix to string
-            'owner_address' => Helper::addWalletPrefix($txData[2])
-        ];
+        $this->publicKey      = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->rewardAddress  = Helper::addWalletPrefix($this->rewardAddress);
+        $this->ownerAddress   = Helper::addWalletPrefix($this->ownerAddress);
+        $this->controlAddress = Helper::addWalletPrefix($this->controlAddress);
     }
 }

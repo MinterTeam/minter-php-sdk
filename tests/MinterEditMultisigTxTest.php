@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
+use Minter\SDK\MinterCoins\MinterEditMultisigTx;
 use Minter\SDK\MinterTx;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class MinterCreateMultisigTx
+ * Class MinterEditMultisigTx
  */
-final class MinterCreateMultisigTxTest extends TestCase
+final class MinterEditMultisigTxTest extends TestCase
 {
     /**
      * Predefined private key
@@ -23,14 +23,14 @@ final class MinterCreateMultisigTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf880080101800cb0ef03c20102ea9467691076548b20234461ff6fd2bc9c64393eb8fc94c26dbd06984949a0efce1517925ca57a8d7a2c06808001b845f8431ba077b3ac0b0605279239bdcec12a698f7beb2c5d9d213c2cdc90638b3da020bbeaa021f4a509eaa7e93bc77901de3061d98e092c9ce1c414ad779a92804aedf4eb97';
+    const VALID_SIGNATURE = '0xf8990101018012b0ef01c20102ea9467691076548b20234461ff6fd2bc9c64393eb8fc94cc34fb43daae6b98af2c3bcf2ec82cdf281ea8b5808002b85ef85c9401bf2a485ab11d4ef1339cc68abf9dc46582675ef845f8431ba012d564085b3ad46539ae1b83eefec68eee2aa21283c5edb8def59696d085dc34a0371782d3d72e98f85e0a46d7d0b68c640daefc0888b1fc5664fb329163ea59b3';
 
     /**
-     * Test to decode data for MinterCreateMultisigTx
+     * Test to decode data for MinterEditMultisigTx
      */
     public function testDecode(): void
     {
-        $tx = MinterTx::decode(self::VALID_SIGNATURE);
+        $tx      = MinterTx::decode(self::VALID_SIGNATURE);
         $validTx = $this->makeTransaction();
 
         $this->assertSame($validTx->getNonce(), $tx->getNonce());
@@ -39,8 +39,7 @@ final class MinterCreateMultisigTxTest extends TestCase
         $this->assertSame($validTx->getChainID(), $tx->getChainID());
         $this->assertSame($validTx->getData()->weights, $tx->getData()->weights);
         $this->assertSame($validTx->getData()->addresses, $tx->getData()->addresses);
-        $this->assertSame($validTx->getData()->threshold, $tx->getData()->threshold);
-        $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
+        $this->assertSame('Mx01bf2a485ab11d4ef1339cc68abf9dc46582675e', $tx->getSenderAddress());
     }
 
     /**
@@ -48,7 +47,8 @@ final class MinterCreateMultisigTxTest extends TestCase
      */
     public function testSign(): void
     {
-        $signature = $this->makeTransaction()->sign(self::PRIVATE_KEY);
+        $signature = $this->makeTransaction()
+                          ->signMultisig('Mx01bf2a485ab11d4ef1339cc68abf9dc46582675e', [self::PRIVATE_KEY]);
         $this->assertSame($signature, self::VALID_SIGNATURE);
     }
 
@@ -57,7 +57,11 @@ final class MinterCreateMultisigTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterCreateMultisigTx(3, [1, 2], ['Mx67691076548b20234461ff6fd2bc9c64393eb8fc', 'Mxc26dbd06984949a0efce1517925ca57a8d7a2c06']);
-        return new MinterTx(8, $data);
+        $data = new MinterEditMultisigTx(
+            1, [1, 2],
+            ['Mx67691076548b20234461ff6fd2bc9c64393eb8fc', 'Mxcc34fb43daae6b98af2c3bcf2ec82cdf281ea8b5']
+        );
+
+        return new MinterTx(1, $data);
     }
 }
