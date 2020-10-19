@@ -352,13 +352,7 @@ class MinterAPI
      */
     public function estimateTxCommission(string $tx, ?int $height = null): \stdClass
     {
-        $params = ['tx' => $tx];
-
-        if($height) {
-            $params['height'] = $height;
-        }
-
-        return $this->get('estimate_tx_commission', $params);
+        return $this->get('estimate_tx_commission/' . $tx, ($height ? ['height' => $height] : null));
     }
 
     /**
