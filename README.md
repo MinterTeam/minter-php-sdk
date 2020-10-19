@@ -515,7 +515,7 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterEditCandidateTx;
 
-$data = new MinterEditCandidateTx('candidate public key', 'Minter address for rewards', 'Minter address of owner');
+$data = new MinterEditCandidateTx('candidate public key', 'Minter address for rewards', 'Minter address of owner', 'Minter address for control');
 $tx   = new MinterTx($nonce, $data);
 
 $tx->sign('your private key')
@@ -557,7 +557,7 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 
-$data = new MinterRecreateCoinTx('TEST', '10000', '10', 10, '10000');
+$data = new MinterRecreateCoinTx('TEST', '10000', '10', 10000, 10, '10000');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```
@@ -603,9 +603,9 @@ $tx->sign('your private key')
 
 ```php
 use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterEditCandidatePublicKey;
+use Minter\SDK\MinterCoins\MinterEditCandidatePublicKeyTx;
 
-$data = new MinterEditCandidatePublicKey('new public key....');
+$data = new MinterEditCandidatePublicKeyTx('public key', 'new public key....');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

@@ -13,6 +13,7 @@ use Minter\SDK\MinterPrefix;
 class MinterEditCandidatePublicKeyTx extends MinterCoinTx implements MinterTxInterface
 {
     public $publicKey;
+    public $newPublicKey;
 
     const TYPE       = 20;
     const COMMISSION = 100000000;
@@ -20,10 +21,12 @@ class MinterEditCandidatePublicKeyTx extends MinterCoinTx implements MinterTxInt
     /**
      * MinterEditCandidatePublicKeyTx constructor.
      * @param $publicKey
+     * @param $newPublicKey
      */
-    public function __construct($publicKey)
+    public function __construct($publicKey, $newPublicKey)
     {
-        $this->publicKey      = $publicKey;
+        $this->publicKey    = $publicKey;
+        $this->newPublicKey = $newPublicKey;
     }
 
     /**
@@ -35,11 +38,13 @@ class MinterEditCandidatePublicKeyTx extends MinterCoinTx implements MinterTxInt
     {
         return [
             hex2bin(Helper::removePrefix($this->publicKey, MinterPrefix::PUBLIC_KEY)),
+            hex2bin(Helper::removePrefix($this->newPublicKey, MinterPrefix::PUBLIC_KEY)),
         ];
     }
 
     public function decodeData()
     {
-        $this->publicKey = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->publicKey    = MinterPrefix::PUBLIC_KEY . $this->publicKey;
+        $this->newPublicKey = MinterPrefix::PUBLIC_KEY . $this->newPublicKey;
     }
 }
