@@ -75,7 +75,7 @@ Create MinterAPI instance
 ```php
 use Minter\MinterAPI;
 
-$nodeUrl = 'https://minter-node-1.testnet.minter.network:8843'; // example of a node url
+$nodeUrl = 'https://minter-node-1.testnet.minter.network:8843/v2/'; // example of a node url
 
 $api = new MinterAPI($nodeUrl);
 ```

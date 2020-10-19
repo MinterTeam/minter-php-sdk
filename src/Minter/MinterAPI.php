@@ -60,7 +60,7 @@ class MinterAPI
      */
     public function getStatus(): \stdClass
     {
-        return $this->get('v2/status');
+        return $this->get('/status');
     }
 
     /**
@@ -79,7 +79,7 @@ class MinterAPI
             $params = ['height' => $height];
         }
 
-        return $this->get('v2/candidate/' . $publicKey, $params ?? null);
+        return $this->get('/candidate/' . $publicKey, $params ?? null);
     }
 
     /**
@@ -103,7 +103,7 @@ class MinterAPI
             $params['per_page'] = $perPage;
         }
 
-        return $this->get('v2/validators', $params);
+        return $this->get('/validators', $params);
     }
 
     /**
@@ -122,7 +122,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/address/' . $address, $params);
+        return $this->get('address/' . $address, $params);
     }
 
     /**
@@ -142,7 +142,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/addresses', $params);
+        return $this->get('/addresses', $params);
     }
 
     /**
@@ -168,7 +168,7 @@ class MinterAPI
      */
     public function send(string $tx): \stdClass
     {
-        return $this->post('v2/send_transaction', ['tx' => $tx]);
+        return $this->post('/send_transaction', ['tx' => $tx]);
     }
 
     /**
@@ -181,7 +181,7 @@ class MinterAPI
      */
     public function getTransaction(string $hash): \stdClass
     {
-        return $this->get('v2/transaction/' . $hash);
+        return $this->get('/transaction/' . $hash);
     }
 
     /**
@@ -194,7 +194,7 @@ class MinterAPI
      */
     public function getBlock(int $height): \stdClass
     {
-        return $this->get('v2/block/' . $height);
+        return $this->get('/block/' . $height);
     }
 
     /**
@@ -207,7 +207,7 @@ class MinterAPI
      */
     public function getEvents(int $height): \stdClass
     {
-        return $this->get('v2/events/' . $height);
+        return $this->get('/events/' . $height);
     }
 
     /**
@@ -231,7 +231,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/candidates', $params);
+        return $this->get('/candidates', $params);
     }
 
     /**
@@ -250,7 +250,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/coin_info/' . $symbol, $params ?? null);
+        return $this->get('/coin_info/' . $symbol, $params ?? null);
     }
 
     /**
@@ -280,7 +280,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/estimate_coin_sell', $params);
+        return $this->get('/estimate_coin_sell', $params);
     }
 
     /**
@@ -309,7 +309,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/estimate_coin_sell_all', $params);
+        return $this->get('/estimate_coin_sell_all', $params);
     }
 
     /**
@@ -339,7 +339,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/estimate_coin_buy', $params);
+        return $this->get('/estimate_coin_buy', $params);
     }
 
     /**
@@ -358,7 +358,7 @@ class MinterAPI
             $params['height'] = $height;
         }
 
-        return $this->get('v2/estimate_tx_commission', $params);
+        return $this->get('/estimate_tx_commission', $params);
     }
 
     /**
@@ -384,7 +384,7 @@ class MinterAPI
         }
 
 
-        return $this->get('v2/transactions', $params);
+        return $this->get('/transactions', $params);
     }
 
     /**
@@ -397,7 +397,7 @@ class MinterAPI
      */
     public function getUnconfirmedTxs(?int $limit = null): \stdClass
     {
-        return $this->get('v2/unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
+        return $this->get('/unconfirmed_txs', ($limit ? ['limit' => $limit] : null));
     }
 
     /**
@@ -410,7 +410,7 @@ class MinterAPI
      */
     public function getMaxGasPrice(?int $height = null): \stdClass
     {
-        return $this->get('v2/max_gas', ($height ? ['height' => $height] : null));
+        return $this->get('/max_gas', ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -422,7 +422,7 @@ class MinterAPI
      */
     public function getMinGasPrice(): \stdClass
     {
-        return $this->get('v2/min_gas_price');
+        return $this->get('/min_gas_price');
     }
 
     /**
@@ -436,7 +436,7 @@ class MinterAPI
      */
     public function getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
     {
-        return $this->get('v2/missed_blocks/' . $pubKey, ($height ? ['height' => $height] : null));
+        return $this->get('/missed_blocks/' . $pubKey, ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -447,7 +447,7 @@ class MinterAPI
      */
     public function getGenesis(): \stdClass
     {
-        return $this->get('v2/genesis');
+        return $this->get('/genesis');
     }
 
     /**
@@ -458,7 +458,7 @@ class MinterAPI
      */
     public function getNetworkInfo(): \stdClass
     {
-        return $this->get('v2/net_info');
+        return $this->get('/net_info');
     }
 
     /**
@@ -469,7 +469,7 @@ class MinterAPI
      */
     public function getCoinInfoByID(int $id, ?int $height = null):\ stdClass
     {
-        return $this->get('v2/coin_info_by_id/' . $id, ($height ? ['height' => $height] : null));
+        return $this->get('/coin_info_by_id/' . $id, ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -479,7 +479,7 @@ class MinterAPI
      */
     public function getHalts(?int $height = null): \stdClass
     {
-        return $this->get('v2/halts', ($height ? ['height' => $height] : null));
+        return $this->get('/halts', ($height ? ['height' => $height] : null));
     }
 
     /**
@@ -499,7 +499,7 @@ class MinterAPI
             $params['coin'] = $coin;
         }
 
-        return $this->get('v2/frozen', $params);
+        return $this->get('/frozen', $params);
     }
 
     /**
@@ -510,6 +510,6 @@ class MinterAPI
      */
     public function getWaitlist(string $publicKey, string $address, ?int $height = null): \stdClass
     {
-        return $this->get('v2/waitlist/' . $publicKey . '/' . $address, ($height ? ['height' => $height] : null));
+        return $this->get('/waitlist/' . $publicKey . '/' . $address, ($height ? ['height' => $height] : null));
     }
 }
