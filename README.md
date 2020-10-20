@@ -28,7 +28,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getMaxGasPrice](#getmaxgasprice)
 	    - [getMinGasPrice](#getmingasprice)
 	    - [getMissedBlocks](#getmissedblocks)
-	    - [getMissedBlocks](#getwaitlist)
+	    - [getWaitlist](#getwaitlist)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
