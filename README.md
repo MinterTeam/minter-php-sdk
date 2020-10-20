@@ -28,6 +28,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getMaxGasPrice](#getmaxgasprice)
 	    - [getMinGasPrice](#getmingasprice)
 	    - [getMissedBlocks](#getmissedblocks)
+	    - [getMissedBlocks](#getwaitlist)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
@@ -288,6 +289,14 @@ Return node network information.
 
 ``
 getNetworkInfo(): \stdClass
+``
+
+### getWaitlist
+
+Return waitlisted stakes by address
+
+``
+getWaitlist(string $address, ?string $publicKey = null, ?int $height = null): \stdClass
 ``
 
 ### Error handling

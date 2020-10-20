@@ -497,13 +497,24 @@ class MinterAPI
     }
 
     /**
-     * @param string   $publicKey
-     * @param string   $address
-     * @param int|null $height
+     * @param string      $address
+     * @param string|null $publicKey
+     * @param int|null    $height
      * @return \stdClass
+     * @throws GuzzleException
      */
-    public function getWaitlist(string $publicKey, string $address, ?int $height = null): \stdClass
+    public function getWaitlist(string $address, ?string $publicKey = null, ?int $height = null): \stdClass
     {
-        return $this->get('waitlist/' . $publicKey . '/' . $address, ($height ? ['height' => $height] : null));
+        $params = [];
+
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        if ($publicKey) {
+            $params['publicKey'] = $publicKey;
+        }
+
+        return $this->get('waitlist/' . $address, $params);
     }
 }
