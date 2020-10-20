@@ -328,6 +328,7 @@ Returns a signed tx.
 ###### Example
 
 * Sign the <b>SendCoin</b> transaction
+* Constructor: ```MinterSendCoinTx($coin, $to, $value)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -359,6 +360,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>SellCoin</b> transaction
+* Constructor: ```MinterSellCoinTx($coinToSell, $valueToSell, $coinToBuy, $minimumValueToBuy)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -372,6 +374,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>SellAllCoin</b> transaction
+* Constructor: ```MinterSellAllCoinTx($coinToSell, $coinToBuy, $minimumValueToBuy)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -385,6 +388,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>BuyCoin</b> transaction
+* Constructor: ```MinterBuyCoinTx($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -398,6 +402,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>CreateCoin</b> transaction
+* Constructor: ```MinterCreateCoinTx($name, $symbol, $amount, $reserve, $crr, $maxSupply)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -411,6 +416,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>DeclareCandidacy</b> transaction
+* Constructor: ```MinterDeclareCandidacyTx($address, $publicKey, $commission, $coin, $stake)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -428,6 +434,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>Delegate</b> transaction
+* Constructor: ```MinterDelegateTx($publicKey, $coin, $stake)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -441,6 +448,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>SetCandidateOn</b> transaction
+* Constructor: ```MinterSetCandidateOnTx($publicKey)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -454,6 +462,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>SetCandidateOff</b> transaction
+* Constructor: ```MinterSetCandidateOffTx($publicKey)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -467,6 +476,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>RedeemCheck</b> transaction
+* Constructor: ```MinterRedeemCheckTx($check, $proof)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -480,6 +490,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>Unbond</b> transaction
+* Constructor: ```MinterUnbondTx($publicKey, $coin, $value)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -493,6 +504,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>MultiSend</b> transaction
+* Constructor: ```MinterMultiSendTx($list)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -510,6 +522,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>EditCandidate</b> transaction
+* Constructor: ```MinterEditCandidateTx($publicKey, $rewardAddress, $ownerAddress, $controlAddress)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -523,6 +536,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>CreateMultisig</b> transaction
+* Constructor: ```MinterCreateMultisigTx($threshold, $weights, $addresses)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -540,6 +554,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>SetHaltBlock</b> transaction
+* Constructor: ```MinterSetHaltBlockTx($publicKey, $height)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -552,6 +567,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>RecreateCoin</b> transaction
+* Constructor: ```MinterRecreateCoinTx($name, $symbol, $amount, $reserve, $crr, $maxSupply)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -564,6 +580,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>EditCoinOwner</b> transaction
+* Constructor: ```MinterEditCoinOwnerTx($symbol, $newOwner)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -576,6 +593,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>EditMultisig</b> transaction
+* Constructor: ```MinterEditMultisigTx($threshold, $weights, $addresses)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -588,6 +606,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>PriceVote</b> transaction
+* Constructor: ```MinterPriceVoteTx($price)```
 
 ```php
 use Minter\SDK\MinterTx;
@@ -600,6 +619,7 @@ $tx->sign('your private key')
 
 ###### Example
 * Sign the <b>EditCandidatePublicKey</b> transaction
+* Constructor: ```MinterEditCandidatePublicKeyTx($publicKey, $newPublicKey)```
 
 ```php
 use Minter\SDK\MinterTx;
