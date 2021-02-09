@@ -185,16 +185,17 @@ class MinterAPI
     }
 
     /**
-     * Returns block data at given height.
-     *
      * @param int $height
+     * @param bool|null $failedTxs
      * @return \stdClass
-     * @throws Exception
      * @throws GuzzleException
      */
-    public function getBlock(int $height): \stdClass
+    public function getBlock(int $height, ?bool $failedTxs = false): \stdClass
     {
-        return $this->get('block/' . $height);
+        if ($failedTxs) {
+            $params['failed_txs'] = 'true';
+        }
+        return $this->get('block/' . $height, $params);
     }
 
     /**
@@ -268,12 +269,14 @@ class MinterAPI
         string $coinToSell,
         string $valueToSell,
         string $coinToBuy,
-        ?int $height = null
+        ?int $height = null,
+        string $swapFrom = 'optimal'
     ): \stdClass {
         $params = [
             'coin_to_sell'  => $coinToSell,
             'value_to_sell' => $valueToSell,
-            'coin_to_buy'   => $coinToBuy
+            'coin_to_buy'   => $coinToBuy,
+            'swap_from'     => $swapFrom
         ];
 
         if ($height) {
@@ -297,12 +300,14 @@ class MinterAPI
         string $coinToSell,
         string $valueToSell,
         string $coinToBuy,
-        ?int   $height = null
+        ?int   $height = null,
+        string $swapFrom = 'optimal'
     ): \stdClass {
         $params = [
             'coin_to_sell'  => $coinToSell,
             'value_to_sell' => $valueToSell,
-            'coin_to_buy'   => $coinToBuy
+            'coin_to_buy'   => $coinToBuy,
+            'swap_from'     => $swapFrom
         ];
 
         if ($height) {
@@ -327,12 +332,15 @@ class MinterAPI
         string $coinToSell,
         string $valueToBuy,
         string $coinToBuy,
-        ?int $height = null
+        ?int $height = null,
+        string $swapFrom = 'optimal'
     ): \stdClass {
         $params = [
             'coin_to_sell' => $coinToSell,
             'value_to_buy' => $valueToBuy,
-            'coin_to_buy'  => $coinToBuy
+            'coin_to_buy'  => $coinToBuy,
+            'swap_from'     => $swapFrom
+
         ];
 
         if ($height) {
@@ -517,4 +525,50 @@ class MinterAPI
 
         return $this->get('waitlist/' . $address, $params);
     }
+
+    /**
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getPriceCommissions(?int $height = null): \stdClass
+    {
+        return $this->get('price_commissions', ($height ? ['height' => $height] : null));
+    }
+
+    /**
+     * @param int $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getPriceVotes(int $height): \stdClass
+    {
+        return $this->get('price_votes/' . $height);
+    }
+
+    /**
+     * @param string $coin0
+     * @param string $coin1
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getSwapPool(string $coin0, string $coin1, ?int $height = null): \stdClass
+    {
+        return $this->get('swap_pool/' . $coin0 . '/' . $coin1, ($height ? ['height' => $height] : null));
+    }
+
+    /**
+     * @param string $coin0
+     * @param string $coin1
+     * @param string $provider
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getSwapPoolProvider(string $coin0, string $coin1, string $provider, ?int $height = null): \stdClass
+    {
+        return $this->get('swap_pool/' . $coin0 . '/' . $coin1 . '/' . $provider, ($height ? ['height' => $height] : null));
+    }
+
 }

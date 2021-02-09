@@ -19,8 +19,7 @@ class MinterRecreateCoinTx extends MinterCoinTx implements MinterTxInterface
     public $maxSupply;
     public $name;
 
-    const TYPE       = 16;
-    const COMMISSION = 10000000;
+    const TYPE = 16;
 
     /**
      * MinterRecreateCoinTx constructor.

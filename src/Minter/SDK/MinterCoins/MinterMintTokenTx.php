@@ -7,35 +7,36 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterSendCoinTx
+ * Class MinterMintTokenTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterMintTokenTx extends MinterCoinTx implements MinterTxInterface
 {
     public $coin;
-    public $to;
     public $value;
 
-    const TYPE = 1;
+    const TYPE = 28;
 
     /**
-     * MinterSendCoinTx constructor.
+     * MinterMintTokenTx constructor.
      * @param $coin
-     * @param $to
      * @param $value
      */
-    public function __construct($coin, $to, $value)
+    public function __construct($coin, $value)
     {
         $this->coin  = $coin;
-        $this->to    = $to;
         $this->value = $value;
     }
 
+    /**
+     * Prepare data for signing
+     *
+     * @return array
+     */
     public function encodeData(): array
     {
         return [
             $this->coin,
-            hex2bin(Helper::removeWalletPrefix($this->to)),
             MinterConverter::convertToPip($this->value)
         ];
     }
@@ -43,7 +44,6 @@ class MinterSendCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decodeData()
     {
         $this->coin  = hexdec($this->coin);
-        $this->to    = Helper::addWalletPrefix($this->to);
         $this->value = MinterConverter::convertToBase(Helper::hexDecode($this->value));
     }
 }

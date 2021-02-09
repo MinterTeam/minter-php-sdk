@@ -15,8 +15,7 @@ class MinterEditMultisigTx extends MinterCoinTx implements MinterTxInterface
     public $addresses;
     public $threshold;
 
-    const TYPE       = 18;
-    const COMMISSION = 1000;
+    const TYPE = 18;
 
     /**
      * MinterEditMultisigTx constructor.

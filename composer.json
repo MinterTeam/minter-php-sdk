@@ -1,5 +1,5 @@
 {
-  "name": "minter/minter-php-sdk",
+  "name": "mx-dec0de/minter-php-sdk",
   "autoload": {
     "psr-0" : {
       "Minter\\" : "src"

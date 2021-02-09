@@ -12,8 +12,7 @@ class MinterPriceVoteTx extends MinterCoinTx implements MinterTxInterface
 {
     public $price;
 
-    const TYPE       = 19;
-    const COMMISSION = 10;
+    const TYPE = 19;
 
     /**
      * MinterPriceVoteTx constructor.

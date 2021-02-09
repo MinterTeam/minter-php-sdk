@@ -15,8 +15,7 @@ class MinterCreateMultisigTx extends MinterCoinTx implements MinterTxInterface
     public $weights;
     public $addresses;
 
-    const TYPE       = 12;
-    const COMMISSION = 100;
+    const TYPE = 12;
 
     /**
      * MinterCreateMultisigTx constructor.

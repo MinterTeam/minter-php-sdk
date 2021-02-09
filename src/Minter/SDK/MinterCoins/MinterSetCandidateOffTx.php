@@ -14,8 +14,7 @@ class MinterSetCandidateOffTx extends MinterCoinTx implements MinterTxInterface
 {
     public $publicKey;
 
-    const TYPE       = 11;
-    const COMMISSION = 100;
+    const TYPE = 11;
 
     /**
      * MinterSetCandidateOffTx constructor.

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
@@ -7,20 +8,20 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterBuyCoinTx
+ * Class MinterBuySwapPoolTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterBuySwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
     public $coinToBuy;
     public $coinToSell;
     public $valueToBuy;
     public $maximumValueToSell;
 
-    const TYPE = 4;
+    const TYPE = 24;
 
     /**
-     * MinterBuyCoinTx constructor.
+     * MinterBuySwapPoolTx constructor.
      * @param $coinToBuy
      * @param $valueToBuy
      * @param $coinToSell

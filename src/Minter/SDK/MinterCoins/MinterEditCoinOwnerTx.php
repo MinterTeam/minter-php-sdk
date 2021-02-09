@@ -15,8 +15,7 @@ class MinterEditCoinOwnerTx extends MinterCoinTx implements MinterTxInterface
     public $symbol;
     public $newOwner;
 
-    const TYPE       = 17;
-    const COMMISSION = 10000000;
+    const TYPE = 17;
 
     /**
      * MinterEditCoinOwnerTx constructor.
