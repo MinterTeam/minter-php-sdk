@@ -30,7 +30,7 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getMissedBlocks](#getmissedblocks)
 	    - [getWaitlist](#getwaitlist)
 		- [getPriceCommissions](#getPriceCommissions)
-		- [getPriceVotes](#getPriceCommissions)
+		- [getPriceVotes](#getPriceVotes)
 		- [getSwapPool](#getSwapPool)
 		- [getSwapPoolProvider](#getSwapPoolProvider)
 	- [Error handling](#error-handling)
