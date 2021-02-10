@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
@@ -7,27 +8,30 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterSellAllCoinTx
+ * Class MinterSellSwapPoolTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterSellSwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
     public $coinToBuy;
     public $coinToSell;
+    public $valueToSell;
     public $minimumValueToBuy;
 
-    const TYPE = 3;
+    const TYPE = 23;
 
     /**
-     * MinterSellAllCoinTx constructor.
+     * MinterSellSwapPoolTx constructor.
      * @param $coinToSell
+     * @param $valueToSell
      * @param $coinToBuy
      * @param $minimumValueToBuy
      */
-    public function __construct($coinToSell, $coinToBuy, $minimumValueToBuy)
+    public function __construct($coinToSell, $valueToSell, $coinToBuy, $minimumValueToBuy)
     {
         $this->coinToBuy         = $coinToBuy;
         $this->coinToSell        = $coinToSell;
+        $this->valueToSell       = $valueToSell;
         $this->minimumValueToBuy = $minimumValueToBuy;
     }
 
@@ -40,6 +44,7 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
     {
         return [
             $this->coinToSell,
+            MinterConverter::convertToPip($this->valueToSell),
             $this->coinToBuy,
             MinterConverter::convertToPip($this->minimumValueToBuy)
         ];
@@ -48,6 +53,7 @@ class MinterSellAllCoinTx extends MinterCoinTx implements MinterTxInterface
     public function decodeData()
     {
         $this->coinToSell        = hexdec($this->coinToSell);
+        $this->valueToSell       = MinterConverter::convertToBase(Helper::hexDecode($this->valueToSell));
         $this->coinToBuy         = hexdec($this->coinToBuy);
         $this->minimumValueToBuy = MinterConverter::convertToBase(Helper::hexDecode($this->minimumValueToBuy));
     }

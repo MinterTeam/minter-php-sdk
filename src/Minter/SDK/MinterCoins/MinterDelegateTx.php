@@ -17,8 +17,7 @@ class MinterDelegateTx extends MinterCoinTx implements MinterTxInterface
     public $coin;
     public $stake;
 
-    const TYPE       = 7;
-    const COMMISSION = 200;
+    const TYPE = 7;
 
     /**
      * MinterDelegateTx constructor.

@@ -12,8 +12,7 @@ class MinterMultiSendTx extends MinterCoinTx implements MinterTxInterface
 {
     public $list;
 
-    const TYPE       = 13;
-    const COMMISSION = 5;
+    const TYPE = 13;
 
     /**
      * MinterMultiSendTx constructor.
@@ -49,10 +48,5 @@ class MinterMultiSendTx extends MinterCoinTx implements MinterTxInterface
 
             $this->list[$key] = $send;
         }
-    }
-
-    public function getFee()
-    {
-        return MinterSendCoinTx::COMMISSION + (count($this->list) - 1) * self::COMMISSION;
     }
 }

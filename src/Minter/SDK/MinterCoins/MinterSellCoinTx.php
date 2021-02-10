@@ -17,8 +17,7 @@ class MinterSellCoinTx extends MinterCoinTx implements MinterTxInterface
     public $valueToSell;
     public $minimumValueToBuy;
 
-    const TYPE       = 2;
-    const COMMISSION = 100;
+    const TYPE = 2;
 
     /**
      * MinterSellCoinTx constructor.
