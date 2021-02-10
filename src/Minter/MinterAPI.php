@@ -192,10 +192,7 @@ class MinterAPI
      */
     public function getBlock(int $height, ?bool $failedTxs = false): \stdClass
     {
-        if ($failedTxs) {
-            $params['failed_txs'] = 'true';
-        }
-        return $this->get('block/' . $height, $params);
+        return $this->get('block/' . $height, (failedTxs ? ['failed_txs' => true] : null));
     }
 
     /**
@@ -261,6 +258,7 @@ class MinterAPI
      * @param string   $valueToSell
      * @param string   $coinToBuy
      * @param null|int $height
+     * @param string   $swapFrom
      * @return \stdClass
      * @throws Exception
      * @throws GuzzleException
@@ -293,6 +291,7 @@ class MinterAPI
      * @param string   $valueToSell
      * @param string   $coinToBuy
      * @param int|null $height
+     * @param string   $swapFrom
      * @return \stdClass
      * @throws GuzzleException
      */
@@ -324,6 +323,7 @@ class MinterAPI
      * @param string   $valueToBuy
      * @param string   $coinToBuy
      * @param null|int $height
+     * @param string   $swapFrom
      * @return \stdClass
      * @throws Exception
      * @throws GuzzleException
