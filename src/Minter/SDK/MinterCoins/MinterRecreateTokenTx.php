@@ -7,10 +7,10 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterReCreateTokenTx
+ * Class MinterRecreateTokenTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterReCreateTokenTx extends MinterCoinTx implements MinterTxInterface
+class MinterRecreateTokenTx extends MinterCoinTx implements MinterTxInterface
 {
     public $name;
     public $symbol;
@@ -22,7 +22,7 @@ class MinterReCreateTokenTx extends MinterCoinTx implements MinterTxInterface
     const TYPE = 31;
 
     /**
-     * MinterReCreateTokenTx constructor.
+     * MinterRecreateTokenTx constructor.
      * @param $name
      * @param $symbol
      * @param $initialAmount
