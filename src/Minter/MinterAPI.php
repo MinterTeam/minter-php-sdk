@@ -192,7 +192,7 @@ class MinterAPI
      */
     public function getBlock(int $height, ?bool $failedTxs = false): \stdClass
     {
-        return $this->get('block/' . $height, (failedTxs ? ['failed_txs' => true] : null));
+        return $this->get('block/' . $height, ($failedTxs ? ['failed_txs' => true] : null));
     }
 
     /**
