@@ -59,6 +59,6 @@ final class MinterAddLiquidityTxTest extends TestCase
     private function makeTransaction(): MinterTx
     {
         $data = new MinterAddLiquidityTx(0, 1, '250', '500');
-        return (new MinterTx(13, $data))->setChainID(MinterTx::TESTNET_CHAIN_ID);;
+        return (new MinterTx(13, $data))->setChainID(MinterTx::TESTNET_CHAIN_ID);
     }
 }
