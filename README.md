@@ -174,7 +174,7 @@ getValidators(?int $height = null, ?int $page = 1, ?int $perPage = null): \stdCl
 Return estimate of buy coin transaction.
 
 ``
-estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### estimateCoinSell
@@ -182,7 +182,7 @@ estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int 
 Return estimate of sell coin transaction.
 
 ``
-estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### estimateCoinSellAll
@@ -190,7 +190,7 @@ estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?in
 Return estimate of sell coin all transaction.
 
 ``
-estimateCoinSellAll(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinSellAll(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### getCoinInfo
