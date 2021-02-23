@@ -20,22 +20,21 @@ class MinterSellAllSwapPoolTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf85d10020180198dcc018089056bc75e2d63100000808001b845f8431ca0e50537db70ed7263094cfaee22c69545c0c41e9efedef521c0ecce3a4f33ade6a03e71cde08a52561136584bc14707b3c01e618513b01a96b9865b44ff0395fc7a';
+    const VALID_SIGNATURE = '0xf85f10020180198fcec301040589056bc75e2d63100000808001b845f8431ca095651bdd2afa8964213f7bc064898b0edeb67fa39f3a0c71b52934f6463412afa0604ced9ff973bf1de6b252c9582982780cf1de4fd2b2e3814bfa8185d10bd6f5';
 
     /**
      * Test to decode data for MinterSellAllSwapPoolTx
      */
     public function testDecode(): void
     {
-        $tx = MinterTx::decode(self::VALID_SIGNATURE);
+        $tx      = MinterTx::decode(self::VALID_SIGNATURE);
         $validTx = $this->makeTransaction();
 
         $this->assertSame($validTx->getNonce(), $tx->getNonce());
         $this->assertSame($validTx->getGasCoin(), $tx->getGasCoin());
         $this->assertSame($validTx->getGasPrice(), $tx->getGasPrice());
         $this->assertSame($validTx->getChainID(), $tx->getChainID());
-        $this->assertSame($validTx->getData()->coinToBuy, $tx->getData()->coinToBuy);
-        $this->assertSame($validTx->getData()->coinToSell, $tx->getData()->coinToSell);
+        $this->assertSame($validTx->getData()->coins, $tx->getData()->coins);
         $this->assertSame($validTx->getData()->minimumValueToBuy, $tx->getData()->minimumValueToBuy);
         $this->assertSame(self::MINTER_ADDRESS, $tx->getSenderAddress());
     }
@@ -54,7 +53,7 @@ class MinterSellAllSwapPoolTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterSellAllSwapPoolTx(1, 0, '100');
+        $data = new MinterSellAllSwapPoolTx([1, 4, 5], '100');
         return (new MinterTx(16, $data))->setChainID(MinterTx::TESTNET_CHAIN_ID);
     }
 }

@@ -13,22 +13,19 @@ use Minter\SDK\MinterConverter;
  */
 class MinterSellAllSwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $coinToBuy;
-    public $coinToSell;
+    public $coins;
     public $minimumValueToBuy;
 
     const TYPE = 25;
 
     /**
      * MinterSellAllSwapPoolTx constructor.
-     * @param $coinToSell
-     * @param $coinToBuy
-     * @param $minimumValueToBuy
+     * @param array $coins
+     * @param       $minimumValueToBuy
      */
-    public function __construct($coinToSell, $coinToBuy, $minimumValueToBuy)
+    public function __construct(array $coins, $minimumValueToBuy)
     {
-        $this->coinToBuy         = $coinToBuy;
-        $this->coinToSell        = $coinToSell;
+        $this->coins             = $coins;
         $this->minimumValueToBuy = $minimumValueToBuy;
     }
 
@@ -40,16 +37,16 @@ class MinterSellAllSwapPoolTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            $this->coinToSell,
-            $this->coinToBuy,
+            $this->coins,
             MinterConverter::convertToPip($this->minimumValueToBuy)
         ];
     }
 
     public function decodeData()
     {
-        $this->coinToSell        = hexdec($this->coinToSell);
-        $this->coinToBuy         = hexdec($this->coinToBuy);
         $this->minimumValueToBuy = MinterConverter::convertToBase(Helper::hexDecode($this->minimumValueToBuy));
+        $this->coins             = array_map(function ($value) {
+            return hexdec($value);
+        }, $this->coins);
     }
 }

@@ -4,18 +4,31 @@ namespace Minter\SDK;
 
 use InvalidArgumentException;
 use Minter\Contracts\MinterTxInterface;
+use Minter\SDK\MinterCoins\MinterAddLiquidityTx;
+use Minter\SDK\MinterCoins\MinterBurnTokenTx;
 use Minter\SDK\MinterCoins\MinterBuyCoinTx;
+use Minter\SDK\MinterCoins\MinterBuySwapPoolTx;
+use Minter\SDK\MinterCoins\MinterCreateSwapPoolTx;
+use Minter\SDK\MinterCoins\MinterCreateTokenTx;
 use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
 use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 use Minter\SDK\MinterCoins\MinterDelegateTx;
 use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+use Minter\SDK\MinterCoins\MinterMintTokenTx;
+use Minter\SDK\MinterCoins\MinterMoveStakeTx;
 use Minter\SDK\MinterCoins\MinterMultiSendTx;
+use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
+use Minter\SDK\MinterCoins\MinterPriceVoteTx;
 use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
+use Minter\SDK\MinterCoins\MinterRecreateTokenTx;
 use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
+use Minter\SDK\MinterCoins\MinterRemoveLiquidityTx;
 use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
+use Minter\SDK\MinterCoins\MinterSellAllSwapPoolTx;
 use Minter\SDK\MinterCoins\MinterSellCoinTx;
+use Minter\SDK\MinterCoins\MinterSellSwapPoolTx;
 use Minter\SDK\MinterCoins\MinterSendCoinTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
@@ -350,7 +363,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceVoteTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterMoveStakeTx|MinterRemoveLiquidityTx
      */
     public function getData(): MinterTxInterface
     {

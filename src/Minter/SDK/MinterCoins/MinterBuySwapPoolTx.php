@@ -13,8 +13,7 @@ use Minter\SDK\MinterConverter;
  */
 class MinterBuySwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $coinToBuy;
-    public $coinToSell;
+    public $coins;
     public $valueToBuy;
     public $maximumValueToSell;
 
@@ -22,15 +21,13 @@ class MinterBuySwapPoolTx extends MinterCoinTx implements MinterTxInterface
 
     /**
      * MinterBuySwapPoolTx constructor.
-     * @param $coinToBuy
+     * @param $coins
      * @param $valueToBuy
-     * @param $coinToSell
      * @param $maximumValueToSell
      */
-    public function __construct($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)
+    public function __construct($coins, $valueToBuy, $maximumValueToSell)
     {
-        $this->coinToBuy          = $coinToBuy;
-        $this->coinToSell         = $coinToSell;
+        $this->coins              = $coins;
         $this->valueToBuy         = $valueToBuy;
         $this->maximumValueToSell = $maximumValueToSell;
     }
@@ -38,18 +35,18 @@ class MinterBuySwapPoolTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            $this->coinToBuy,
+            $this->coins,
             MinterConverter::convertToPip($this->valueToBuy),
-            $this->coinToSell,
             MinterConverter::convertToPip($this->maximumValueToSell)
         ];
     }
 
     public function decodeData()
     {
-        $this->coinToBuy          = hexdec($this->coinToBuy);
         $this->valueToBuy         = MinterConverter::convertToBase(Helper::hexDecode($this->valueToBuy));
-        $this->coinToSell         = hexdec($this->coinToSell);
         $this->maximumValueToSell = MinterConverter::convertToBase(Helper::hexDecode($this->maximumValueToSell));
+        $this->coins              = array_map(function ($value) {
+            return hexdec($value);
+        }, $this->coins);
     }
 }

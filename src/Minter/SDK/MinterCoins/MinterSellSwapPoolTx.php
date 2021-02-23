@@ -13,8 +13,7 @@ use Minter\SDK\MinterConverter;
  */
 class MinterSellSwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $coinToBuy;
-    public $coinToSell;
+    public $coins;
     public $valueToSell;
     public $minimumValueToBuy;
 
@@ -22,15 +21,13 @@ class MinterSellSwapPoolTx extends MinterCoinTx implements MinterTxInterface
 
     /**
      * MinterSellSwapPoolTx constructor.
-     * @param $coinToSell
-     * @param $valueToSell
-     * @param $coinToBuy
-     * @param $minimumValueToBuy
+     * @param array $coins
+     * @param       $valueToSell
+     * @param       $minimumValueToBuy
      */
-    public function __construct($coinToSell, $valueToSell, $coinToBuy, $minimumValueToBuy)
+    public function __construct(array $coins, $valueToSell, $minimumValueToBuy)
     {
-        $this->coinToBuy         = $coinToBuy;
-        $this->coinToSell        = $coinToSell;
+        $this->coins             = $coins;
         $this->valueToSell       = $valueToSell;
         $this->minimumValueToBuy = $minimumValueToBuy;
     }
@@ -43,18 +40,18 @@ class MinterSellSwapPoolTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            $this->coinToSell,
+            $this->coins,
             MinterConverter::convertToPip($this->valueToSell),
-            $this->coinToBuy,
             MinterConverter::convertToPip($this->minimumValueToBuy)
         ];
     }
 
     public function decodeData()
     {
-        $this->coinToSell        = hexdec($this->coinToSell);
         $this->valueToSell       = MinterConverter::convertToBase(Helper::hexDecode($this->valueToSell));
-        $this->coinToBuy         = hexdec($this->coinToBuy);
         $this->minimumValueToBuy = MinterConverter::convertToBase(Helper::hexDecode($this->minimumValueToBuy));
+        $this->coins             = array_map(function ($value) {
+            return hexdec($value);
+        }, $this->coins);
     }
 }
