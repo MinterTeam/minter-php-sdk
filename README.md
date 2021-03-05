@@ -55,21 +55,19 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [RecreateCoin](#example-18)
 		- [EditCoinOwner](#example-19)
 		- [EditMultisig](#example-20)
-		- [PriceVote](#example-21)
-		- [EditCandidatePublicKey](#example-22)
-		- [AddLiquidity](#example-23)
-		- [RemoveLiquidity](#example-24) 
-		- [SellSwapPool](#example-25)
-		- [BuySwapPool](#example-26)
-		- [SellAllSwapPool](#example-27)
-		- [EditCandidateCommission](#example-28)
-		- [MoveStake](#example-29)
-		- [MintToken](#example-30)
-		- [BurnToken](#example-31)
-		- [CreateToken](#example-32)
-		- [RecreateToken](#example-33)
-		- [PriceCommission](#example-34)
-		- [CreateSwapPool](#example-35)
+		- [EditCandidatePublicKey](#example-21)
+		- [AddLiquidity](#example-22)
+		- [RemoveLiquidity](#example-23) 
+		- [SellSwapPool](#example-24)
+		- [BuySwapPool](#example-25)
+		- [SellAllSwapPool](#example-26)
+		- [EditCandidateCommission](#example-27)
+		- [MintToken](#example-28)
+		- [BurnToken](#example-29)
+		- [CreateToken](#example-30)
+		- [RecreateToken](#example-31)
+		- [PriceCommission](#example-32)
+		- [CreateSwapPool](#example-33)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -405,7 +403,7 @@ use Minter\SDK\MinterCoins\MinterSendCoinTx;
 $data = new MinterSendCoinTx($coinID, 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
 $tx = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 <b>At all type of transactions you can also set optional fields: 
@@ -421,9 +419,9 @@ $tx   = (new MinterTx($nonce, $data))
    ->setGasPrice(1)
    ->setGasCoin(MinterTx::BASE_COIN_ID)
    ->setPayload('some payload')
-   ->setServiceData('some data')
+   ->setServiceData('some data');
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -437,7 +435,7 @@ use Minter\SDK\MinterCoins\MinterSellCoinTx;
 $data = new MinterSellCoinTx(123, '1', 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -451,7 +449,7 @@ use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
 $data = new MinterSellAllCoinTx(123, 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -465,7 +463,7 @@ use Minter\SDK\MinterCoins\MinterBuyCoinTx;
 $data = new MinterBuyCoinTx(123, '1', 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -479,7 +477,7 @@ use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 $data = new MinterCreateCoinTx('TEST COIN', 'TEST', '10000', '10', 10, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -497,7 +495,7 @@ $data = new MinterDeclareCandidacyTx(
 );
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -511,7 +509,7 @@ use Minter\SDK\MinterCoins\MinterDelegateTx;
 $data = new MinterDelegateTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43', 123, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -525,7 +523,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 $data = new MinterSetCandidateOnTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -539,7 +537,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 $data = new MinterSetCandidateOffTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -553,7 +551,7 @@ use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 $data = new MinterRedeemCheckTx('your check', 'created by MinterCheck proof');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -567,7 +565,7 @@ use Minter\SDK\MinterCoins\MinterUnbondTx;
 $data = new MinterUnbondTx('Mp....', 123, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -585,7 +583,7 @@ $data = new MinterMultiSendTx([
 ]);
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -599,7 +597,7 @@ use Minter\SDK\MinterCoins\MinterEditCandidateTx;
 $data = new MinterEditCandidateTx('candidate public key', 'Minter address for rewards', 'Minter address of owner', 'Minter address for control');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -617,7 +615,7 @@ $data = new MinterCreateMultisigTx(7, [1, 3, 5], [
 ]);
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -630,7 +628,7 @@ use Minter\SDK\MinterCoins\MinterSetHaltBlockTx;
 
 $data = new MinterSetHaltBlockTx('your public key', 236503);
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -643,7 +641,7 @@ use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 
 $data = new MinterRecreateCoinTx('TEST', '10000', '10', 10000, 10, '10000');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -656,7 +654,7 @@ use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 
 $data = new MinterEditCoinOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -669,20 +667,7 @@ use Minter\SDK\MinterCoins\MinterEditMultisigTx;
 
 $data = new MinterEditMultisigTx(1, [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
-```
-
-###### Example
-* Sign the <b>PriceVote</b> transaction
-* Constructor: ```MinterPriceVoteTx($price)```
-
-```php
-use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterPriceVoteTx;
-
-$data = new MinterPriceVoteTx(1000);
-$tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -695,7 +680,7 @@ use Minter\SDK\MinterCoins\MinterEditCandidatePublicKeyTx;
 
 $data = new MinterEditCandidatePublicKeyTx('public key', 'new public key....');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -708,7 +693,7 @@ use Minter\SDK\MinterCoins\MinterAddLiquidityTx;
 
 $data = new MinterAddLiquidityTx(0, 1, '1000', '2000');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -721,7 +706,7 @@ use Minter\SDK\MinterCoins\MinterRemoveLiquidityTx;
 
 $data = new MinterRemoveLiquidityTx(0, 1, '2000', '500', '1000');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -734,7 +719,7 @@ use Minter\SDK\MinterCoins\MinterSellSwapPoolTx;
 
 $data = new MinterSellSwapPoolTx(0, '100', 1, '200');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -747,7 +732,7 @@ use Minter\SDK\MinterCoins\MinterBuySwapPoolTx;
 
 $data = new MinterBuySwapPoolTx(0, '100', 1, '200');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -760,7 +745,7 @@ use Minter\SDK\MinterCoins\MinterSellAllSwapPoolTx;
 
 $data = new MinterSellAllSwapPoolTx(0, 1, '100');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -773,20 +758,7 @@ use Minter\SDK\MinterCoins\MinterEditCandidateCommissionTx;
 
 $data = new MinterEditCandidateCommissionTx('public key', 77);
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
-```
-
-###### Example
-* Sign the <b>MoveStake</b> transaction
-* Constructor: ```MinterMoveStakeTx($from, $to, $coin, $stake)```
-
-```php
-use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterEditCandidateCommissionTx;
-
-$data = new MinterEditCandidateCommissionTx('from public key', 'to public key', 1, '3000');
-$tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -877,13 +849,11 @@ $tx->sign('your private key')
   $setHaltBlock,
   $editTickerOwner,
   $editMultisig,
-  $priceVote,
   $editCandidatePublicKey,
   $createSwapPool,
   $addLiquidity,
   $removeLiquidity,
   $editCandidateCommission,
-  $moveStake,
   $burnToken,
   $mintToken,
   $voteCommission,
@@ -896,7 +866,7 @@ use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
 
 $data = new MinterPriceCommissionTx('public key', 100000,0,'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example

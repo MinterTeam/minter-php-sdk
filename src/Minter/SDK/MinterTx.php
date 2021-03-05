@@ -17,10 +17,8 @@ use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 use Minter\SDK\MinterCoins\MinterDelegateTx;
 use Minter\SDK\MinterCoins\MinterEditCandidateTx;
 use Minter\SDK\MinterCoins\MinterMintTokenTx;
-use Minter\SDK\MinterCoins\MinterMoveStakeTx;
 use Minter\SDK\MinterCoins\MinterMultiSendTx;
 use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
-use Minter\SDK\MinterCoins\MinterPriceVoteTx;
 use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 use Minter\SDK\MinterCoins\MinterRecreateTokenTx;
 use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
@@ -363,7 +361,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceVoteTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterMoveStakeTx|MinterRemoveLiquidityTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterRemoveLiquidityTx
      */
     public function getData(): MinterTxInterface
     {

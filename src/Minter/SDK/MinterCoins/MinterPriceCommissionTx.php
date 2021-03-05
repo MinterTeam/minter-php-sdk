@@ -48,13 +48,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
     public $setHaltBlock;
     public $editTickerOwner;
     public $editMultisig;
-    public $priceVote;
     public $editCandidatePublicKey;
     public $createSwapPool;
     public $addLiquidity;
     public $removeLiquidity;
     public $editCandidateCommission;
-    public $moveStake;
     public $burnToken;
     public $mintToken;
     public $voteCommission;
@@ -97,13 +95,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
      * @param $setHaltBlock
      * @param $editTickerOwner
      * @param $editMultisig
-     * @param $priceVote
      * @param $editCandidatePublicKey
      * @param $createSwapPool
      * @param $addLiquidity
      * @param $removeLiquidity
      * @param $editCandidateCommission
-     * @param $moveStake
      * @param $burnToken
      * @param $mintToken
      * @param $voteCommission
@@ -143,13 +139,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $setHaltBlock,
         $editTickerOwner,
         $editMultisig,
-        $priceVote,
         $editCandidatePublicKey,
         $createSwapPool,
         $addLiquidity,
         $removeLiquidity,
         $editCandidateCommission,
-        $moveStake,
         $burnToken,
         $mintToken,
         $voteCommission,
@@ -188,13 +182,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $this->setHaltBlock            = $setHaltBlock;
         $this->editTickerOwner           = $editTickerOwner;
         $this->editMultisig            = $editMultisig;
-        $this->priceVote               = $priceVote;
         $this->editCandidatePublicKey  = $editCandidatePublicKey;
         $this->createSwapPool          = $createSwapPool;
         $this->addLiquidity            = $addLiquidity;
         $this->removeLiquidity         = $removeLiquidity;
         $this->editCandidateCommission = $editCandidateCommission;
-        $this->moveStake               = $moveStake;
         $this->burnToken               = $burnToken;
         $this->mintToken               = $mintToken;
         $this->voteCommission          = $voteCommission;
@@ -242,13 +234,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
             MinterConverter::convertToPip($this->setHaltBlock),
             MinterConverter::convertToPip($this->editTickerOwner),
             MinterConverter::convertToPip($this->editMultisig),
-            MinterConverter::convertToPip($this->priceVote),
             MinterConverter::convertToPip($this->editCandidatePublicKey),
             MinterConverter::convertToPip($this->createSwapPool),
             MinterConverter::convertToPip($this->addLiquidity),
             MinterConverter::convertToPip($this->removeLiquidity),
             MinterConverter::convertToPip($this->editCandidateCommission),
-            MinterConverter::convertToPip($this->moveStake),
             MinterConverter::convertToPip($this->burnToken),
             MinterConverter::convertToPip($this->mintToken),
             MinterConverter::convertToPip($this->voteCommission),
@@ -292,13 +282,11 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $this->setHaltBlock            = MinterConverter::convertToBase(Helper::hexDecode($this->setHaltBlock));
         $this->editTickerOwner         = MinterConverter::convertToBase(Helper::hexDecode($this->editTickerOwner));
         $this->editMultisig            = MinterConverter::convertToBase(Helper::hexDecode($this->editMultisig));
-        $this->priceVote               = MinterConverter::convertToBase(Helper::hexDecode($this->priceVote));
         $this->editCandidatePublicKey  = MinterConverter::convertToBase(Helper::hexDecode($this->editCandidatePublicKey));
         $this->createSwapPool          = MinterConverter::convertToBase(Helper::hexDecode($this->createSwapPool));
         $this->addLiquidity            = MinterConverter::convertToBase(Helper::hexDecode($this->addLiquidity));
         $this->removeLiquidity         = MinterConverter::convertToBase(Helper::hexDecode($this->removeLiquidity));
         $this->editCandidateCommission = MinterConverter::convertToBase(Helper::hexDecode($this->editCandidateCommission));
-        $this->moveStake               = MinterConverter::convertToBase(Helper::hexDecode($this->moveStake));
         $this->burnToken               = MinterConverter::convertToBase(Helper::hexDecode($this->burnToken));
         $this->mintToken               = MinterConverter::convertToBase(Helper::hexDecode($this->mintToken));
         $this->voteCommission          = MinterConverter::convertToBase(Helper::hexDecode($this->voteCommission));
