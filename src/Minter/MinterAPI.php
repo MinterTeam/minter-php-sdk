@@ -469,7 +469,7 @@ class MinterAPI
      * @return \stdClass
      * @throws GuzzleException
      */
-    public function getCoinInfoByID(int $id, ?int $height = null):\ stdClass
+    public function getCoinInfoByID(int $id, ?int $height = null): \stdClass
     {
         return $this->get('coin_info_by_id/' . $id, ($height ? ['height' => $height] : null));
     }
