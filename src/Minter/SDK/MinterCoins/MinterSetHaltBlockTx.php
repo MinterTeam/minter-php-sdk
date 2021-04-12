@@ -15,8 +15,7 @@ class MinterSetHaltBlockTx extends MinterCoinTx implements MinterTxInterface
     public $publicKey;
     public $height;
 
-    const TYPE       = 15;
-    const COMMISSION = 1000;
+    const TYPE = 15;
 
     /**
      * MinterUnbondTx constructor.

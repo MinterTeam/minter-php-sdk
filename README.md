@@ -29,6 +29,10 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 	    - [getMinGasPrice](#getmingasprice)
 	    - [getMissedBlocks](#getmissedblocks)
 	    - [getWaitlist](#getwaitlist)
+		- [getPriceCommissions](#getPriceCommissions)
+		- [getPriceVotes](#getPriceVotes)
+		- [getSwapPool](#getSwapPool)
+		- [getSwapPoolProvider](#getSwapPoolProvider)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
@@ -51,8 +55,19 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [RecreateCoin](#example-18)
 		- [EditCoinOwner](#example-19)
 		- [EditMultisig](#example-20)
-		- [PriceVote](#example-21)
-		- [EditCandidatePublicKey](#example-22)
+		- [EditCandidatePublicKey](#example-21)
+		- [AddLiquidity](#example-22)
+		- [RemoveLiquidity](#example-23) 
+		- [SellSwapPool](#example-24)
+		- [BuySwapPool](#example-25)
+		- [SellAllSwapPool](#example-26)
+		- [EditCandidateCommission](#example-27)
+		- [MintToken](#example-28)
+		- [BurnToken](#example-29)
+		- [CreateToken](#example-30)
+		- [RecreateToken](#example-31)
+		- [PriceCommission](#example-32)
+		- [CreateSwapPool](#example-33)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -157,7 +172,7 @@ getValidators(?int $height = null, ?int $page = 1, ?int $perPage = null): \stdCl
 Return estimate of buy coin transaction.
 
 ``
-estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### estimateCoinSell
@@ -165,7 +180,7 @@ estimateCoinBuy(string $coinToSell, string $valueToBuy, string $coinToBuy, ?int 
 Return estimate of sell coin transaction.
 
 ``
-estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### estimateCoinSellAll
@@ -173,7 +188,7 @@ estimateCoinSell(string $coinToSell, string $valueToSell, string $coinToBuy, ?in
 Return estimate of sell coin all transaction.
 
 ``
-estimateCoinSellAll(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null): \stdClass
+estimateCoinSellAll(string $coinToSell, string $valueToSell, string $coinToBuy, ?int $height = null, string $swapFrom): \stdClass
 ``
 
 ### getCoinInfo
@@ -229,7 +244,7 @@ getCandidates(?int $height = null, ?bool $includeStakes = false): \stdClass
 
 ### estimateTxCommission
 
-Return estimate of transaction.
+Returns estimate of transaction.
 
 ``
 estimateTxCommission(string $tx, ?int $height = null): \stdClass
@@ -237,7 +252,7 @@ estimateTxCommission(string $tx, ?int $height = null): \stdClass
 
 ### getTransactions
 
-Return transactions by query.
+Returns transactions by query.
 
 ``
 getTransactions(string $query, ?int $page = null, ?int $perPage = null): \stdClass
@@ -277,7 +292,7 @@ getMissedBlocks(string $pubKey, ?int $height = null): \stdClass
 
 ### getGenesis
 
-Return network genesis.
+Returns network genesis.
 
 ``
 getGenesis(): \stdClass
@@ -285,7 +300,7 @@ getGenesis(): \stdClass
 
 ### getNetworkInfo
 
-Return node network information.
+Returns node network information.
 
 ``
 getNetworkInfo(): \stdClass
@@ -293,11 +308,53 @@ getNetworkInfo(): \stdClass
 
 ### getWaitlist
 
-Return waitlisted stakes by address
+Returns waitlisted stakes by address
 
 ``
 getWaitlist(string $address, ?string $publicKey = null, ?int $height = null): \stdClass
 ``
+
+### getWaitlist
+
+Returns waitlisted stakes by address
+
+``
+getWaitlist(string $address, ?string $publicKey = null, ?int $height = null): \stdClass
+``
+
+### getPriceCommissions
+
+Returns the list of the commissions that are set up on the Minter Network
+
+``
+getPriceCommissions(?int $height = null): \stdClass
+``
+
+### getPriceVotes
+
+Returns the list of validators' votes for changing commissions on the network
+
+``
+getPriceVotes(int $height): \stdClass
+``
+
+### getSwapPool
+
+Returns entire liquidity volume of the swap pool
+
+``
+getSwapPool(string $coin0, string $coin1, ?int $height = null): \stdClass
+``
+
+### getSwapPoolProvider
+
+Returns liquidity volume of the swap pool provided by specified address
+
+``
+getSwapPoolProvider(string $coin0, string $coin1, string $provider, ?int $height = null): \stdClass
+``
+
+
 
 ### Error handling
 
@@ -346,7 +403,7 @@ use Minter\SDK\MinterCoins\MinterSendCoinTx;
 $data = new MinterSendCoinTx($coinID, 'Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99', '10');
 $tx = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 <b>At all type of transactions you can also set optional fields: 
@@ -362,9 +419,9 @@ $tx   = (new MinterTx($nonce, $data))
    ->setGasPrice(1)
    ->setGasCoin(MinterTx::BASE_COIN_ID)
    ->setPayload('some payload')
-   ->setServiceData('some data')
+   ->setServiceData('some data');
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -378,7 +435,7 @@ use Minter\SDK\MinterCoins\MinterSellCoinTx;
 $data = new MinterSellCoinTx(123, '1', 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -392,7 +449,7 @@ use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
 $data = new MinterSellAllCoinTx(123, 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -406,7 +463,7 @@ use Minter\SDK\MinterCoins\MinterBuyCoinTx;
 $data = new MinterBuyCoinTx(123, '1', 321, '1');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -420,7 +477,7 @@ use Minter\SDK\MinterCoins\MinterCreateCoinTx;
 $data = new MinterCreateCoinTx('TEST COIN', 'TEST', '10000', '10', 10, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -438,7 +495,7 @@ $data = new MinterDeclareCandidacyTx(
 );
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -452,7 +509,7 @@ use Minter\SDK\MinterCoins\MinterDelegateTx;
 $data = new MinterDelegateTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43', 123, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -466,7 +523,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOnTx;
 $data = new MinterSetCandidateOnTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -480,7 +537,7 @@ use Minter\SDK\MinterCoins\MinterSetCandidateOffTx;
 $data = new MinterSetCandidateOffTx('Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -494,7 +551,7 @@ use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
 $data = new MinterRedeemCheckTx('your check', 'created by MinterCheck proof');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -508,7 +565,7 @@ use Minter\SDK\MinterCoins\MinterUnbondTx;
 $data = new MinterUnbondTx('Mp....', 123, '10000');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -526,7 +583,7 @@ $data = new MinterMultiSendTx([
 ]);
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -540,7 +597,7 @@ use Minter\SDK\MinterCoins\MinterEditCandidateTx;
 $data = new MinterEditCandidateTx('candidate public key', 'Minter address for rewards', 'Minter address of owner', 'Minter address for control');
 $tx   = new MinterTx($nonce, $data);
 
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -558,7 +615,7 @@ $data = new MinterCreateMultisigTx(7, [1, 3, 5], [
 ]);
 
 $tx = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -571,7 +628,7 @@ use Minter\SDK\MinterCoins\MinterSetHaltBlockTx;
 
 $data = new MinterSetHaltBlockTx('your public key', 236503);
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -584,7 +641,7 @@ use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 
 $data = new MinterRecreateCoinTx('TEST', '10000', '10', 10000, 10, '10000');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -597,7 +654,7 @@ use Minter\SDK\MinterCoins\MinterEditCoinOwnerTx;
 
 $data = new MinterEditCoinOwnerTx('COINSYMBOL', 'Mxee81347211c72524338f9680072af90744333145');
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -610,20 +667,7 @@ use Minter\SDK\MinterCoins\MinterEditMultisigTx;
 
 $data = new MinterEditMultisigTx(1, [1, 2], ['Mxee81347211c72524338f9680072af90744333145', 'Mxee81347211c72524338f9680072af90744333146']);
 $tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
-```
-
-###### Example
-* Sign the <b>PriceVote</b> transaction
-* Constructor: ```MinterPriceVoteTx($price)```
-
-```php
-use Minter\SDK\MinterTx;
-use Minter\SDK\MinterCoins\MinterPriceVoteTx;
-
-$data = new MinterPriceVoteTx(1000);
-$tx   = new MinterTx($nonce, $data);
-$tx->sign('your private key')
+$tx->sign('your private key');
 ```
 
 ###### Example
@@ -635,6 +679,205 @@ use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterEditCandidatePublicKeyTx;
 
 $data = new MinterEditCandidatePublicKeyTx('public key', 'new public key....');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>AddLiquidity</b> transaction
+* Constructor: ```MinterAddLiquidityTx($coin0, $coin1, $volume0, $maximumVolume1)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterAddLiquidityTx;
+
+$data = new MinterAddLiquidityTx(0, 1, '1000', '2000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>RemoveLiquidity</b> transaction
+* Constructor: ```MinterRemoveLiquidityTx($coin0, $coin1, $liquidity, $minimumVolume0, $minimumVolume1)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRemoveLiquidityTx;
+
+$data = new MinterRemoveLiquidityTx(0, 1, '2000', '500', '1000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>SellSwapPool</b> transaction
+* Constructor: ```MinterSellSwapPoolTx($coinToSell, $valueToSell, $coinToBuy, $minimumValueToBuy)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSellSwapPoolTx;
+
+$data = new MinterSellSwapPoolTx(0, '100', 1, '200');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>BuySwapPool</b> transaction
+* Constructor: ```MinterBuySwapPoolTx($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterBuySwapPoolTx;
+
+$data = new MinterBuySwapPoolTx(0, '100', 1, '200');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>SellAllSwapPool</b> transaction
+* Constructor: ```MinterSellAllSwapPoolTx($coinToSell, $coinToBuy, $minimumValueToBuy)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterSellAllSwapPoolTx;
+
+$data = new MinterSellAllSwapPoolTx(0, 1, '100');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>EditCandidateCommission</b> transaction
+* Constructor: ```MinterEditCandidateCommissionTx($publicKey, $commission)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterEditCandidateCommissionTx;
+
+$data = new MinterEditCandidateCommissionTx('public key', 77);
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>MintToken</b> transaction
+* Constructor: ```MinterMintTokenTx($coin, $value)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterMintTokenTx;
+
+$data = new MinterMintTokenTx(2, '3000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>BurnToken</b> transaction
+* Constructor: ```MinterBurnTokenTx($coin, $value)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterBurnTokenTx;
+
+$data = new MinterBurnTokenTx(3, '100000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>CreateToken</b> transaction
+* Constructor: ```MinterCreateTokenTx($name, $symbol, $initialAmount, $maxSupply, $mintable, $burnable)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterCreateTokenTx;
+
+$data = new MinterCreateTokenTx('TEST COIN IS MINTABLE ONLY', 'TEST', '10000', '50000', true, false);
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>RecreateToken</b> transaction
+* Constructor: ```MinterRecreateTokenTx($name, $symbol, $initialAmount, $maxSupply, $mintable, $burnable)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRecreateTokenTx;
+
+$data = new MinterRecreateTokenTx('TEST COIN IS TURNED TO BE BURNABLE ONLY', 'TEST', '50000', '50000', false, true);
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>PriceCommission</b> transaction
+* Constructor: ```MinterPriceCommissionTx(
+  $pubKey,
+  $height,
+  $coin,
+  $payloadByte,
+  $send,
+  $buyBancor,
+  $sellBancor,
+  $sellAllBancor,
+  $buyPool,
+  $sellPool,
+  $sellAllPool,
+  $createTicker3,
+  $createTicker4,
+  $createTicker5,
+  $createTicker6,
+  $createTicker7to10,
+  $createCoin,
+  $createToken,
+  $recreateCoin,
+  $recreateToken,
+  $declareCandidacy,
+  $delegate,
+  $unbond,
+  $redeemCheck,
+  $setCandidateOn,
+  $setCandidateOff,
+  $createMultisig,
+  $multisendBase,
+  $multisendDelta,
+  $editCandidate,
+  $setHaltBlock,
+  $editTickerOwner,
+  $editMultisig,
+  $editCandidatePublicKey,
+  $createSwapPool,
+  $addLiquidity,
+  $removeLiquidity,
+  $editCandidateCommission,
+  $burnToken,
+  $mintToken,
+  $voteCommission,
+  $voteUpdate
+  )```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
+
+$data = new MinterPriceCommissionTx('public key', 100000,0,'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key');
+```
+
+###### Example
+* Sign the <b>CreateSwapPoll</b> transaction
+* Constructor: ```MinterCreateSwapPoolTx($coin0, $coin1, $volume0, $volume1)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterCreateSwapPoolTx;
+
+$data = new MinterCreateSwapPoolTx(1, 2, '11000', '22000');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

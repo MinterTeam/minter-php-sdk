@@ -19,8 +19,7 @@ class MinterCreateCoinTx extends MinterCoinTx implements MinterTxInterface
     public $crr;
     public $maxSupply;
 
-    const TYPE       = 5;
-    const COMMISSION = 1000;
+    const TYPE = 5;
 
     /**
      * MinterCreateCoinTx constructor.

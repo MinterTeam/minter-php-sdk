@@ -13,8 +13,7 @@ use Minter\SDK\MinterPrefix;
  */
 class MinterDeclareCandidacyTx extends MinterCoinTx implements MinterTxInterface
 {
-    const TYPE       = 6;
-    const COMMISSION = 10000;
+    const TYPE = 6;
 
     public $address;
     public $publicKey;

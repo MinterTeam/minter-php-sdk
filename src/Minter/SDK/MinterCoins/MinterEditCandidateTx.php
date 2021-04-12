@@ -17,8 +17,7 @@ class MinterEditCandidateTx extends MinterCoinTx implements MinterTxInterface
     public $ownerAddress;
     public $controlAddress;
 
-    const TYPE       = 14;
-    const COMMISSION = 10000;
+    const TYPE = 14;
 
     /**
      * MinterEditCandidateTx constructor.

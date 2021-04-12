@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Minter\SDK\MinterCoins;
 
 use Minter\Contracts\MinterTxInterface;
@@ -7,29 +8,26 @@ use Minter\Library\Helper;
 use Minter\SDK\MinterConverter;
 
 /**
- * Class MinterBuyCoinTx
+ * Class MinterBuySwapPoolTx
  * @package Minter\SDK\MinterCoins
  */
-class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
+class MinterBuySwapPoolTx extends MinterCoinTx implements MinterTxInterface
 {
-    public $coinToBuy;
-    public $coinToSell;
+    public $coins;
     public $valueToBuy;
     public $maximumValueToSell;
 
-    const TYPE = 4;
+    const TYPE = 24;
 
     /**
-     * MinterBuyCoinTx constructor.
-     * @param $coinToBuy
+     * MinterBuySwapPoolTx constructor.
+     * @param $coins
      * @param $valueToBuy
-     * @param $coinToSell
      * @param $maximumValueToSell
      */
-    public function __construct($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)
+    public function __construct($coins, $valueToBuy, $maximumValueToSell)
     {
-        $this->coinToBuy          = $coinToBuy;
-        $this->coinToSell         = $coinToSell;
+        $this->coins              = $coins;
         $this->valueToBuy         = $valueToBuy;
         $this->maximumValueToSell = $maximumValueToSell;
     }
@@ -37,18 +35,18 @@ class MinterBuyCoinTx extends MinterCoinTx implements MinterTxInterface
     public function encodeData(): array
     {
         return [
-            $this->coinToBuy,
+            $this->coins,
             MinterConverter::convertToPip($this->valueToBuy),
-            $this->coinToSell,
             MinterConverter::convertToPip($this->maximumValueToSell)
         ];
     }
 
     public function decodeData()
     {
-        $this->coinToBuy          = hexdec($this->coinToBuy);
         $this->valueToBuy         = MinterConverter::convertToBase(Helper::hexDecode($this->valueToBuy));
-        $this->coinToSell         = hexdec($this->coinToSell);
         $this->maximumValueToSell = MinterConverter::convertToBase(Helper::hexDecode($this->maximumValueToSell));
+        $this->coins              = array_map(function ($value) {
+            return hexdec($value);
+        }, $this->coins);
     }
 }

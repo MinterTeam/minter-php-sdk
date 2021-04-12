@@ -17,8 +17,7 @@ class MinterUnbondTx extends MinterCoinTx implements MinterTxInterface
     public $coin;
     public $value;
 
-    const TYPE       = 8;
-    const COMMISSION = 200;
+    const TYPE = 8;
 
     /**
      * MinterUnbondTx constructor.

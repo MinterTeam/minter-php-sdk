@@ -15,8 +15,7 @@ class MinterEditCandidatePublicKeyTx extends MinterCoinTx implements MinterTxInt
     public $publicKey;
     public $newPublicKey;
 
-    const TYPE       = 20;
-    const COMMISSION = 100000000;
+    const TYPE = 20;
 
     /**
      * MinterEditCandidatePublicKeyTx constructor.

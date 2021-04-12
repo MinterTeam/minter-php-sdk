@@ -15,8 +15,7 @@ class MinterRedeemCheckTx extends MinterCoinTx implements MinterTxInterface
     public $check;
     public $proof;
 
-    const TYPE       = 9;
-    const COMMISSION = 30;
+    const TYPE = 9;
 
     /**
      * MinterRedeemCheckTx constructor.
