@@ -12,7 +12,7 @@
     "ext-gmp": "*",
     "kornrunner/keccak": "^1.0",
     "guzzlehttp/guzzle": "^6.3|^7.3",
-    "minter/minter-php-bip-44": "^1.1",
+    "minter/minter-php-bip-44": "^1.2",
     "bitwasp/bitcoin-lib": "^1.0",
     "simplito/elliptic-php": "^1.0",
     "minter/php-rlp": "^1.0.0"
