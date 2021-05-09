@@ -148,7 +148,8 @@ class Helper
         $decoded = $rlp->decode('0x' . $data);
 
         return array_map(function ($v) use ($rlp) {
-            return $rlp->decode('0x' . $v);
+            $data = $rlp->decode('0x' . $v);
+            return is_array($data) ? $data : (string) $v;
         }, $decoded);
     }
 
