@@ -145,11 +145,12 @@ class Helper
     public static function hex2rlp(string $data): array
     {
         $rlp     = new RLP();
+        $key     = 0;
         $decoded = $rlp->decode('0x' . $data);
 
-        return array_map(function ($v) use ($rlp) {
-            $data = $rlp->decode('0x' . $v);
-            return is_array($data) ? $data : (string) $v;
+        return array_map(function ($v) use ($rlp, &$key) {
+            $key++;
+            return $key == 6 || $key == 10 ? $rlp->decode('0x' . $v) : (string)$v;
         }, $decoded);
     }
 
