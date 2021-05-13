@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Minter\SDK\MinterCoins;
-
 
 use Minter\Contracts\MinterTxInterface;
 use Minter\Library\Helper;
@@ -23,9 +20,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
     public $buyBancor;
     public $sellBancor;
     public $sellAllBancor;
-    public $buyPool;
-    public $sellPool;
-    public $sellAllPool;
+    public $buyPoolBase;
+    public $buyPoolDelta;
+    public $sellPoolBase;
+    public $sellPoolDelta;
+    public $sellAllPoolBase;
+    public $sellAllPoolDelta;
     public $createTicker3;
     public $createTicker4;
     public $createTicker5;
@@ -70,9 +70,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
      * @param $buyBancor
      * @param $sellBancor
      * @param $sellAllBancor
-     * @param $buyPool
-     * @param $sellPool
-     * @param $sellAllPool
+     * @param $buyPoolBase
+     * @param $buyPoolDelta
+     * @param $sellPoolBase
+     * @param $sellPoolDelta
+     * @param $sellAllPoolBase
+     * @param $sellAllPoolDelta
      * @param $createTicker3
      * @param $createTicker4
      * @param $createTicker5
@@ -114,9 +117,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $buyBancor,
         $sellBancor,
         $sellAllBancor,
-        $buyPool,
-        $sellPool,
-        $sellAllPool,
+        $buyPoolBase,
+        $buyPoolDelta,
+        $sellPoolBase,
+        $sellPoolDelta,
+        $sellAllPoolBase,
+        $sellAllPoolDelta,
         $createTicker3,
         $createTicker4,
         $createTicker5,
@@ -157,9 +163,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $this->buyBancor               = $buyBancor;
         $this->sellBancor              = $sellBancor;
         $this->sellAllBancor           = $sellAllBancor;
-        $this->buyPool                 = $buyPool;
-        $this->sellPool                = $sellPool;
-        $this->sellAllPool             = $sellAllPool;
+        $this->buyPoolBase             = $buyPoolBase;
+        $this->buyPoolDelta            = $buyPoolDelta;
+        $this->sellPoolBase            = $sellPoolBase;
+        $this->sellPoolDelta           = $sellPoolDelta;
+        $this->sellAllPoolBase         = $sellAllPoolBase;
+        $this->sellAllPoolDelta        = $sellAllPoolDelta;
         $this->createTicker3           = $createTicker3;
         $this->createTicker4           = $createTicker4;
         $this->createTicker5           = $createTicker5;
@@ -180,7 +189,7 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $this->multisendDelta          = $multisendDelta;
         $this->editCandidate           = $editCandidate;
         $this->setHaltBlock            = $setHaltBlock;
-        $this->editTickerOwner           = $editTickerOwner;
+        $this->editTickerOwner         = $editTickerOwner;
         $this->editMultisig            = $editMultisig;
         $this->editCandidatePublicKey  = $editCandidatePublicKey;
         $this->createSwapPool          = $createSwapPool;
@@ -209,9 +218,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
             MinterConverter::convertToPip($this->buyBancor),
             MinterConverter::convertToPip($this->sellBancor),
             MinterConverter::convertToPip($this->sellAllBancor),
-            MinterConverter::convertToPip($this->buyPool),
-            MinterConverter::convertToPip($this->sellPool),
-            MinterConverter::convertToPip($this->sellAllPool),
+            MinterConverter::convertToPip($this->buyPoolBase),
+            MinterConverter::convertToPip($this->buyPoolDelta),
+            MinterConverter::convertToPip($this->sellPoolBase),
+            MinterConverter::convertToPip($this->sellPoolDelta),
+            MinterConverter::convertToPip($this->sellAllPoolBase),
+            MinterConverter::convertToPip($this->sellAllPoolDelta),
             MinterConverter::convertToPip($this->createTicker3),
             MinterConverter::convertToPip($this->createTicker4),
             MinterConverter::convertToPip($this->createTicker5),
@@ -257,9 +269,12 @@ class MinterPriceCommissionTx extends MinterCoinTx implements MinterTxInterface
         $this->buyBancor               = MinterConverter::convertToBase(Helper::hexDecode($this->buyBancor));
         $this->sellBancor              = MinterConverter::convertToBase(Helper::hexDecode($this->sellBancor));
         $this->sellAllBancor           = MinterConverter::convertToBase(Helper::hexDecode($this->sellAllBancor));
-        $this->buyPool                 = MinterConverter::convertToBase(Helper::hexDecode($this->buyPool));
-        $this->sellPool                = MinterConverter::convertToBase(Helper::hexDecode($this->sellPool));
-        $this->sellAllPool             = MinterConverter::convertToBase(Helper::hexDecode($this->sellAllPool));
+        $this->buyPoolBase             = MinterConverter::convertToBase(Helper::hexDecode($this->buyPoolBase));
+        $this->buyPoolDelta            = MinterConverter::convertToBase(Helper::hexDecode($this->buyPoolDelta));
+        $this->sellPoolBase            = MinterConverter::convertToBase(Helper::hexDecode($this->sellPoolBase));
+        $this->sellPoolDelta           = MinterConverter::convertToBase(Helper::hexDecode($this->sellPoolDelta));
+        $this->sellAllPoolBase         = MinterConverter::convertToBase(Helper::hexDecode($this->sellAllPoolBase));
+        $this->sellAllPoolDelta        = MinterConverter::convertToBase(Helper::hexDecode($this->sellAllPoolDelta));
         $this->createTicker3           = MinterConverter::convertToBase(Helper::hexDecode($this->createTicker3));
         $this->createTicker4           = MinterConverter::convertToBase(Helper::hexDecode($this->createTicker4));
         $this->createTicker5           = MinterConverter::convertToBase(Helper::hexDecode($this->createTicker5));

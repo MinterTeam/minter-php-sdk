@@ -23,7 +23,7 @@ final class MinterPriceCommissionTxTest extends TestCase
     /**
      * Predefined valid signature
      */
-    const VALID_SIGNATURE = '0xf901ef1f02018020b9019df9019aa0325580a8baed04899252ae5b5f6167ee34ec0144f3401d88586b350999999999830186a080880de0b6b3a7640000881bc16d674ec800008829a2241af62c0000883782dace9d900000884563918244f400008853444835ec580000886124fee993bc0000886f05b59d3b200000887ce66c50e2840000888ac7230489e800008898a7d9b8314c000088a688906bd8b0000088b469471f8014000088c249fdd32778000088d02ab486cedc000088de0b6b3a7640000088ebec21ee1da4000088f9ccd8a1c5080000890107ad8f556c6c00008901158e460913d000008901236efcbcbb3400008901314fb3706298000089013f306a2409fc000089014d1120d7b160000089015af1d78b58c40000890168d28e3f00280000890176b344f2a78c000089018493fba64ef0000089019274b259f65400008901a055690d9db800008901ae361fc1451c00008901bc16d674ec8000008901c9f78d2893e400008901d7d843dc3b4800008901e5b8fa8fe2ac00008901f399b1438a1000008902017a67f73174000089020f5b1eaad8d8000089021d3bd55e803c0000808001b845f8431ba01a4a00cbaf631afe162117702c05e9ad2e342970064671a44ce3b4cc51647dada079beab994992431c341a12dfe63f8e13edf70d472427f02ca03b15f742a87df9';
+    const VALID_SIGNATURE = '0xf9020d1f02018020b901bbf901b8a0325580a8baed04899252ae5b5f6167ee34ec0144f3401d88586b350999999999830186a080880de0b6b3a7640000881bc16d674ec800008829a2241af62c0000883782dace9d900000884563918244f400008853444835ec580000886124fee993bc0000886f05b59d3b200000887ce66c50e2840000888ac7230489e800008898a7d9b8314c000088a688906bd8b0000088b469471f8014000088c249fdd32778000088d02ab486cedc000088de0b6b3a7640000088ebec21ee1da4000088f9ccd8a1c5080000890107ad8f556c6c00008901158e460913d000008901236efcbcbb3400008901314fb3706298000089013f306a2409fc000089014d1120d7b160000089015af1d78b58c40000890168d28e3f00280000890176b344f2a78c000089018493fba64ef0000089019274b259f65400008901a055690d9db800008901ae361fc1451c00008901bc16d674ec8000008901c9f78d2893e400008901d7d843dc3b4800008901e5b8fa8fe2ac00008901f399b1438a1000008902017a67f73174000089020f5b1eaad8d8000089021d3bd55e803c000089022b1c8c1227a00000890238fd42c5cf040000890246ddf97976680000808001b845f8431ca086032a5fc3e0d9bd542f56154da0bc46d6f2b79e9b34cf8a6e38e50a8bb16062a060d1927397b16a64d94af0db384be321403e14fcc72fd3e4da99a2fa1e53d26f';
 
     /**
      * Test to decode data for MinterPriceCommissionTx
@@ -45,9 +45,10 @@ final class MinterPriceCommissionTxTest extends TestCase
         $this->assertSame($validTx->getData()->buyBancor, $tx->getData()->buyBancor);
         $this->assertSame($validTx->getData()->sellBancor, $tx->getData()->sellBancor);
         $this->assertSame($validTx->getData()->sellAllBancor, $tx->getData()->sellAllBancor);
-        $this->assertSame($validTx->getData()->buyPool, $tx->getData()->buyPool);
-        $this->assertSame($validTx->getData()->sellPool, $tx->getData()->sellPool);
-        $this->assertSame($validTx->getData()->sellAllPool, $tx->getData()->sellAllPool);
+        $this->assertSame($validTx->getData()->buyPoolBase, $tx->getData()->buyPoolBase);
+        $this->assertSame($validTx->getData()->buyPoolDelta, $tx->getData()->buyPoolDelta);
+        $this->assertSame($validTx->getData()->sellAllPoolBase, $tx->getData()->sellAllPoolBase);
+        $this->assertSame($validTx->getData()->sellAllPoolDelta, $tx->getData()->sellAllPoolDelta);
         $this->assertSame($validTx->getData()->createTicker3, $tx->getData()->createTicker3);
         $this->assertSame($validTx->getData()->createTicker4, $tx->getData()->createTicker4);
         $this->assertSame($validTx->getData()->createTicker5, $tx->getData()->createTicker5);
@@ -96,7 +97,7 @@ final class MinterPriceCommissionTxTest extends TestCase
      */
     private function makeTransaction(): MinterTx
     {
-        $data = new MinterPriceCommissionTx('Mp325580a8baed04899252ae5b5f6167ee34ec0144f3401d88586b350999999999', 100000,0,'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41');
+        $data = new MinterPriceCommissionTx('Mp325580a8baed04899252ae5b5f6167ee34ec0144f3401d88586b350999999999', 100000,0,'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41', '42');
         return (new MinterTx(31, $data))->setChainID(MinterTx::TESTNET_CHAIN_ID);
     }
 }
