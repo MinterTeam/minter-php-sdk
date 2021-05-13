@@ -711,39 +711,39 @@ $tx->sign('your private key');
 
 ###### Example
 * Sign the <b>SellSwapPool</b> transaction
-* Constructor: ```MinterSellSwapPoolTx($coinToSell, $valueToSell, $coinToBuy, $minimumValueToBuy)```
+* Constructor: ```MinterSellSwapPoolTx(array $coins, $valueToSell, $minimumValueToBuy)```
 
 ```php
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterSellSwapPoolTx;
 
-$data = new MinterSellSwapPoolTx(0, '100', 1, '200');
+$data = new MinterSellSwapPoolTx([1, 2], '20',  '2');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key');
 ```
 
 ###### Example
 * Sign the <b>BuySwapPool</b> transaction
-* Constructor: ```MinterBuySwapPoolTx($coinToBuy, $valueToBuy, $coinToSell, $maximumValueToSell)```
+* Constructor: ```MinterBuySwapPoolTx($coins, $valueToBuy, $maximumValueToSell)```
 
 ```php
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterBuySwapPoolTx;
 
-$data = new MinterBuySwapPoolTx(0, '100', 1, '200');
+$data = new MinterBuySwapPoolTx([2, 3], '3', '5000');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key');
 ```
 
 ###### Example
 * Sign the <b>SellAllSwapPool</b> transaction
-* Constructor: ```MinterSellAllSwapPoolTx($coinToSell, $coinToBuy, $minimumValueToBuy)```
+* Constructor: ```MinterSellAllSwapPoolTx(array $coins, $minimumValueToBuy)```
 
 ```php
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterSellAllSwapPoolTx;
 
-$data = new MinterSellAllSwapPoolTx(0, 1, '100');
+$data = new MinterSellAllSwapPoolTx([1, 4, 5], '100');
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key');
 ```
