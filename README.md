@@ -908,7 +908,7 @@ $tx->sign('your private key')
 use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterRemoveLimitOrderTx;
 
-$data = new MinterAddLimitOrderTx($limitOrderId);
+$data = new MinterRemoveLimitOrderTx($limitOrderId);
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```
