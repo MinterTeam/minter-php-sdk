@@ -68,6 +68,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [RecreateToken](#example-31)
 		- [PriceCommission](#example-32)
 		- [CreateSwapPool](#example-33)
+		- [AddLimitOrder](#example-34)
+		- [RemoveLimitOrder](#example-35)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -881,6 +883,32 @@ use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterCreateSwapPoolTx;
 
 $data = new MinterCreateSwapPoolTx(1, 2, '11000', '22000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>AddLimitOrder</b> transaction
+* Constructor: ```MinterAddLimitOrderTx($coinToSell, $valueToSell, $coinToBuy, $valueToBuy)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterAddLimitOrderTx;
+
+$data = new MinterAddLimitOrderTx(0, '10', 1841, '7');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>RemoveLimitOrder</b> transaction
+* Constructor: ```MinterRemoveLimitOrderTx($id)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRemoveLimitOrderTx;
+
+$data = new MinterAddLimitOrderTx($limitOrderId);
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```

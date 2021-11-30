@@ -4,6 +4,7 @@ namespace Minter\SDK;
 
 use InvalidArgumentException;
 use Minter\Contracts\MinterTxInterface;
+use Minter\SDK\MinterCoins\MinterAddLimitOrderTx;
 use Minter\SDK\MinterCoins\MinterAddLiquidityTx;
 use Minter\SDK\MinterCoins\MinterBurnTokenTx;
 use Minter\SDK\MinterCoins\MinterBuyCoinTx;
@@ -22,6 +23,7 @@ use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
 use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
 use Minter\SDK\MinterCoins\MinterRecreateTokenTx;
 use Minter\SDK\MinterCoins\MinterRedeemCheckTx;
+use Minter\SDK\MinterCoins\MinterRemoveLimitOrderTx;
 use Minter\SDK\MinterCoins\MinterRemoveLiquidityTx;
 use Minter\SDK\MinterCoins\MinterSellAllCoinTx;
 use Minter\SDK\MinterCoins\MinterSellAllSwapPoolTx;
@@ -361,7 +363,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterRemoveLiquidityTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterRemoveLiquidityTx|MinterAddLimitOrderTx|MinterRemoveLimitOrderTx
      */
     public function getData(): MinterTxInterface
     {
