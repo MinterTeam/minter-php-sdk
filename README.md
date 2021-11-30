@@ -33,6 +33,9 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [getPriceVotes](#getPriceVotes)
 		- [getSwapPool](#getSwapPool)
 		- [getSwapPoolProvider](#getSwapPoolProvider)
+	    - [getLimitOrder](#getLimitOrder)
+	    - [getLimitOrders](#getLimitOrders)
+	    - [getLimitOrdersByCoins](#getLimitOrdersByCoins)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
@@ -354,6 +357,30 @@ Returns liquidity volume of the swap pool provided by specified address
 
 ``
 getSwapPoolProvider(string $coin0, string $coin1, string $provider, ?int $height = null): \stdClass
+``
+
+### getLimitOrders
+
+Returns list of limit orders by ids
+
+``
+getLimitOrders(array $ids, ?int $height = null): \stdClass
+``
+
+### getLimitOrder
+
+Returns limit order details by id
+
+``
+getLimitOrder(int $limitOrderId, ?int $height = null): \stdClass
+``
+
+### getLimitOrdersByCoins
+
+Returns limit orders related to sell and buy coins
+
+``
+getLimitOrdersByCoins(string $sellCoin, string $buyCoin, int $limit = null, ?int $height = null): \stdClass
 ``
 
 
