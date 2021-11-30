@@ -45,10 +45,10 @@ class MinterAPI
     public function createDefaultHttpClient(string $baseUri): Client
     {
         return new Client([
-            'base_uri'        => $baseUri,
-            'connect_timeout' => self::HTTP_DEFAULT_CONNECT_TIMEOUT,
-            'timeout'         => self::HTTP_DEFAULT_TIMEOUT,
-        ]);
+                              'base_uri'        => $baseUri,
+                              'connect_timeout' => self::HTTP_DEFAULT_CONNECT_TIMEOUT,
+                              'timeout'         => self::HTTP_DEFAULT_TIMEOUT,
+                          ]);
     }
 
     /**
@@ -95,11 +95,11 @@ class MinterAPI
     {
         $params = ['page' => $page];
 
-        if($height) {
+        if ($height) {
             $params['height'] = $height;
         }
 
-        if($perPage) {
+        if ($perPage) {
             $params['per_page'] = $perPage;
         }
 
@@ -185,7 +185,7 @@ class MinterAPI
     }
 
     /**
-     * @param int $height
+     * @param int       $height
      * @param bool|null $failedTxs
      * @return \stdClass
      * @throws GuzzleException
@@ -267,7 +267,7 @@ class MinterAPI
         string $coinToSell,
         string $valueToSell,
         string $coinToBuy,
-        ?int $height = null,
+        ?int   $height = null,
         string $swapFrom = 'optimal'
     ): \stdClass {
         $params = [
@@ -332,14 +332,14 @@ class MinterAPI
         string $coinToSell,
         string $valueToBuy,
         string $coinToBuy,
-        ?int $height = null,
+        ?int   $height = null,
         string $swapFrom = 'optimal'
     ): \stdClass {
         $params = [
             'coin_to_sell' => $coinToSell,
             'value_to_buy' => $valueToBuy,
             'coin_to_buy'  => $coinToBuy,
-            'swap_from'     => $swapFrom
+            'swap_from'    => $swapFrom
 
         ];
 
@@ -547,8 +547,8 @@ class MinterAPI
     }
 
     /**
-     * @param string $coin0
-     * @param string $coin1
+     * @param string   $coin0
+     * @param string   $coin1
      * @param int|null $height
      * @return \stdClass
      * @throws GuzzleException
@@ -559,9 +559,9 @@ class MinterAPI
     }
 
     /**
-     * @param string $coin0
-     * @param string $coin1
-     * @param string $provider
+     * @param string   $coin0
+     * @param string   $coin1
+     * @param string   $provider
      * @param int|null $height
      * @return \stdClass
      * @throws GuzzleException
@@ -571,4 +571,56 @@ class MinterAPI
         return $this->get('swap_pool/' . $coin0 . '/' . $coin1 . '/' . $provider, ($height ? ['height' => $height] : null));
     }
 
+    /**
+     * @param array    $ids
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getLimitOrders(array $ids, ?int $height = null): \stdClass
+    {
+        $params = ['ids' => $ids];
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('limit_orders', $params);
+    }
+
+    /**
+     * @param int      $limitOrderId
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getLimitOrder(int $limitOrderId, ?int $height = null): \stdClass
+    {
+        return $this->get('limit_order/' . $limitOrderId, ($height ? ['height' => $height] : null));
+    }
+
+    /**
+     * @param string   $sellCoin
+     * @param string   $buyCoin
+     * @param int|null $limit
+     * @param int|null $height
+     * @return \stdClass
+     * @throws GuzzleException
+     */
+    public function getLimitOrdersByCoins(
+        string $sellCoin,
+        string $buyCoin,
+        int    $limit = null,
+        ?int   $height = null
+    ): \stdClass {
+        $params = [];
+        if ($limit) {
+            $params['limit'] = $limit;
+        }
+
+        if ($height) {
+            $params['height'] = $height;
+        }
+
+        return $this->get('limit_orders/' . $sellCoin . '/' . $buyCoin, $params);
+    }
 }

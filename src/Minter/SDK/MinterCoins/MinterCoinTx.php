@@ -43,7 +43,9 @@ abstract class MinterCoinTx implements MinterTxInterface
         MinterCreateTokenTx::TYPE             => MinterCreateTokenTx::class,
         MinterRecreateTokenTx::TYPE           => MinterRecreateTokenTx::class,
         MinterPriceCommissionTx::TYPE         => MinterPriceCommissionTx::class,
-        MinterCreateSwapPoolTx::TYPE          => MinterCreateSwapPoolTx::class
+        MinterCreateSwapPoolTx::TYPE          => MinterCreateSwapPoolTx::class,
+        MinterAddLimitOrderTx::TYPE           => MinterAddLimitOrderTx::class,
+        MinterRemoveLimitOrderTx::TYPE        => MinterRemoveLimitOrderTx::class
     ];
 
     /**

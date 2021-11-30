@@ -33,6 +33,9 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [getPriceVotes](#getPriceVotes)
 		- [getSwapPool](#getSwapPool)
 		- [getSwapPoolProvider](#getSwapPoolProvider)
+	    - [getLimitOrder](#getLimitOrder)
+	    - [getLimitOrders](#getLimitOrders)
+	    - [getLimitOrdersByCoins](#getLimitOrdersByCoins)
 	- [Error handling](#error-handling)
 	
 * [Minter SDK](#using-mintersdk)
@@ -68,6 +71,8 @@ This is a pure PHP SDK for working with <b>Minter</b> blockchain
 		- [RecreateToken](#example-31)
 		- [PriceCommission](#example-32)
 		- [CreateSwapPool](#example-33)
+		- [AddLimitOrder](#example-34)
+		- [RemoveLimitOrder](#example-35)
 	- [Sign transaction with multisignatures](#sign-transaction-with-multisignatures)
 	- [Get fee of transaction](#get-fee-of-transaction)
 	- [Decode Transaction](#decode-transaction)
@@ -352,6 +357,30 @@ Returns liquidity volume of the swap pool provided by specified address
 
 ``
 getSwapPoolProvider(string $coin0, string $coin1, string $provider, ?int $height = null): \stdClass
+``
+
+### getLimitOrders
+
+Returns list of limit orders by ids
+
+``
+getLimitOrders(array $ids, ?int $height = null): \stdClass
+``
+
+### getLimitOrder
+
+Returns limit order details by id
+
+``
+getLimitOrder(int $limitOrderId, ?int $height = null): \stdClass
+``
+
+### getLimitOrdersByCoins
+
+Returns limit orders related to sell and buy coins
+
+``
+getLimitOrdersByCoins(string $sellCoin, string $buyCoin, int $limit = null, ?int $height = null): \stdClass
 ``
 
 
@@ -881,6 +910,32 @@ use Minter\SDK\MinterTx;
 use Minter\SDK\MinterCoins\MinterCreateSwapPoolTx;
 
 $data = new MinterCreateSwapPoolTx(1, 2, '11000', '22000');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>AddLimitOrder</b> transaction
+* Constructor: ```MinterAddLimitOrderTx($coinToSell, $valueToSell, $coinToBuy, $valueToBuy)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterAddLimitOrderTx;
+
+$data = new MinterAddLimitOrderTx(0, '10', 1841, '7');
+$tx   = new MinterTx($nonce, $data);
+$tx->sign('your private key')
+```
+
+###### Example
+* Sign the <b>RemoveLimitOrder</b> transaction
+* Constructor: ```MinterRemoveLimitOrderTx($id)```
+
+```php
+use Minter\SDK\MinterTx;
+use Minter\SDK\MinterCoins\MinterRemoveLimitOrderTx;
+
+$data = new MinterRemoveLimitOrderTx($limitOrderId);
 $tx   = new MinterTx($nonce, $data);
 $tx->sign('your private key')
 ```
