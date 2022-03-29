@@ -17,7 +17,10 @@ use Minter\SDK\MinterCoins\MinterCreateMultisigTx;
 use Minter\SDK\MinterCoins\MinterDeclareCandidacyTx;
 use Minter\SDK\MinterCoins\MinterDelegateTx;
 use Minter\SDK\MinterCoins\MinterEditCandidateTx;
+use Minter\SDK\MinterCoins\MinterLockStakeTx;
+use Minter\SDK\MinterCoins\MinterLockTx;
 use Minter\SDK\MinterCoins\MinterMintTokenTx;
+use Minter\SDK\MinterCoins\MinterMoveStakeTx;
 use Minter\SDK\MinterCoins\MinterMultiSendTx;
 use Minter\SDK\MinterCoins\MinterPriceCommissionTx;
 use Minter\SDK\MinterCoins\MinterRecreateCoinTx;
@@ -278,6 +281,15 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
+     * @return $this
+     */
+    public function setTestnetChainId(): MinterTx
+    {
+        $this->chainID = self::TESTNET_CHAIN_ID;
+        return $this;
+    }
+
+    /**
      * @param mixed $payload
      * @return MinterTx
      */
@@ -363,7 +375,7 @@ class MinterTx extends MinterTxSigner
     }
 
     /**
-     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterRemoveLiquidityTx|MinterAddLimitOrderTx|MinterRemoveLimitOrderTx
+     * @return MinterSendCoinTx|MinterBuyCoinTx|MinterSellCoinTx|MinterSellAllCoinTx|MinterDelegateTx|MinterUnbondTx|MinterMultiSendTx|MinterCreateMultisigTx|MinterCreateCoinTx|MinterRecreateCoinTx|MinterEditCoinOwnerTx|MinterDeclareCandidacyTx|MinterSetCandidateOnTx|MinterSetCandidateOffTx|MinterEditCandidateTx|MinterRedeemCheckTx|MinterSetHaltBlockTx|MinterSellSwapPoolTx|MinterSellAllSwapPoolTx|MinterBuySwapPoolTx|MinterPriceCommissionTx|MinterCreateTokenTx|MinterRecreateTokenTx|MinterCreateSwapPoolTx|MinterBurnTokenTx|MinterMintTokenTx|MinterAddLiquidityTx|MinterRemoveLiquidityTx|MinterAddLimitOrderTx|MinterRemoveLimitOrderTx|MinterLockTx|MinterLockStakeTx|MinterMoveStakeTx
      */
     public function getData(): MinterTxInterface
     {
