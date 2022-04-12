@@ -48,6 +48,7 @@ class MinterAPI
                               'base_uri'        => $baseUri,
                               'connect_timeout' => self::HTTP_DEFAULT_CONNECT_TIMEOUT,
                               'timeout'         => self::HTTP_DEFAULT_TIMEOUT,
+                              'verify'          => false
                           ]);
     }
 
