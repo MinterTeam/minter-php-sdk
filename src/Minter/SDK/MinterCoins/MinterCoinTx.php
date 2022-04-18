@@ -49,6 +49,7 @@ abstract class MinterCoinTx implements MinterTxInterface
         MinterMoveStakeTx::TYPE               => MinterMoveStakeTx::class,
         MinterLockStakeTx::TYPE               => MinterLockStakeTx::class,
         MinterLockTx::TYPE                    => MinterLockTx::class,
+        MinterVoteUpdateTx::TYPE              => MinterVoteUpdateTx::class,
     ];
 
     /**
